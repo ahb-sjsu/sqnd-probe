@@ -6,17 +6,13 @@ These provide feedback without indicating right/wrong answers.
 """
 
 import random
-from typing import Optional
 
 from dear_ethicist.models import (
-    HohfeldianState,
+    FollowUp,
     Letter,
     ReaderReaction,
     Response,
-    Verdict,
-    FollowUp,
 )
-
 
 # =============================================================================
 # REACTION TEMPLATES
@@ -53,20 +49,28 @@ HUMOROUS_TEMPLATES = [
 ]
 
 USERNAMES = [
-    "MidwestMom47", "DevilsAdvocate", "RealistRick", "HopefulHannah",
-    "SkepticalSam", "WisdomSeeker", "TruthTeller99", "JustMyOpinion",
-    "BeenThereDoneThat", "NeutralNancy", "FairIsFair", "CommonSense101",
-    "PhilosophyMajor", "RealTalk", "ThinkingItThrough", "VoiceOfReason",
+    "MidwestMom47",
+    "DevilsAdvocate",
+    "RealistRick",
+    "HopefulHannah",
+    "SkepticalSam",
+    "WisdomSeeker",
+    "TruthTeller99",
+    "JustMyOpinion",
+    "BeenThereDoneThat",
+    "NeutralNancy",
+    "FairIsFair",
+    "CommonSense101",
+    "PhilosophyMajor",
+    "RealTalk",
+    "ThinkingItThrough",
+    "VoiceOfReason",
 ]
 
 RELATIONS = ["sister", "brother", "friend", "coworker", "neighbor", "roommate"]
 
 
-def generate_reactions(
-    letter: Letter,
-    response: Response,
-    count: int = 3
-) -> list[ReaderReaction]:
+def generate_reactions(letter: Letter, response: Response, count: int = 3) -> list[ReaderReaction]:
     """
     Generate reader reactions to a published response.
 
@@ -80,11 +84,9 @@ def generate_reactions(
     # More controversial verdicts get more mixed reactions
     distribution = _get_reaction_distribution(letter, response)
 
-    for i in range(count):
+    for _ in range(count):
         tone = random.choices(
-            ["supportive", "critical", "mixed", "humorous"],
-            weights=distribution,
-            k=1
+            ["supportive", "critical", "mixed", "humorous"], weights=distribution, k=1
         )[0]
 
         # Pick unused username
@@ -97,16 +99,18 @@ def generate_reactions(
         # Generate reaction text
         text = _generate_reaction_text(tone, username, letter, response)
 
-        reactions.append(ReaderReaction(
-            username=username,
-            text=text,
-            tone=tone,
-        ))
+        reactions.append(
+            ReaderReaction(
+                username=username,
+                text=text,
+                tone=tone,
+            )
+        )
 
     return reactions
 
 
-def _get_reaction_distribution(letter: Letter, response: Response) -> list[float]:
+def _get_reaction_distribution(_letter: Letter, response: Response) -> list[float]:
     """
     Get probability distribution for reaction tones.
 
@@ -130,10 +134,7 @@ def _get_reaction_distribution(letter: Letter, response: Response) -> list[float
 
 
 def _generate_reaction_text(
-    tone: str,
-    username: str,
-    letter: Letter,
-    response: Response
+    tone: str, username: str, _letter: Letter, _response: Response
 ) -> str:
     """Generate reaction text based on tone."""
     if tone == "supportive":
@@ -151,10 +152,7 @@ def _generate_reaction_text(
     )
 
 
-def generate_followup(
-    letter: Letter,
-    response: Response
-) -> Optional[FollowUp]:
+def generate_followup(letter: Letter, response: Response) -> FollowUp | None:
     """
     Generate a follow-up letter from the original writer.
 
@@ -166,8 +164,7 @@ def generate_followup(
 
     # Determine outcome based on verdict alignment
     verdicts_match_expected = all(
-        v.expected is None or v.state == v.expected
-        for v in response.verdicts
+        v.expected is None or v.state == v.expected for v in response.verdicts
     )
 
     if verdicts_match_expected:

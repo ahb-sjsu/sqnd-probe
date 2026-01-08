@@ -1,12 +1,9 @@
 """Tests for Dear Ethicist data models."""
 
-import pytest
 
 from dear_ethicist.models import (
     D4Element,
     HohfeldianState,
-    Letter,
-    Protocol,
     Verdict,
     correlative,
     d4_apply_to_state,

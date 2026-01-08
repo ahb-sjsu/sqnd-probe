@@ -14,15 +14,15 @@ This module defines:
 
 from datetime import datetime
 from enum import Enum
-from typing import Literal, Optional
+from typing import Literal
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel, Field
 
-
 # =============================================================================
 # HOHFELDIAN CLASSIFICATION
 # =============================================================================
+
 
 class HohfeldianState(str, Enum):
     """
@@ -34,7 +34,8 @@ class HohfeldianState(str, Enum):
     - L: "Can I refuse?" / "Am I free to choose?"
     - N: "Can they demand?" (no) / "They have no right"
     """
-    O = "O"  # Obligation: MUST do something
+
+    O = "O"  # noqa: E741 - Obligation: MUST do something
     C = "C"  # Claim: OWED something / has a RIGHT
     L = "L"  # Liberty: FREE to choose
     N = "N"  # No-claim: CANNOT demand
@@ -42,6 +43,7 @@ class HohfeldianState(str, Enum):
 
 class D4Element(str, Enum):
     """The 8 elements of the dihedral group D4."""
+
     E = "e"
     R = "r"
     R2 = "r2"
@@ -128,7 +130,7 @@ _D4_INVERSE: dict[D4Element, D4Element] = {
     D4Element.R: D4Element.R3,
     D4Element.R2: D4Element.R2,
     D4Element.R3: D4Element.R,
-    D4Element.S: D4Element.S,      # All reflections are self-inverse (order 2)
+    D4Element.S: D4Element.S,  # All reflections are self-inverse (order 2)
     D4Element.SR: D4Element.SR,
     D4Element.SR2: D4Element.SR2,
     D4Element.SR3: D4Element.SR3,
@@ -191,33 +193,38 @@ def correlative(state: HohfeldianState) -> HohfeldianState:
 # LETTER STRUCTURE
 # =============================================================================
 
+
 class Protocol(str, Enum):
     """SQND experimental protocols."""
-    GATE_DETECTION = "GATE_DETECTION"      # Protocol 1: Semantic gates
-    CORRELATIVE = "CORRELATIVE"            # Protocol 2: O<->C, L<->N
-    PATH_DEPENDENCE = "PATH_DEPENDENCE"    # Protocol 3: Perspective order
+
+    GATE_DETECTION = "GATE_DETECTION"  # Protocol 1: Semantic gates
+    CORRELATIVE = "CORRELATIVE"  # Protocol 2: O<->C, L<->N
+    PATH_DEPENDENCE = "PATH_DEPENDENCE"  # Protocol 3: Perspective order
     CONTEXT_SALIENCE = "CONTEXT_SALIENCE"  # Protocol 4: Editor pressure
     PHASE_TRANSITION = "PHASE_TRANSITION"  # Protocol 5: Ambiguity level
 
 
 class LetterVoice(str, Enum):
     """Voice styles for letter writers."""
-    OVERTHINKER = "overthinker"      # Agonizes over tiny details
-    VALIDATOR = "validator"          # Wants confirmation they're right
+
+    OVERTHINKER = "overthinker"  # Agonizes over tiny details
+    VALIDATOR = "validator"  # Wants confirmation they're right
     GENUINELY_STUCK = "genuinely_stuck"  # Real dilemma, needs help
-    AGGRIEVED = "aggrieved"          # Clearly wronged, wants validation
+    AGGRIEVED = "aggrieved"  # Clearly wronged, wants validation
 
 
 class Party(BaseModel):
     """A party mentioned in a letter."""
+
     name: str
     role: str  # e.g., "letter_writer", "friend", "coworker"
     is_writer: bool = False
-    expected_state: Optional[HohfeldianState] = None
+    expected_state: HohfeldianState | None = None
 
 
 class Letter(BaseModel):
     """An advice column letter from a reader."""
+
     letter_id: str
     day: int = 0
     protocol: Protocol
@@ -226,7 +233,7 @@ class Letter(BaseModel):
     # Letter content
     signoff: str  # e.g., "CONFUSED IN CLEVELAND"
     subject: str  # Brief subject line
-    body: str     # Full letter text
+    body: str  # Full letter text
     voice: LetterVoice = LetterVoice.GENUINELY_STUCK
 
     # Parties involved
@@ -237,16 +244,16 @@ class Letter(BaseModel):
 
     # For follow-ups
     is_followup: bool = False
-    original_letter_id: Optional[str] = None
+    original_letter_id: str | None = None
 
-    def get_writer(self) -> Optional[Party]:
+    def get_writer(self) -> Party | None:
         """Get the letter writer party."""
         for party in self.parties:
             if party.is_writer:
                 return party
         return None
 
-    def get_other_party(self) -> Optional[Party]:
+    def get_other_party(self) -> Party | None:
         """Get the main other party (not the writer)."""
         for party in self.parties:
             if not party.is_writer:
@@ -258,18 +265,20 @@ class Letter(BaseModel):
 # RESPONSE AND VERDICT
 # =============================================================================
 
+
 class Verdict(BaseModel):
     """
     The player's Hohfeldian classification (the hidden measurement).
 
     This is captured separately from the response text.
     """
+
     party_name: str
     state: HohfeldianState
-    expected: Optional[HohfeldianState] = None
+    expected: HohfeldianState | None = None
 
     @property
-    def is_correct(self) -> Optional[bool]:
+    def is_correct(self) -> bool | None:
         if self.expected is None:
             return None
         return self.state == self.expected
@@ -277,20 +286,22 @@ class Verdict(BaseModel):
 
 class ResponseChoice(BaseModel):
     """A choice in the guided response builder."""
+
     label: str
-    implies_state: Optional[HohfeldianState] = None
-    for_party: Optional[str] = None
+    implies_state: HohfeldianState | None = None
+    for_party: str | None = None
 
 
 class Response(BaseModel):
     """The player's published response to a letter."""
+
     letter_id: str
     response_text: str = ""
     verdicts: list[Verdict] = Field(default_factory=list)
     advice_choices: list[str] = Field(default_factory=list)  # Selected advice options
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
-    def get_verdict_for(self, party_name: str) -> Optional[Verdict]:
+    def get_verdict_for(self, party_name: str) -> Verdict | None:
         """Get verdict for a specific party."""
         for v in self.verdicts:
             if v.party_name == party_name:
@@ -302,8 +313,10 @@ class Response(BaseModel):
 # READER REACTIONS
 # =============================================================================
 
+
 class ReaderReaction(BaseModel):
     """A reaction from a "reader" to published advice."""
+
     username: str
     text: str
     tone: Literal["supportive", "critical", "mixed", "humorous"]
@@ -311,6 +324,7 @@ class ReaderReaction(BaseModel):
 
 class FollowUp(BaseModel):
     """A follow-up letter from the original writer."""
+
     original_letter_id: str
     outcome_text: str
     writer_satisfaction: Literal["grateful", "neutral", "disappointed"]
@@ -320,16 +334,19 @@ class FollowUp(BaseModel):
 # GAME STATE
 # =============================================================================
 
+
 class CareerStage(str, Enum):
     """Career progression stages."""
-    JUNIOR = "junior"           # Weeks 1-2: Learning
-    STAFF = "staff"             # Weeks 3-4: Established
-    SENIOR = "senior"           # Weeks 5-6: Respected
-    SYNDICATED = "syndicated"   # Weeks 7-8: National
+
+    JUNIOR = "junior"  # Weeks 1-2: Learning
+    STAFF = "staff"  # Weeks 3-4: Established
+    SENIOR = "senior"  # Weeks 5-6: Respected
+    SYNDICATED = "syndicated"  # Weeks 7-8: National
 
 
 class EditorMood(str, Enum):
     """Editor's current stance (affects Protocol 4)."""
+
     SUPPORTIVE = "supportive"
     NEUTRAL = "neutral"
     DEMANDING = "demanding"
@@ -337,6 +354,7 @@ class EditorMood(str, Enum):
 
 class GameState(BaseModel):
     """Complete game state."""
+
     session_id: str = Field(default_factory=lambda: str(uuid4())[:8])
     current_day: int = 1
     current_week: int = 1
@@ -344,7 +362,7 @@ class GameState(BaseModel):
     # Career
     career_stage: CareerStage = CareerStage.JUNIOR
     readership: int = 1000  # Subscriber count
-    reputation: int = 50    # 0-100 scale (not shown to player)
+    reputation: int = 50  # 0-100 scale (not shown to player)
 
     # Editor
     editor_mood: EditorMood = EditorMood.NEUTRAL
@@ -363,8 +381,10 @@ class GameState(BaseModel):
 # TELEMETRY
 # =============================================================================
 
+
 class TrialRecord(BaseModel):
     """Complete telemetry record for a single letter response."""
+
     trial_id: UUID = Field(default_factory=uuid4)
     session_id: str
     letter_id: str

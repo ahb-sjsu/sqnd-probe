@@ -7,21 +7,17 @@ Records all player verdicts for SQND analysis.
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
 from uuid import uuid4
 
 from dear_ethicist.models import (
-    GameState,
-    Protocol,
     TrialRecord,
-    Verdict,
 )
 
 
 class TelemetryLogger:
     """Logger for experimental telemetry."""
 
-    def __init__(self, output_dir: Path, session_id: Optional[str] = None):
+    def __init__(self, output_dir: Path, session_id: str | None = None):
         self.output_dir = Path(output_dir)
         self.session_id = session_id or str(uuid4())[:8]
         self.output_dir.mkdir(parents=True, exist_ok=True)

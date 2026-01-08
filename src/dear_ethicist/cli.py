@@ -8,27 +8,24 @@ import os
 import random
 import time
 from pathlib import Path
-from typing import Optional
 
 import click
 from rich.console import Console
 from rich.panel import Panel
-from rich.prompt import Prompt, Confirm
+from rich.prompt import Confirm, Prompt
 from rich.table import Table
 from rich.text import Text
 
+from dear_ethicist.letters import LetterBank, create_default_letter_bank, get_response_options
 from dear_ethicist.models import (
-    CareerStage,
     GameState,
-    HohfeldianState,
     Letter,
     Protocol,
     Response,
     TrialRecord,
     Verdict,
 )
-from dear_ethicist.letters import LetterBank, create_default_letter_bank, get_response_options
-from dear_ethicist.reactions import generate_reactions, generate_engagement_stats
+from dear_ethicist.reactions import generate_engagement_stats, generate_reactions
 from dear_ethicist.telemetry import TelemetryLogger
 
 console = Console()
@@ -36,7 +33,7 @@ console = Console()
 
 def clear_screen():
     """Clear screen - works reliably on Windows."""
-    os.system('cls' if os.name == 'nt' else 'clear')
+    os.system("cls" if os.name == "nt" else "clear")
 
 
 @click.group()
@@ -47,19 +44,23 @@ def cli():
 
 
 @cli.command()
-@click.option("--output-dir", default="./data", type=click.Path(), help="Telemetry output directory")
+@click.option(
+    "--output-dir", default="./data", type=click.Path(), help="Telemetry output directory"
+)
 def play(output_dir: str):
     """Start a new game session."""
     clear_screen()
-    console.print(Panel.fit(
-        "[bold]THE MORNING CHRONICLE[/bold]\n\n"
-        "Welcome to your first day as the new advice columnist.\n\n"
-        "Letters will arrive from readers seeking guidance.\n"
-        "Read them carefully. Offer your wisdom.\n\n"
-        "[dim]Press Enter to begin...[/dim]",
-        title="Dear Ethicist",
-        border_style="blue"
-    ))
+    console.print(
+        Panel.fit(
+            "[bold]THE MORNING CHRONICLE[/bold]\n\n"
+            "Welcome to your first day as the new advice columnist.\n\n"
+            "Letters will arrive from readers seeking guidance.\n"
+            "Read them carefully. Offer your wisdom.\n\n"
+            "[dim]Press Enter to begin...[/dim]",
+            title="Dear Ethicist",
+            border_style="blue",
+        )
+    )
     input()
 
     # Initialize game
@@ -120,10 +121,9 @@ def run_game_loop(game_state: GameState, letter_bank: LetterBank, telemetry: Tel
 def display_letter(letter: Letter, game_state: GameState):
     """Display a letter on screen."""
     # Header
-    console.print(Panel(
-        f"[bold]THE MORNING CHRONICLE[/bold] — Day {game_state.current_day}",
-        style="blue"
-    ))
+    console.print(
+        Panel(f"[bold]THE MORNING CHRONICLE[/bold] — Day {game_state.current_day}", style="blue")
+    )
 
     # Letter content - extract body after "Dear Ethicist," and before signoff
     body_content = letter.body.split("Dear Ethicist,")[-1].strip()
@@ -137,15 +137,17 @@ def display_letter(letter: Letter, game_state: GameState):
     letter_text.append(body_content)
     letter_text.append(f"\n\n— {letter.signoff}", style="italic")
 
-    console.print(Panel(
-        letter_text,
-        title=f"[bold]{letter.subject.upper()}[/bold]",
-        border_style="white",
-        padding=(1, 2),
-    ))
+    console.print(
+        Panel(
+            letter_text,
+            title=f"[bold]{letter.subject.upper()}[/bold]",
+            border_style="white",
+            padding=(1, 2),
+        )
+    )
 
 
-def get_player_response(letter: Letter, game_state: GameState) -> Optional[Response]:
+def get_player_response(letter: Letter, _game_state: GameState) -> Response | None:
     """Get the player's response to a letter."""
     console.print("\n[bold]YOUR VERDICT[/bold] [dim](for your records)[/dim]\n")
 
@@ -155,12 +157,6 @@ def get_player_response(letter: Letter, game_state: GameState) -> Optional[Respo
     for option_group in options:
         console.print(f"[cyan]{option_group['category']}:[/cyan]")
         for i, choice in enumerate(option_group["choices"], 1):
-            state_label = {
-                HohfeldianState.O: "O - Obligated",
-                HohfeldianState.C: "C - Has a claim",
-                HohfeldianState.L: "L - Free to choose",
-                HohfeldianState.N: "N - No claim",
-            }.get(choice["state"], str(choice["state"]))
             console.print(f"  [{i}] {choice['label']}")
 
         while True:
@@ -177,11 +173,13 @@ def get_player_response(letter: Letter, game_state: GameState) -> Optional[Respo
                         expected = party.expected_state
                         break
 
-                verdicts.append(Verdict(
-                    party_name=choice["party"],
-                    state=choice["state"],
-                    expected=expected,
-                ))
+                verdicts.append(
+                    Verdict(
+                        party_name=choice["party"],
+                        state=choice["state"],
+                        expected=expected,
+                    )
+                )
                 break
 
         console.print()
@@ -218,19 +216,23 @@ def display_reactions(letter: Letter, response: Response):
         time.sleep(0.3)
 
     stats = generate_engagement_stats()
-    console.print(f"\n[dim]Engagement: {stats['comments']} comments, {stats['shares']} shares[/dim]")
+    console.print(
+        f"\n[dim]Engagement: {stats['comments']} comments, {stats['shares']} shares[/dim]"
+    )
 
 
 def display_session_end(game_state: GameState, telemetry: TelemetryLogger):
     """Display end of session summary."""
     console.print("\n" + "═" * 60)
-    console.print(Panel(
-        f"[bold]END OF SESSION[/bold]\n\n"
-        f"Letters answered: {game_state.letters_answered}\n"
-        f"Session ID: {game_state.session_id}\n\n"
-        f"[dim]Telemetry saved to: {telemetry.filepath}[/dim]",
-        border_style="blue"
-    ))
+    console.print(
+        Panel(
+            f"[bold]END OF SESSION[/bold]\n\n"
+            f"Letters answered: {game_state.letters_answered}\n"
+            f"Session ID: {game_state.session_id}\n\n"
+            f"[dim]Telemetry saved to: {telemetry.filepath}[/dim]",
+            border_style="blue",
+        )
+    )
 
     stats = telemetry.compute_statistics()
     if stats["total_trials"] > 0:
@@ -254,8 +256,10 @@ def preview(letter_id: str):
 
 
 @cli.command()
-@click.option("--protocol", type=click.Choice([p.value for p in Protocol]), help="Filter by protocol")
-def list_letters(protocol: Optional[str]):
+@click.option(
+    "--protocol", type=click.Choice([p.value for p in Protocol]), help="Filter by protocol"
+)
+def list_letters(protocol: str | None):
     """List available letters."""
     bank = create_default_letter_bank()
 
@@ -271,7 +275,7 @@ def list_letters(protocol: Optional[str]):
             table.add_row(
                 letter.letter_id,
                 letter.protocol.value,
-                letter.subject[:40] + "..." if len(letter.subject) > 40 else letter.subject
+                letter.subject[:40] + "..." if len(letter.subject) > 40 else letter.subject,
             )
 
     console.print(table)
@@ -282,11 +286,11 @@ def list_letters(protocol: Optional[str]):
 @click.argument("session_file", type=click.Path(exists=True))
 def analyze(session_file: str):
     """Analyze telemetry from a session file."""
-    from dear_ethicist.telemetry import load_session, compute_bond_index
+    from dear_ethicist.telemetry import compute_bond_index, load_session
 
     records = load_session(Path(session_file))
 
-    console.print(f"\n[bold]Session Analysis[/bold]")
+    console.print("\n[bold]Session Analysis[/bold]")
     console.print(f"Records: {len(records)}")
 
     # By protocol
@@ -303,7 +307,7 @@ def analyze(session_file: str):
             if verdict.is_correct:
                 correct += 1
 
-    console.print(f"\nBy Protocol:")
+    console.print("\nBy Protocol:")
     for proto, count in by_protocol.items():
         console.print(f"  {proto}: {count}")
 

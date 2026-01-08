@@ -5,7 +5,6 @@ Loads letter templates from YAML files in the letters/ directory.
 """
 
 from pathlib import Path
-from typing import Optional
 
 import yaml
 
@@ -16,7 +15,6 @@ from dear_ethicist.models import (
     Party,
     Protocol,
 )
-
 
 # Path to letters directory
 LETTERS_DIR = Path(__file__).parent / "letters"
@@ -34,7 +32,7 @@ class LetterBank:
         self._letters[letter.letter_id] = letter
         self._by_protocol[letter.protocol].append(letter.letter_id)
 
-    def get(self, letter_id: str) -> Optional[Letter]:
+    def get(self, letter_id: str) -> Letter | None:
         """Get a letter by ID."""
         return self._letters.get(letter_id)
 
@@ -42,13 +40,13 @@ class LetterBank:
         """Get all letters for a protocol."""
         return [self._letters[lid] for lid in self._by_protocol[protocol]]
 
-    def list_ids(self, protocol: Optional[Protocol] = None) -> list[str]:
+    def list_ids(self, protocol: Protocol | None = None) -> list[str]:
         """List all letter IDs, optionally filtered by protocol."""
         if protocol:
             return self._by_protocol[protocol].copy()
         return list(self._letters.keys())
 
-    def count(self, protocol: Optional[Protocol] = None) -> int:
+    def count(self, protocol: Protocol | None = None) -> int:
         """Count letters, optionally filtered by protocol."""
         if protocol:
             return len(self._by_protocol[protocol])
@@ -70,12 +68,14 @@ def parse_letter_from_dict(data: dict) -> Letter:
         expected = None
         if p.get("expected_state"):
             expected = HohfeldianState(p["expected_state"])
-        parties.append(Party(
-            name=p["name"],
-            role=p["role"],
-            is_writer=p.get("is_writer", False),
-            expected_state=expected,
-        ))
+        parties.append(
+            Party(
+                name=p["name"],
+                role=p["role"],
+                is_writer=p.get("is_writer", False),
+                expected_state=expected,
+            )
+        )
 
     return Letter(
         letter_id=data["letter_id"],
@@ -93,7 +93,7 @@ def parse_letter_from_dict(data: dict) -> Letter:
 def load_letters_from_yaml(filepath: Path) -> list[Letter]:
     """Load letters from a YAML file."""
     letters = []
-    with open(filepath, "r", encoding="utf-8") as f:
+    with open(filepath, encoding="utf-8") as f:
         data = yaml.safe_load(f)
         if data:
             for item in data:
@@ -105,7 +105,9 @@ def load_letters_from_yaml(filepath: Path) -> list[Letter]:
     return letters
 
 
-def load_all_letters(letters_dir: Path = LETTERS_DIR, include_archive: bool = False) -> list[Letter]:
+def load_all_letters(
+    letters_dir: Path = LETTERS_DIR, include_archive: bool = False
+) -> list[Letter]:
     """Load all letters from YAML files in the letters directory.
 
     Args:
@@ -148,21 +150,41 @@ def get_response_options(letter: Letter) -> list[dict]:
     options = []
 
     # Options for the other party's status
-    options.append({
-        "category": f"{other.name}'s situation",
-        "choices": [
-            {"label": f"{other.name} is obligated (promise stands)", "state": HohfeldianState.O, "party": other.name},
-            {"label": f"{other.name} is free to choose", "state": HohfeldianState.L, "party": other.name},
-        ]
-    })
+    options.append(
+        {
+            "category": f"{other.name}'s situation",
+            "choices": [
+                {
+                    "label": f"{other.name} is obligated (promise stands)",
+                    "state": HohfeldianState.O,
+                    "party": other.name,
+                },
+                {
+                    "label": f"{other.name} is free to choose",
+                    "state": HohfeldianState.L,
+                    "party": other.name,
+                },
+            ],
+        }
+    )
 
     # Options for the writer's status
-    options.append({
-        "category": "Your claim",
-        "choices": [
-            {"label": "You have a right to expect this", "state": HohfeldianState.C, "party": writer.name},
-            {"label": "You can't demand this", "state": HohfeldianState.N, "party": writer.name},
-        ]
-    })
+    options.append(
+        {
+            "category": "Your claim",
+            "choices": [
+                {
+                    "label": "You have a right to expect this",
+                    "state": HohfeldianState.C,
+                    "party": writer.name,
+                },
+                {
+                    "label": "You can't demand this",
+                    "state": HohfeldianState.N,
+                    "party": writer.name,
+                },
+            ],
+        }
+    )
 
     return options
