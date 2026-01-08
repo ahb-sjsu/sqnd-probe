@@ -7,8 +7,24 @@ dist/
 build/
 *.egg
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
 .claude/
 data/
 dear_abby_data/
 dear_abby_temp/
 *.zip
+
+# Coverage
+.coverage
+coverage.xml
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+nul

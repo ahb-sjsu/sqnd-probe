@@ -1,6 +1,5 @@
 """Tests for Dear Ethicist data models."""
 
-
 from dear_ethicist.models import (
     D4Element,
     HohfeldianState,

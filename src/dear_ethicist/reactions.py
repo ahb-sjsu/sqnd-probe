@@ -6,6 +6,7 @@ These provide feedback without indicating right/wrong answers.
 """
 
 import random
+from typing import Literal
 
 from dear_ethicist.models import (
     FollowUp,
@@ -13,6 +14,9 @@ from dear_ethicist.models import (
     ReaderReaction,
     Response,
 )
+
+ReactionTone = Literal["supportive", "critical", "mixed", "humorous"]
+SatisfactionLevel = Literal["grateful", "neutral", "disappointed"]
 
 # =============================================================================
 # REACTION TEMPLATES
@@ -84,10 +88,9 @@ def generate_reactions(letter: Letter, response: Response, count: int = 3) -> li
     # More controversial verdicts get more mixed reactions
     distribution = _get_reaction_distribution(letter, response)
 
+    tones: list[ReactionTone] = ["supportive", "critical", "mixed", "humorous"]
     for _ in range(count):
-        tone = random.choices(
-            ["supportive", "critical", "mixed", "humorous"], weights=distribution, k=1
-        )[0]
+        tone: ReactionTone = random.choices(tones, weights=distribution, k=1)[0]
 
         # Pick unused username
         available = [u for u in USERNAMES if u not in used_usernames]
@@ -133,9 +136,7 @@ def _get_reaction_distribution(_letter: Letter, response: Response) -> list[floa
     return weights
 
 
-def _generate_reaction_text(
-    tone: str, username: str, _letter: Letter, _response: Response
-) -> str:
+def _generate_reaction_text(tone: str, username: str, _letter: Letter, _response: Response) -> str:
     """Generate reaction text based on tone."""
     if tone == "supportive":
         template = random.choice(SUPPORTIVE_TEMPLATES)
@@ -167,10 +168,14 @@ def generate_followup(letter: Letter, response: Response) -> FollowUp | None:
         v.expected is None or v.state == v.expected for v in response.verdicts
     )
 
+    other_party = letter.get_other_party()
+    other_name = other_party.name if other_party else "them"
+
+    satisfaction: SatisfactionLevel
     if verdicts_match_expected:
         # Positive outcome
         outcomes = [
-            f"I took your advice and talked to {letter.get_other_party().name if letter.get_other_party() else 'them'}. We worked it out!",
+            f"I took your advice and talked to {other_name}. We worked it out!",
             "Thank you! Your clarity helped me see the situation more clearly.",
             "Update: Everything resolved itself. You were right about the core issue.",
         ]
