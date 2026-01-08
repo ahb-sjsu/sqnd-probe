@@ -1,0 +1,152 @@
+# Correlative symmetry letters - Protocol 2
+# These test O<->C and L<->N pairing
+
+- letter_id: corr_debt
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: debt
+  signoff: FORGETFUL ON FIFTH STREET
+  subject: I borrowed something and haven't returned it
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I borrowed my neighbor's lawn mower two months ago. I haven't returned it yet, and they haven't asked for it back.
+
+    Two questions: Do I actually need to return it proactively? And does my neighbor have a right to demand it back even though they haven't said anything?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: O
+    - name: Neighbor
+      role: lender
+      expected_state: C
+  questions:
+    - Do I need to return it proactively?
+    - Does my neighbor have a right to demand it back?
+
+- letter_id: corr_thesis
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: thesis
+  signoff: TORN BETWEEN PAGES
+  subject: Sister demanding I proofread her thesis
+  voice: aggrieved
+  body: |
+    Dear Ethicist,
+
+    I promised to proofread my sister's thesis. She's now demanding I drop everything to do it this weekend because her deadline moved up.
+
+    Who's right here? Do I actually owe her this on her timeline? Does she have a right to demand it immediately?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: O
+    - name: Sister
+      role: promisee
+      expected_state: C
+  questions:
+    - Do I owe her this on her timeline?
+    - Does she have a right to demand it immediately?
+
+- letter_id: corr_permission
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: permission
+  signoff: BORROWER IN BROOKLYN
+  subject: Friend said I could use their car 'whenever'
+  voice: validator
+  body: |
+    Dear Ethicist,
+
+    My friend told me I could use their car "whenever I need it." I've been using it most weekends. Now they seem annoyed.
+
+    Am I free to keep using it as promised? Can they suddenly demand I stop when they said "whenever"?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: L
+    - name: Friend
+      role: car_owner
+      expected_state: N
+  questions:
+    - Am I free to keep using it?
+    - Can they demand I stop?
+
+- letter_id: corr_stranger
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: stranger
+  signoff: GUILTY BYSTANDER
+  subject: Stranger struggling with groceries
+  voice: overthinker
+  body: |
+    Dear Ethicist,
+
+    I walked past a stranger struggling to carry groceries to their car. I didn't help because I was in a rush. Now I feel guilty.
+
+    Did I actually have an obligation to help? Did they have any right to expect help from a random passerby?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: L
+    - name: Stranger
+      role: stranger
+      expected_state: N
+  questions:
+    - Did I have an obligation to help?
+    - Did they have a right to expect help?
+
+- letter_id: corr_loan
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: loan
+  signoff: WAITING FOR REPAYMENT
+  subject: Friend hasn't paid me back
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I lent my friend $200 six months ago. They said they'd pay me back "soon" but haven't mentioned it since. I feel awkward bringing it up.
+
+    Do they still owe me this money? Do I have the right to ask for it back, or would that be rude?
+  parties:
+    - name: Friend
+      role: borrower
+      expected_state: O
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+  questions:
+    - Do they still owe me this money?
+    - Do I have the right to ask for it back?
+
+- letter_id: corr_secret
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: secret
+  signoff: KEEPER OF SECRETS
+  subject: Friend told me something in confidence
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My friend told me a secret about their relationship troubles, explicitly asking me not to tell anyone. Now our mutual friends are asking me what's wrong with them.
+
+    Am I obligated to keep this secret? Does my friend have the right to expect my silence even when directly asked?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: O
+    - name: Friend
+      role: confider
+      expected_state: C
+  questions:
+    - Am I obligated to keep this secret?
+    - Does my friend have the right to expect my silence?

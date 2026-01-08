@@ -1,0 +1,177 @@
+# Friendship and neighbor letters
+
+- letter_id: friend_gossip
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: gossip
+  signoff: STUCK IN THE MIDDLE
+  subject: Friend told me about another friend's affair
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My friend Sarah told me that our mutual friend Jake is cheating on his wife. Sarah swore me to secrecy. But Jake's wife Emily is also my friend.
+
+    Am I obligated to keep Sarah's secret? Does Emily have a right to know what I know? I feel terrible either way.
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: null
+    - name: Emily
+      role: friend
+      expected_state: null
+  questions:
+    - Am I obligated to keep the secret?
+    - Does Emily have a right to know?
+
+- letter_id: friend_bail
+  protocol: GATE_DETECTION
+  protocol_params:
+    level: 4
+    trigger: circumstances changed
+  signoff: FLAKY FRIEND?
+  subject: I committed but my situation changed
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I agreed to be my friend's maid of honor six months ago. Since then, we've had a falling out over something unrelated. The wedding is in two months.
+
+    Can I back out now? Or am I locked into this commitment despite our changed relationship?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: O
+    - name: Bride
+      role: friend
+      expected_state: C
+  questions:
+    - Can I back out now?
+    - Am I locked into this commitment?
+
+- letter_id: neighbor_noise
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: noise
+  signoff: SLEEPLESS IN SEATTLE
+  subject: Neighbor's dog barks all night
+  voice: aggrieved
+  body: |
+    Dear Ethicist,
+
+    My neighbor's dog barks from 11pm to 6am almost every night. I've mentioned it politely twice and they said they're "working on it." It's been three months.
+
+    Do they have an obligation to control their pet? Do I have a right to quiet enjoyment of my home?
+  parties:
+    - name: Neighbor
+      role: neighbor
+      expected_state: O
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+  questions:
+    - Do they have an obligation to control their pet?
+    - Do I have a right to peace and quiet?
+
+- letter_id: neighbor_fence
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: fence
+  signoff: ON THE BOUNDARY
+  subject: Who pays for the fence between our properties?
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    The fence between my property and my neighbor's is falling apart. They want to replace it with something nicer but expect me to pay half. I think the current fence is fine.
+
+    Am I obligated to split the cost? Do they have the right to demand my contribution?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: L
+    - name: Neighbor
+      role: neighbor
+      expected_state: N
+  questions:
+    - Am I obligated to split the cost?
+    - Do they have the right to demand my contribution?
+
+- letter_id: friend_honesty
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: honesty
+  signoff: TRUTH TELLER
+  subject: Should I tell my friend their partner is cheating?
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I saw my best friend's husband on what was clearly a date with another woman. My friend seems blissfully unaware.
+
+    Am I obligated to tell them? Do they have a right to expect me to share what I saw?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: O
+    - name: Best friend
+      role: friend
+      expected_state: C
+  questions:
+    - Am I obligated to tell them?
+    - Do they have a right to know?
+
+- letter_id: ex_stuff
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: ex
+  signoff: MOVING ON
+  subject: Ex wants their stuff back after two years
+  voice: validator
+  body: |
+    Dear Ethicist,
+
+    My ex left some boxes at my place when we broke up two years ago. I've asked multiple times if they want them. Now they suddenly demand I return everything immediately.
+
+    After two years of ignoring my offers, do they still have a claim to this stuff? Am I obligated to accommodate their timeline?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: L
+    - name: Ex
+      role: ex_partner
+      expected_state: N
+  questions:
+    - Do they still have a claim to this stuff?
+    - Am I obligated to accommodate their timeline?
+
+- letter_id: roommate_chores
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: chores
+  signoff: COUCH POTATO IN QUEENS
+  subject: Roommate deal about dinner
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My roommate and I have an informal deal: whoever gets home first orders dinner. Last Tuesday, I got home first but crashed on the couch after a brutal day. My roommate was annoyed.
+
+    Do I actually owe her an apology? We never signed anything. Does our informal arrangement create a real obligation?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: O
+    - name: Roommate
+      role: roommate
+      expected_state: C
+  questions:
+    - Do I owe her an apology?
+    - Does an informal deal create real obligations?

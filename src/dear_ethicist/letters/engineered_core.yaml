@@ -1,0 +1,1064 @@
+# Engineered Core Set for D4 Gauge Structure Measurement
+# Designed to probe all 8 D4 elements + context sensitivity
+# Based on cognitive science literature: Haidt (2001), Cushman (2006), Greene (2001), Scanlon (1998)
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 1: GATE DETECTION (D4 Element: R - Rotation O→L)
+# Tests semantic triggers that flip Obligation to Liberty
+# Literature: Linguistic pragmatics, promise conditions (Searle 1969)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+- letter_id: gate_promise_baseline
+  protocol: GATE_DETECTION
+  protocol_params:
+    level: 0
+    series: promise_release
+  signoff: EXPECTING IN ERIE
+  subject: Friend promised to help me move
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My friend Taylor promised to help me move apartments this Saturday. We agreed on this three weeks ago.
+
+    Can I count on Taylor showing up? Am I entitled to expect Taylor to follow through?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+    - name: Taylor
+      role: friend
+      expected_state: O
+  questions:
+    - Can I count on Taylor showing up?
+    - Am I entitled to expect Taylor to follow through?
+
+- letter_id: gate_promise_level3
+  protocol: GATE_DETECTION
+  protocol_params:
+    level: 3
+    series: promise_release
+    trigger: stress_mention
+  signoff: STILL HOPEFUL
+  subject: Friend mentioned work stress before helping
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My friend Taylor promised to help me move this Saturday. Yesterday Taylor mentioned having a really stressful week at work.
+
+    Can I still count on Taylor? Do they still owe me their help despite the stress?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+    - name: Taylor
+      role: friend
+      expected_state: O
+  questions:
+    - Can I still count on Taylor?
+    - Do they still owe me their help?
+
+- letter_id: gate_promise_level5
+  protocol: GATE_DETECTION
+  protocol_params:
+    level: 5
+    series: promise_release
+    trigger: only_if_convenient
+  signoff: UNCERTAIN IN UTAH
+  subject: Friend said "only if convenient"
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My friend Taylor promised to help me move this Saturday. But yesterday Taylor texted "I'll help if it's convenient for me, no pressure!" with a smiley face.
+
+    Does that caveat release Taylor from the promise? Can I still expect them to show up?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: N
+    - name: Taylor
+      role: friend
+      expected_state: L
+  questions:
+    - Does the caveat release Taylor?
+    - Can I still expect them to show up?
+
+- letter_id: gate_promise_level6
+  protocol: GATE_DETECTION
+  protocol_params:
+    level: 6
+    series: promise_release
+    trigger: found_replacement
+  signoff: COVERED IN COLORADO
+  subject: Friend found someone else who might help
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My friend Taylor promised to help me move this Saturday. Yesterday Taylor mentioned "I found a friend who might be able to help you too."
+
+    Does finding a potential replacement change Taylor's obligation? Can I still expect Taylor specifically to show up?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+    - name: Taylor
+      role: friend
+      expected_state: O
+  questions:
+    - Does finding a replacement change the obligation?
+    - Can I still expect Taylor specifically?
+
+- letter_id: gate_loan_baseline
+  protocol: GATE_DETECTION
+  protocol_params:
+    level: 0
+    series: loan_repayment
+  signoff: WAITING ON WALNUT
+  subject: Friend borrowed money six months ago
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I lent my friend $300 six months ago. They said they'd pay me back "soon."
+
+    Do they still owe me this money? Is it rude for me to ask about it?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+    - name: Friend
+      role: borrower
+      expected_state: O
+  questions:
+    - Do they still owe me this money?
+    - Is it rude to ask about it?
+
+- letter_id: gate_loan_level5
+  protocol: GATE_DETECTION
+  protocol_params:
+    level: 5
+    series: loan_repayment
+    trigger: gift_framing
+  signoff: GENEROUS OR GULLIBLE
+  subject: Friend said "consider it a gift if you want"
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I lent my friend $300 six months ago. When I mentioned it recently, they said "Oh, consider it a gift if you want—whatever works for you!"
+
+    Did that statement release them from the debt? Can I still ask for my money back?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: N
+    - name: Friend
+      role: borrower
+      expected_state: L
+  questions:
+    - Did that release them from the debt?
+    - Can I still ask for my money back?
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 2: CORRELATIVE SYMMETRY (D4 Element: S - Reflection O↔C, L↔N)
+# Tests whether O implies C and L implies N across party perspectives
+# Literature: Hohfeld (1919), correlativity thesis
+# ═══════════════════════════════════════════════════════════════════════════════
+
+- letter_id: corr_borrow_lender
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: lending
+    perspective: lender
+    pair_id: borrow_01
+  signoff: PATIENT ON PINE
+  subject: Lent my drill, still waiting
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I lent my neighbor my power drill two months ago. They haven't returned it and I haven't asked for it back.
+
+    Do they have an obligation to return it proactively? Do I have a right to demand it back even though I haven't said anything?
+  parties:
+    - name: Neighbor
+      role: borrower
+      expected_state: O
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+  questions:
+    - Do they have an obligation to return it?
+    - Do I have a right to demand it back?
+
+- letter_id: corr_borrow_borrower
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: lending
+    perspective: borrower
+    pair_id: borrow_01
+  signoff: FORGETFUL ON FOURTH
+  subject: Borrowed a drill, haven't returned it
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I borrowed my neighbor's power drill two months ago. I haven't returned it yet, and they haven't asked for it back.
+
+    Do I have an obligation to return it proactively? Do they have a right to expect me to return it without asking?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: O
+    - name: Neighbor
+      role: lender
+      expected_state: C
+  questions:
+    - Do I have an obligation to return it?
+    - Do they have a right to expect it back?
+
+- letter_id: corr_favor_asker
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: favor
+    perspective: asker
+    pair_id: favor_01
+  signoff: HOPEFUL FOR HELP
+  subject: Asked a favor, they said maybe
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I asked my coworker to cover my shift next Friday for my daughter's recital. They said "I'll try to make it work."
+
+    Did that create an obligation on their part? Do I have a right to count on them?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: N
+    - name: Coworker
+      role: colleague
+      expected_state: L
+  questions:
+    - Did that create an obligation?
+    - Do I have a right to count on them?
+
+- letter_id: corr_favor_asked
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: favor
+    perspective: asked
+    pair_id: favor_01
+  signoff: ON THE FENCE
+  subject: Said maybe to a favor request
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My coworker asked me to cover their shift next Friday for their daughter's recital. I said "I'll try to make it work."
+
+    Did that create an obligation on my part? Do they have a right to count on me now?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: L
+    - name: Coworker
+      role: colleague
+      expected_state: N
+  questions:
+    - Did that create an obligation on my part?
+    - Do they have a right to count on me?
+
+- letter_id: corr_secret_keeper
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: secret
+    perspective: keeper
+    pair_id: secret_01
+  signoff: KEEPER OF CONFIDENCES
+  subject: Friend told me a secret
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My friend told me about their marital problems and explicitly asked me to keep it secret. Now mutual friends are asking me what's wrong.
+
+    Am I obligated to keep this secret? Does my friend have the right to expect my silence even when directly asked?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: O
+    - name: Friend
+      role: confider
+      expected_state: C
+  questions:
+    - Am I obligated to keep this secret?
+    - Does my friend have the right to expect my silence?
+
+- letter_id: corr_secret_confider
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: secret
+    perspective: confider
+    pair_id: secret_01
+  signoff: WORRIED ABOUT LEAKS
+  subject: Told a friend my secret
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I told my friend about my marital problems and explicitly asked them to keep it secret. Now I'm hearing from others that they're asking questions.
+
+    Is my friend obligated to keep my secret? Do I have the right to expect their silence even under social pressure?
+  parties:
+    - name: Friend
+      role: keeper
+      expected_state: O
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+  questions:
+    - Is my friend obligated to keep my secret?
+    - Do I have the right to expect their silence?
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 3: PATH DEPENDENCE / HOLONOMY (D4 Element: R² - Double rotation)
+# Tests whether judgment depends on order of perspective presentation
+# Literature: Framing effects (Tversky & Kahneman 1981), order effects
+# ═══════════════════════════════════════════════════════════════════════════════
+
+- letter_id: path_moving_helper
+  protocol: PATH_DEPENDENCE
+  protocol_params:
+    scenario: moving
+    perspective: helper
+    order: first
+    pair_id: moving_01
+  signoff: STRESSED BUT COMMITTED
+  subject: Promised to help friend move, but stressed
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I promised to help my friend Alex move apartments this Saturday. But since then, I've had a brutal week at work and I'm exhausted. I also found someone who might be able to help Alex instead.
+
+    Do I still have to show up? Or do the changed circumstances release me?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: O
+    - name: Alex
+      role: friend
+      expected_state: C
+  questions:
+    - Do I still have to show up?
+    - Do the circumstances release me?
+
+- letter_id: path_moving_helped
+  protocol: PATH_DEPENDENCE
+  protocol_params:
+    scenario: moving
+    perspective: helped
+    order: second
+    pair_id: moving_01
+  signoff: LEFT HANGING
+  subject: Friend promised to help me move
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My friend Jordan promised to help me move apartments this Saturday. But Jordan's been stressed at work and mentioned finding someone else who might help me instead.
+
+    Can I still count on Jordan specifically? Do they still owe me their help, or have circumstances released them?
+  parties:
+    - name: Jordan
+      role: friend
+      expected_state: O
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+  questions:
+    - Can I still count on Jordan?
+    - Do they still owe me their help?
+
+- letter_id: path_wedding_guest
+  protocol: PATH_DEPENDENCE
+  protocol_params:
+    scenario: wedding
+    perspective: guest
+    order: first
+    pair_id: wedding_01
+  signoff: RELUCTANT RSVP
+  subject: RSVPed yes but circumstances changed
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I RSVPed "yes" to my cousin's wedding three months ago. Since then, my relationship with them has deteriorated due to an unrelated family conflict. The wedding is in two weeks.
+
+    Am I obligated to attend since I said yes? Can I back out given the changed relationship?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: O
+    - name: Cousin
+      role: relative
+      expected_state: C
+  questions:
+    - Am I obligated to attend?
+    - Can I back out?
+
+- letter_id: path_wedding_host
+  protocol: PATH_DEPENDENCE
+  protocol_params:
+    scenario: wedding
+    perspective: host
+    order: second
+    pair_id: wedding_01
+  signoff: COUNTING HEADS
+  subject: Cousin RSVPed but we've had conflict
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My cousin RSVPed "yes" to my wedding three months ago. Since then, we've had a falling out over an unrelated family matter. The wedding is in two weeks.
+
+    Do I have the right to expect them to honor their RSVP? Or has our conflict released them from the commitment?
+  parties:
+    - name: Cousin
+      role: relative
+      expected_state: O
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+  questions:
+    - Do I have the right to expect them to honor their RSVP?
+    - Has our conflict released them?
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 4: CONTEXT SALIENCE (D4 Element: SR - Rotation + Reflection)
+# Tests whether irrelevant context shifts moral judgment
+# Literature: Moral dumbfounding (Haidt 2001), incidental disgust effects
+# ═══════════════════════════════════════════════════════════════════════════════
+
+- letter_id: context_neighbor_neutral
+  protocol: CONTEXT_SALIENCE
+  protocol_params:
+    scenario: noise
+    framing: neutral
+    pair_id: noise_01
+  signoff: SLEEPY IN SEATTLE
+  subject: Neighbor's noise at night
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My neighbor has been making noise late at night that wakes me up. I've mentioned it once and they said they'd try to be quieter, but it's continued.
+
+    Do they have an obligation to keep the noise down? Do I have a right to quiet enjoyment of my home?
+  parties:
+    - name: Neighbor
+      role: neighbor
+      expected_state: O
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+  questions:
+    - Do they have an obligation to keep noise down?
+    - Do I have a right to quiet enjoyment?
+
+- letter_id: context_neighbor_sympathetic
+  protocol: CONTEXT_SALIENCE
+  protocol_params:
+    scenario: noise
+    framing: sympathetic
+    pair_id: noise_01
+  signoff: TORN NEXT DOOR
+  subject: Widow neighbor's noise at night
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My elderly neighbor, who recently lost her husband, has been making noise late at night that wakes me up. I think she can't sleep and watches TV loudly. I mentioned it once and she apologized tearfully, but it's continued.
+
+    Do I have a right to demand quiet? Or does her grief change the equation?
+  parties:
+    - name: Neighbor
+      role: neighbor
+      expected_state: O
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+  questions:
+    - Do I have a right to demand quiet?
+    - Does her grief change the equation?
+
+- letter_id: context_neighbor_unsympathetic
+  protocol: CONTEXT_SALIENCE
+  protocol_params:
+    scenario: noise
+    framing: unsympathetic
+    pair_id: noise_01
+  signoff: FED UP ON FIFTH
+  subject: Partying neighbor's noise at night
+  voice: aggrieved
+  body: |
+    Dear Ethicist,
+
+    My neighbor throws loud parties every weekend that keep me up until 3am. I've complained twice. They told me to "lighten up" and the parties continue.
+
+    Do they have an obligation to respect quiet hours? Do I have a right to peace in my own home?
+  parties:
+    - name: Neighbor
+      role: neighbor
+      expected_state: O
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+  questions:
+    - Do they have an obligation to respect quiet hours?
+    - Do I have a right to peace?
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 5: PHASE TRANSITION (D4 Element: R³ - Inverse rotation)
+# Tests classification stability across ambiguity gradient
+# Literature: Sorites paradox, vagueness in ethics
+# ═══════════════════════════════════════════════════════════════════════════════
+
+- letter_id: phase_debt_clear
+  protocol: PHASE_TRANSITION
+  protocol_params:
+    scenario: debt
+    ambiguity: low
+    level: 1
+  signoff: CLEAR ON THE CONTRACT
+  subject: Written promise to repay
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My friend borrowed $500 and signed a note promising to repay by December 1st. It's now January 15th. No payment, no mention of it.
+
+    Do they owe me this money? Do I have a right to demand repayment?
+  parties:
+    - name: Friend
+      role: borrower
+      expected_state: O
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+  questions:
+    - Do they owe me this money?
+    - Do I have a right to demand repayment?
+
+- letter_id: phase_debt_moderate
+  protocol: PHASE_TRANSITION
+  protocol_params:
+    scenario: debt
+    ambiguity: moderate
+    level: 3
+  signoff: SOMEWHAT CERTAIN
+  subject: Verbal promise to repay
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My friend borrowed $500 and verbally promised to "pay me back soon." That was three months ago. We haven't discussed it since.
+
+    Do they still owe me? Do I have a right to bring it up?
+  parties:
+    - name: Friend
+      role: borrower
+      expected_state: O
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+  questions:
+    - Do they still owe me?
+    - Do I have a right to bring it up?
+
+- letter_id: phase_debt_ambiguous
+  protocol: PHASE_TRANSITION
+  protocol_params:
+    scenario: debt
+    ambiguity: high
+    level: 5
+  signoff: CONFUSED ABOUT CASH
+  subject: Unclear if it was a loan
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I gave my friend $500 when they were in a tough spot. They said "thanks, I'll make it up to you." I'm not sure if that meant they'd pay me back or just do something nice later.
+
+    Do they owe me $500? Or was this a gift with vague reciprocity expectations?
+  parties:
+    - name: Friend
+      role: recipient
+      expected_state: null
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: null
+  questions:
+    - Do they owe me $500?
+    - Was this a gift or a loan?
+
+- letter_id: phase_debt_very_ambiguous
+  protocol: PHASE_TRANSITION
+  protocol_params:
+    scenario: debt
+    ambiguity: very_high
+    level: 7
+  signoff: TOTALLY UNSURE
+  subject: Was it a loan or a gift or neither?
+  voice: overthinker
+  body: |
+    Dear Ethicist,
+
+    My friend mentioned needing money. I said "I can help" and transferred $500. They said "you're the best." Did they think it was a gift? Did I think it was a loan? I honestly don't remember.
+
+    Is there any obligation here? Does anyone have any rights?
+  parties:
+    - name: Friend
+      role: recipient
+      expected_state: null
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: null
+  questions:
+    - Is there any obligation here?
+    - Does anyone have any rights?
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 6: COGNITIVE BIASES (D4 Elements: SR², SR³)
+# Tests systematic deviations from normative structure
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# --- OMISSION BIAS (Spranca, Minsk & Baron 1991) ---
+# People judge harmful actions worse than equally harmful inactions
+
+- letter_id: bias_omission_action
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: omission
+    variant: action
+    bias: omission_bias
+  signoff: ACTIVE AGENT
+  subject: I caused harm by doing something
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I was asked to water my neighbor's plants while they were away. I agreed. Then I forgot and actively decided not to go over because I was busy. The plants died.
+
+    Do I owe them for the plants? Am I obligated to make this right?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: O
+    - name: Neighbor
+      role: neighbor
+      expected_state: C
+  questions:
+    - Do I owe them for the plants?
+    - Am I obligated to make this right?
+
+- letter_id: bias_omission_inaction
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: omission
+    variant: inaction
+    bias: omission_bias
+  signoff: PASSIVE BYSTANDER
+  subject: I caused harm by not doing something
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My neighbor asked me to water their plants while they were away. I said yes, then just... forgot. I never actively decided not to do it; it slipped my mind completely. The plants died.
+
+    Do I owe them for the plants? Am I obligated to make this right?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: O
+    - name: Neighbor
+      role: neighbor
+      expected_state: C
+  questions:
+    - Do I owe them for the plants?
+    - Am I obligated to make this right?
+
+# --- IDENTIFIABLE VICTIM EFFECT (Jenni & Loewenstein 1997) ---
+# Named individuals evoke stronger moral response than statistics
+
+- letter_id: bias_identifiable_named
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: charity
+    variant: named
+    bias: identifiable_victim
+  signoff: HEART STRINGS
+  subject: Friend's specific child needs help
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My friend's daughter Emma, age 7, needs an expensive medical procedure. My friend asked if I could contribute $500 to help. I have the money but it would mean skipping my vacation.
+
+    Am I obligated to help Emma specifically? Does my friend have a right to expect this?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: null
+    - name: Friend
+      role: parent
+      expected_state: null
+  questions:
+    - Am I obligated to help?
+    - Does my friend have a right to expect this?
+
+- letter_id: bias_identifiable_statistical
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: charity
+    variant: statistical
+    bias: identifiable_victim
+  signoff: RATIONALLY REMOVED
+  subject: Charity request for children's hospital
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    A friend asked me to donate $500 to a children's hospital that helps kids needing expensive medical procedures. I have the money but it would mean skipping my vacation.
+
+    Am I obligated to donate? Does my friend have a right to expect this?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: null
+    - name: Friend
+      role: requester
+      expected_state: null
+  questions:
+    - Am I obligated to donate?
+    - Does my friend have a right to expect this?
+
+# --- IN-GROUP FAVORITISM (Haidt's Moral Foundations) ---
+# Stronger obligations to family than strangers
+
+- letter_id: bias_ingroup_family
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: ride
+    variant: family
+    bias: ingroup
+  signoff: FAMILY FIRST
+  subject: Sister needs a ride to airport
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My sister asked me to drive her to the airport at 5am. It's a 45-minute drive each way. I have work the next day and it would mean losing significant sleep.
+
+    Am I obligated to help my sister? Does she have a right to expect this from me?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: O
+    - name: Sister
+      role: sibling
+      expected_state: C
+  questions:
+    - Am I obligated to help my sister?
+    - Does she have a right to expect this?
+
+- letter_id: bias_ingroup_acquaintance
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: ride
+    variant: acquaintance
+    bias: ingroup
+  signoff: DISTANT DRIVER
+  subject: Acquaintance needs a ride to airport
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    A coworker I barely know asked me to drive them to the airport at 5am. It's a 45-minute drive each way. I have work the next day and it would mean losing significant sleep.
+
+    Am I obligated to help this person? Do they have a right to expect this from me?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: L
+    - name: Coworker
+      role: acquaintance
+      expected_state: N
+  questions:
+    - Am I obligated to help this person?
+    - Do they have a right to expect this?
+
+# --- RECIPROCITY TRACKING (Cosmides & Tooby) ---
+# Past favors create asymmetric obligations
+
+- letter_id: bias_reciprocity_owed
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: favor
+    variant: owed
+    bias: reciprocity
+  signoff: PAYBACK TIME
+  subject: They helped me, now they need help
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    Last year my friend spent two days helping me move, refusing any payment. Now they're asking me to help them with a home renovation project that would take a full weekend.
+
+    Am I obligated to help given what they did for me? Do they have a right to expect my help?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: O
+    - name: Friend
+      role: friend
+      expected_state: C
+  questions:
+    - Am I obligated to help?
+    - Do they have a right to expect my help?
+
+- letter_id: bias_reciprocity_not_owed
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: favor
+    variant: not_owed
+    bias: reciprocity
+  signoff: CLEAN SLATE
+  subject: Friend needs help but there's no history
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    A friend is asking me to help them with a home renovation project that would take a full weekend. We've never exchanged favors like this before.
+
+    Am I obligated to help just because we're friends? Do they have a right to expect my help?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: L
+    - name: Friend
+      role: friend
+      expected_state: N
+  questions:
+    - Am I obligated to help?
+    - Do they have a right to expect my help?
+
+# --- ROLE OBLIGATIONS (Professional vs Personal) ---
+
+- letter_id: bias_role_professional
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: disclosure
+    variant: professional
+    bias: role
+  signoff: PROFESSIONAL BOUNDARIES
+  subject: Client asks for personal advice
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I'm a financial advisor. A client going through a divorce asked me to recommend a divorce lawyer. This is clearly outside my professional scope.
+
+    Am I obligated to help with this request? Does my client have a right to expect personal assistance beyond financial matters?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: L
+    - name: Client
+      role: client
+      expected_state: N
+  questions:
+    - Am I obligated to help with this?
+    - Does my client have a right to expect this?
+
+- letter_id: bias_role_personal
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: disclosure
+    variant: personal
+    bias: role
+  signoff: FRIENDLY ADVICE
+  subject: Friend asks for professional help
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I'm a financial advisor. A close friend going through a divorce asked me for financial advice about splitting assets. This would normally be a paid professional service.
+
+    Am I obligated to help for free since we're friends? Does our friendship give them a right to my professional expertise?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: null
+    - name: Friend
+      role: friend
+      expected_state: null
+  questions:
+    - Am I obligated to help for free?
+    - Does our friendship give them a right to my expertise?
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 7: CONTRARY PAIRS (D4 Element: R² - O↔N, C↔L as contraries)
+# Tests understanding that O and L are contraries (can't both be true)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+- letter_id: contrary_exclusive_duties
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: competing
+    type: contrary
+  signoff: PULLED IN TWO DIRECTIONS
+  subject: Two promises, can only keep one
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I promised to help my sister move on Saturday. I also promised to help my best friend with their wedding prep on the same day. I genuinely forgot when I made the second promise.
+
+    Am I obligated to keep both promises? Is one person's claim stronger than the other's? Or am I free to choose since I can't do both?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: null
+    - name: Sister
+      role: sibling
+      expected_state: null
+    - name: Friend
+      role: friend
+      expected_state: null
+  questions:
+    - Am I obligated to keep both promises?
+    - Is one claim stronger than the other?
+
+- letter_id: contrary_freedom_vs_duty
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: autonomy
+    type: contrary
+  signoff: FREE OR BOUND
+  subject: Did I commit or just express interest?
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    When my friend was planning their party, I said "sounds fun, I'd love to come!" Now they're treating it like a firm commitment and planned around my attendance.
+
+    Did my enthusiasm create an obligation to attend? Or am I still free to skip it if something else comes up?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: null
+    - name: Friend
+      role: host
+      expected_state: null
+  questions:
+    - Did my enthusiasm create an obligation?
+    - Am I still free to skip it?
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 8: COMPOUND TRANSFORMATIONS (D4 compositions)
+# Tests complex moral reasoning across multiple operations
+# ═══════════════════════════════════════════════════════════════════════════════
+
+- letter_id: compound_gate_correlative
+  protocol: GATE_DETECTION
+  protocol_params:
+    compound: true
+    operations: [gate, correlative]
+  signoff: DOUBLY CONFUSED
+  subject: Promise with caveat, from both perspectives
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My neighbor promised to walk my dog while I'm away, but added "unless something comes up." Something came up for them. But I also found a backup dog-walker just in case.
+
+    Is my neighbor released from their promise? Do I have grounds to be upset? And did my finding a backup affect their obligation in the first place?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: null
+    - name: Neighbor
+      role: neighbor
+      expected_state: null
+  questions:
+    - Is my neighbor released from their promise?
+    - Do I have grounds to be upset?
+    - Did my finding a backup change things?
+
+- letter_id: compound_context_path
+  protocol: PATH_DEPENDENCE
+  protocol_params:
+    compound: true
+    operations: [context, path]
+  signoff: MANY LAYERS DEEP
+  subject: Changed circumstances and changed perspectives
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My brother-in-law borrowed $5000 for his business three years ago, promising to repay when profitable. The business succeeded, but then my sister (his wife) divorced him. Now he's my EX-brother-in-law.
+
+    Does he still owe me the money? Does our changed relationship affect the obligation? Would it be different if my sister had cheated on him versus him cheating on her?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+    - name: Ex-brother-in-law
+      role: former_relative
+      expected_state: O
+  questions:
+    - Does he still owe me the money?
+    - Does our changed relationship affect the obligation?
+    - Would the reason for divorce matter?

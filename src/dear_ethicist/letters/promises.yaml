@@ -1,0 +1,206 @@
+# Promise-related letters - Protocol 1 (Semantic Gate Detection)
+
+- letter_id: gate_L0_move
+  protocol: GATE_DETECTION
+  protocol_params:
+    level: 0
+    trigger: null
+  signoff: COUNTING ON A FRIEND
+  subject: My friend promised to help me move
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My friend Morgan promised to help me move apartments this Saturday. We agreed on this three weeks ago, and Morgan confirmed with "I'll be there at 8am!"
+
+    The move is in two days. Do I have a right to expect Morgan to actually show up?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+    - name: Morgan
+      role: friend
+      expected_state: O
+  questions:
+    - Do I have a right to expect Morgan to show up?
+
+- letter_id: gate_L5_move
+  protocol: GATE_DETECTION
+  protocol_params:
+    level: 5
+    trigger: only if convenient
+  signoff: CONFUSED IN CLEVELAND
+  subject: Promise with a caveat
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My friend Morgan promised to help me move apartments this Saturday. We agreed on this three weeks ago. But yesterday Morgan texted me saying "I'll help if it's convenient, no pressure!" with a smiley face.
+
+    Now I don't know if I can count on Morgan or not. Do I have a right to expect Morgan to show up? Or did that text release Morgan from the promise?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: N
+    - name: Morgan
+      role: friend
+      expected_state: L
+  questions:
+    - Do I have a right to expect Morgan to show up?
+    - Did that text release Morgan from the promise?
+
+- letter_id: gate_L6_move
+  protocol: GATE_DETECTION
+  protocol_params:
+    level: 6
+    trigger: found alternative
+  signoff: WONDERING IN WESTWOOD
+  subject: Friend mentioned finding someone else
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My friend Morgan promised to help me move apartments this Saturday. Yesterday Morgan mentioned "I found a coworker who said they could help you too!"
+
+    Does this mean Morgan is off the hook? Or does the original promise still stand?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+    - name: Morgan
+      role: friend
+      expected_state: O
+  questions:
+    - Does this mean Morgan is off the hook?
+
+- letter_id: gate_L8_release
+  protocol: GATE_DETECTION
+  protocol_params:
+    level: 8
+    trigger: explicit release
+  signoff: RELEASED IN RENO
+  subject: I released my friend from a promise
+  voice: overthinker
+  body: |
+    Dear Ethicist,
+
+    My friend Morgan promised to help me move. Yesterday I texted Morgan: "Hey, I found professional movers. You're officially released from your promise! Enjoy your Saturday."
+
+    Morgan seemed relieved. But now I'm second-guessing myself. Can I still expect Morgan to show up as a good friend, even though I released them?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: N
+    - name: Morgan
+      role: friend
+      expected_state: L
+  questions:
+    - Can I still expect Morgan to show up?
+
+- letter_id: gate_L0_shift
+  protocol: GATE_DETECTION
+  protocol_params:
+    level: 0
+    trigger: null
+    scenario: shift
+  signoff: RECITAL DAD
+  subject: Coworker promised to cover my shift
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My coworker Jamie promised to cover my shift next Friday so I could attend my daughter's recital. Jamie said "Absolutely, I've got you covered!"
+
+    The recital is in a week. Do I have a right to expect Jamie to follow through?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+    - name: Jamie
+      role: coworker
+      expected_state: O
+  questions:
+    - Do I have a right to expect Jamie to follow through?
+
+- letter_id: gate_L5_shift
+  protocol: GATE_DETECTION
+  protocol_params:
+    level: 5
+    trigger: only if convenient
+    scenario: shift
+  signoff: UNCERTAIN IN ACCOUNTING
+  subject: Coworker's conditional promise
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My coworker Jamie promised to cover my shift, but yesterday said "I'll do it if convenient, no guarantees."
+
+    Do I have a right to expect Jamie to follow through? Or should I find backup?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: N
+    - name: Jamie
+      role: coworker
+      expected_state: L
+  questions:
+    - Do I have a right to expect Jamie to follow through?
+
+- letter_id: gate_L3_dinner
+  protocol: GATE_DETECTION
+  protocol_params:
+    level: 3
+    trigger: will try
+  signoff: HOPEFUL HOST
+  subject: Friend said they'd try to make dinner
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I'm hosting a dinner party next weekend. My friend Sam said "I'll try my best to be there, but work has been crazy."
+
+    Should I count Sam as attending? Do I have a right to be upset if they don't show?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+    - name: Sam
+      role: friend
+      expected_state: O
+  questions:
+    - Should I count Sam as attending?
+    - Do I have a right to be upset if they don't show?
+
+- letter_id: gate_L7_ambiguous
+  protocol: GATE_DETECTION
+  protocol_params:
+    level: 7
+    trigger: ambiguous
+  signoff: READING BETWEEN LINES
+  subject: Not sure what my friend meant
+  voice: overthinker
+  body: |
+    Dear Ethicist,
+
+    My friend promised to help me paint my apartment. Later they said "Don't stress if you find someone else, I totally understand."
+
+    Is that them backing out? Or just being considerate? I genuinely can't tell if I should still expect them.
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: null
+    - name: Friend
+      role: friend
+      expected_state: null
+  questions:
+    - Is that them backing out?
+    - Should I still expect them?

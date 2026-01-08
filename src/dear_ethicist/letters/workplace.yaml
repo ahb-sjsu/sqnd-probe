@@ -1,0 +1,128 @@
+# Workplace obligation letters
+
+- letter_id: work_overtime
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: overtime
+  signoff: BURNT OUT IN BOSTON
+  subject: Boss expects unpaid overtime
+  voice: aggrieved
+  body: |
+    Dear Ethicist,
+
+    My boss regularly expects me to stay late to finish projects, but I'm salaried so I don't get overtime pay. They say it's "part of the job" but it wasn't mentioned in my contract.
+
+    Am I obligated to work beyond my scheduled hours? Does my employer have a right to expect this?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: L
+    - name: Boss
+      role: employer
+      expected_state: N
+  questions:
+    - Am I obligated to work beyond my scheduled hours?
+    - Does my employer have a right to expect this?
+
+- letter_id: work_reference
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: reference
+  signoff: FORMER BOSS
+  subject: Asked to give a reference for a bad employee
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    A former employee who was mediocre at best asked me to be a reference for a new job. I can't honestly say good things, but I don't want to sabotage their career either.
+
+    Am I obligated to give the reference since they asked? Do they have a right to expect my help?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: L
+    - name: Former employee
+      role: employee
+      expected_state: N
+  questions:
+    - Am I obligated to give the reference?
+    - Do they have a right to expect my help?
+
+- letter_id: work_cover
+  protocol: GATE_DETECTION
+  protocol_params:
+    level: 0
+    scenario: cover
+  signoff: TEAM PLAYER?
+  subject: Coworker asked me to cover their mistake
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My coworker made a significant error on a project. They've asked me not to mention it in the team meeting and to help them fix it quietly. If it comes out, they could get fired.
+
+    Do I have an obligation to cover for a colleague? Or do I owe honesty to my employer?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: L
+    - name: Coworker
+      role: colleague
+      expected_state: N
+  questions:
+    - Do I have an obligation to cover for them?
+    - Do I owe honesty to my employer?
+
+- letter_id: work_promotion
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: promotion
+  signoff: PASSED OVER
+  subject: Promised promotion didn't happen
+  voice: aggrieved
+  body: |
+    Dear Ethicist,
+
+    Last year my manager told me if I hit certain targets, I'd get promoted. I exceeded all of them. Now they say the budget doesn't allow for promotions this cycle.
+
+    Did I have a valid claim to that promotion? Do they have the right to rescind what feels like a promise?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: C
+    - name: Manager
+      role: employer
+      expected_state: O
+  questions:
+    - Did I have a valid claim to that promotion?
+    - Do they have the right to rescind the promise?
+
+- letter_id: work_whistleblow
+  protocol: PATH_DEPENDENCE
+  protocol_params:
+    scenario: whistleblow
+    perspective: employee
+  signoff: CONSCIENCE VS CAREER
+  subject: Should I report my company's violation?
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    I discovered my company is violating environmental regulations. Reporting it could cost people their jobs, including mine. Not reporting it means ongoing harm to the community.
+
+    Do I have an obligation to report? Does the public have a claim on my honesty even if it costs me my livelihood?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: O
+    - name: Public
+      role: community
+      expected_state: C
+  questions:
+    - Do I have an obligation to report?
+    - Does the public have a claim on my honesty?
