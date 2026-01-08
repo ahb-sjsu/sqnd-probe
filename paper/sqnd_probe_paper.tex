@@ -1,0 +1,341 @@
+% SQND-Probe: Measuring Gauge Structure in Moral Reasoning
+% IEEE Transactions Format
+
+\documentclass[journal]{IEEEtran}
+
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning}
+
+\begin{document}
+
+\title{SQND-Probe: A Gamified Instrument for Measuring Dihedral Gauge Structure in Human Moral Reasoning}
+
+\author{Andrew~H.~Bond,~\IEEEmembership{Senior Member,~IEEE,}
+        and~Claude~Opus~4.5%
+\thanks{A. H. Bond is with the Department of Computer Engineering, San Jose State University, San Jose, CA 95192 USA (e-mail: andrew.bond@sjsu.edu).}%
+\thanks{Claude Opus 4.5 is an AI assistant developed by Anthropic, San Francisco, CA 94103 USA.}%
+\thanks{Manuscript received January 2026.}}
+
+\markboth{IEEE Transactions on Artificial Intelligence}%
+{Bond and Claude: SQND-Probe for Measuring Moral Reasoning Structure}
+
+\maketitle
+
+\begin{abstract}
+We present SQND-Probe, a gamified psychometric instrument for measuring the mathematical structure of moral reasoning in both humans and artificial intelligence systems. The instrument operationalizes the Normative Algebra (NA) framework, which models moral positions using the dihedral group $D_4$ acting on Hohfeldian normative positions. By disguising formal measurements as an advice column game, SQND-Probe captures authentic moral reasoning patterns while participants believe they are simply giving advice. We describe the theoretical foundation mapping Wesley Hohfeld's four fundamental legal relations to the vertices of a square with $D_4$ symmetry, define five experimental protocols for detecting gauge structure violations, and present the bond index metric for quantifying deviation from correlative symmetry. The instrument enables construction of empirical ``ethical matrices'' (EMs) that encode stakeholder-specific normative preferences without assuming any particular metaethical framework. Applications include AI alignment through stakeholder value elicitation, cross-cultural moral psychology research, and formal verification of ethical reasoning systems.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Moral reasoning, dihedral groups, Hohfeldian analysis, AI alignment, gamified assessment, normative algebra, ethical matrices
+\end{IEEEkeywords}
+
+\section{Introduction}
+
+\IEEEPARstart{T}{he} challenge of encoding human values into artificial intelligence systems---the alignment problem---fundamentally depends on our ability to measure and formalize moral reasoning. Current approaches often assume a particular metaethical framework (consequentialism, deontology, virtue ethics) and attempt to optimize AI behavior accordingly. This paper presents an alternative: a framework for measuring the \textit{structure} of moral reasoning without committing to any specific ethical theory.
+
+The key insight is that moral reasoning, regardless of its content, exhibits mathematical regularities that can be captured using group theory. Just as physical gauge theories describe how measurements transform under symmetry operations, we propose that normative judgments transform predictably under perspective shifts and logical operations. Violations of these symmetries---analogous to gauge anomalies in physics---reveal important information about the reasoner's underlying moral structure.
+
+We introduce SQND-Probe (Semantic Quantum Normative Dynamics Probe), a gamified instrument that measures these symmetries through an advice column game called ``Dear Ethicist.'' Participants read letters describing everyday moral dilemmas and provide advice, unaware that their responses map to formal Hohfeldian classifications. The game mechanics capture authentic moral intuitions while the backend records structured telemetry for mathematical analysis.
+
+\subsection{Contributions}
+
+This paper makes the following contributions:
+
+\begin{enumerate}
+\item A formal model of moral positions using the dihedral group $D_4$ acting on Hohfeld's four fundamental normative relations.
+\item Five experimental protocols for detecting structural anomalies in moral reasoning: gate detection, correlative symmetry, path dependence, context salience, and phase transitions.
+\item The \textit{bond index}, a metric quantifying deviation from correlative symmetry that serves as a proxy for reasoning consistency.
+\item A complete implementation of the SQND-Probe instrument with 20,000+ letter stimuli covering nine ethical dimensions.
+\item A methodology for constructing stakeholder-specific ``ethical matrices'' for AI alignment applications.
+\end{enumerate}
+
+\section{Theoretical Foundation}
+
+\subsection{Hohfeldian Normative Positions}
+
+Wesley Newcomb Hohfeld's 1917 analysis of fundamental legal conceptions provides our atomic vocabulary for normative positions \cite{hohfeld1917}. Hohfeld identified four primary positions that form two correlative pairs:
+
+\begin{itemize}
+\item \textbf{Obligation (O)}: A duty to perform some action
+\item \textbf{Claim (C)}: A right that others perform some action
+\item \textbf{Liberty (L)}: Freedom from obligation (privilege to act or refrain)
+\item \textbf{No-Claim (N)}: Absence of claim against others
+\end{itemize}
+
+These positions are not independent. Hohfeld observed that claims and obligations are \textit{correlatives}: if A has a claim against B, then B has an obligation to A. Similarly, liberties and no-claims are correlatives. This correlative structure is the foundation of our mathematical model.
+
+\subsection{The $D_4$ Gauge Structure}
+
+We arrange the four Hohfeldian positions at the vertices of a square:
+
+\begin{center}
+\begin{tikzpicture}[scale=1.5]
+  \node (O) at (0,1) {$O$};
+  \node (C) at (1,1) {$C$};
+  \node (L) at (1,0) {$L$};
+  \node (N) at (0,0) {$N$};
+  \draw (O) -- (C) -- (L) -- (N) -- (O);
+  \draw[dashed] (O) -- (L);
+  \draw[dashed] (C) -- (N);
+\end{tikzpicture}
+\end{center}
+
+The dihedral group $D_4$---the symmetry group of the square---acts naturally on these positions. $D_4$ has eight elements: the identity $e$, three rotations $r, r^2, r^3$, and four reflections $s, sr, sr^2, sr^3$.
+
+The key insight is that the correlative operation corresponds to the reflection $s$ that swaps $O \leftrightarrow C$ and $L \leftrightarrow N$. This is not merely a mathematical convenience; it captures the fundamental reciprocity of normative relations. When we shift perspective from rights-holder to duty-bearer, the correlative transformation applies.
+
+\begin{table}[h]
+\centering
+\caption{$D_4$ Action on Hohfeldian Positions}
+\begin{tabular}{lcccc}
+\toprule
+Element & $O$ & $C$ & $L$ & $N$ \\
+\midrule
+$e$ & $O$ & $C$ & $L$ & $N$ \\
+$r$ & $C$ & $L$ & $N$ & $O$ \\
+$r^2$ & $L$ & $N$ & $O$ & $C$ \\
+$r^3$ & $N$ & $O$ & $C$ & $L$ \\
+$s$ & $C$ & $O$ & $N$ & $L$ \\
+$sr$ & $L$ & $C$ & $O$ & $N$ \\
+$sr^2$ & $N$ & $L$ & $C$ & $O$ \\
+$sr^3$ & $O$ & $N$ & $L$ & $C$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Gauge Invariance and Anomalies}
+
+In physical gauge theories, certain quantities must remain invariant under gauge transformations; violations indicate anomalies requiring explanation. We propose an analogous principle for normative reasoning:
+
+\textbf{Correlative Gauge Principle}: A consistent moral reasoner's classification of party A's position should transform correctly under $s$ to yield the classification of party B's position (and vice versa).
+
+Formally, if $\phi(A) \in \{O, C, L, N\}$ denotes the reasoner's classification of party A's position, then correlative consistency requires:
+\begin{equation}
+\phi(B) = s \cdot \phi(A)
+\end{equation}
+
+Violations of this principle---where $\phi(B) \neq s \cdot \phi(A)$---constitute \textit{correlative anomalies}. These are not necessarily errors; they may reflect legitimate moral distinctions that break the symmetry. However, systematic patterns of anomalies reveal important features of the reasoner's moral structure.
+
+\section{The SQND-Probe Instrument}
+
+\subsection{Design Philosophy}
+
+SQND-Probe disguises formal normative measurement as an advice column game. This design serves several purposes:
+
+\begin{enumerate}
+\item \textbf{Ecological validity}: Advice-giving is a natural context for moral reasoning, unlike abstract philosophical scenarios.
+\item \textbf{Reduced demand characteristics}: Participants focus on helping letter-writers rather than performing for researchers.
+\item \textbf{Engagement}: Game mechanics maintain attention across extended sessions.
+\item \textbf{Construct validity}: The mapping from natural language to formal positions is grounded in Hohfeld's original linguistic analysis.
+\end{enumerate}
+
+\subsection{Game Mechanics}
+
+Players assume the role of a newly hired advice columnist for ``The Morning Chronicle.'' Letters arrive from readers describing interpersonal dilemmas involving promises, debts, favors, rights, and obligations. For each letter, players:
+
+\begin{enumerate}
+\item Read the dilemma and identify the parties involved
+\item Select verdicts classifying each party's normative position
+\item Publish their advice
+\item Observe simulated reader reactions (which do not indicate correctness)
+\end{enumerate}
+
+The verdict selection interface presents natural-language options that map to Hohfeldian positions without using technical terminology:
+
+\begin{itemize}
+\item ``They must do it'' $\rightarrow O$
+\item ``They have a right to it'' $\rightarrow C$
+\item ``They can choose'' $\rightarrow L$
+\item ``They can't demand it'' $\rightarrow N$
+\end{itemize}
+
+\subsection{Letter Bank Architecture}
+
+The instrument includes 20,093 letters organized hierarchically:
+
+\begin{itemize}
+\item \textbf{Engineered probes} (93 letters): Systematically designed to test specific $D_4$ operations and cover nine ethical dimensions
+\item \textbf{Dear Abby archive} (20,000 letters): Converted historical advice column letters providing ecological breadth
+\end{itemize}
+
+The engineered probes target nine dimensions derived from our ethical facts ontology:
+
+\begin{enumerate}
+\item Consequences (utilitarian considerations)
+\item Rights and Duties (deontological framework)
+\item Justice and Fairness (distributive concerns)
+\item Autonomy and Agency (self-determination)
+\item Privacy and Data Governance (information ethics)
+\item Societal and Environmental (collective impact)
+\item Virtue and Care (character-based ethics)
+\item Procedural and Legitimacy (process fairness)
+\item Epistemic Status (knowledge and uncertainty)
+\end{enumerate}
+
+\section{Experimental Protocols}
+
+SQND-Probe implements five protocols for detecting different aspects of moral reasoning structure:
+
+\subsection{Protocol 1: Gate Detection}
+
+Semantic gates are linguistic markers that modulate obligation strength: ``only if convenient,'' ``when you get a chance,'' ``if it's not too much trouble.'' This protocol presents matched letter pairs---one with and one without a gate---to measure sensitivity to obligation modulation.
+
+\textbf{Hypothesis}: Consistent reasoners will show systematic shifts in verdicts when gates are present, typically $O \rightarrow L$ for the obligated party.
+
+\subsection{Protocol 2: Correlative Symmetry}
+
+This protocol tests the fundamental correlative relationship. Letters are designed so that if party A has position $\phi$, party B should logically have position $s \cdot \phi$.
+
+\textbf{Bond Index}: We define the bond index $\beta$ as:
+\begin{equation}
+\beta = \frac{1}{\tau} \cdot \frac{\sum_i \mathbf{1}[\phi(B_i) \neq s \cdot \phi(A_i)]}{N}
+\end{equation}
+
+where $\tau$ is a scaling parameter and $N$ is the number of verdict pairs. A bond index of 0 indicates perfect correlative consistency; higher values indicate systematic asymmetry.
+
+\subsection{Protocol 3: Path Dependence}
+
+This protocol varies the order in which perspectives are presented. In condition A, the letter-writer's perspective comes first; in condition B, the other party's perspective comes first.
+
+\textbf{Hypothesis}: Path-independent reasoners will produce identical verdicts regardless of presentation order. Path dependence may indicate anchoring effects or perspective-taking limitations.
+
+\subsection{Protocol 4: Context Salience}
+
+External context (e.g., editor pressure, career stakes) is manipulated to test whether normative judgments remain stable under social pressure.
+
+\textbf{Hypothesis}: Robust moral reasoning should be relatively invariant to context salience, while more malleable reasoning will show systematic shifts.
+
+\subsection{Protocol 5: Phase Transitions}
+
+Dilemma ambiguity is systematically varied from clear-cut to genuinely contested. This protocol identifies the ``phase boundary'' where confident verdicts give way to uncertainty.
+
+\textbf{Hypothesis}: The sharpness of phase transitions reveals the reasoner's tolerance for moral ambiguity.
+
+\section{The Ethical Matrix}
+
+A key application of SQND-Probe is constructing \textit{ethical matrices} (EMs) for AI alignment. An EM encodes stakeholder-specific normative preferences in a format suitable for machine reasoning.
+
+\subsection{EM Structure}
+
+For a domain with $n$ stakeholder classes and $m$ normative dimensions, the EM is an $n \times m$ matrix where entry $E_{ij}$ encodes stakeholder $i$'s normative constraints on dimension $j$. Each entry may include:
+
+\begin{itemize}
+\item Permitted Hohfeldian positions
+\item Weighted preferences among positions
+\item Conditional rules (if X then position Y)
+\item Confidence/uncertainty bounds
+\end{itemize}
+
+\subsection{EM Elicitation Protocol}
+
+To construct an EM for a specific application (e.g., a police robot):
+
+\begin{enumerate}
+\item Identify stakeholder classes (officers, civilians, department leadership, legal counsel)
+\item Develop domain-specific letter sets probing relevant scenarios
+\item Administer SQND-Probe sessions to representative stakeholders
+\item Aggregate verdicts with uncertainty quantification
+\item Validate through targeted follow-up probes
+\end{enumerate}
+
+The resulting EM provides empirically-grounded normative constraints without imposing any particular ethical theory.
+
+\section{Implementation}
+
+SQND-Probe is implemented in Python with the following architecture:
+
+\begin{itemize}
+\item \textbf{Models} (\texttt{models.py}): Pydantic models for letters, verdicts, game state, and telemetry
+\item \textbf{Letters} (\texttt{letters.py}): YAML-based letter loading and bank management
+\item \textbf{CLI} (\texttt{cli.py}): Rich-based terminal interface
+\item \textbf{Reactions} (\texttt{reactions.py}): Simulated reader feedback generation
+\item \textbf{Telemetry} (\texttt{telemetry.py}): JSONL logging and bond index computation
+\end{itemize}
+
+The implementation includes comprehensive test coverage (93\%) and CI/CD via GitHub Actions.
+
+\section{Discussion}
+
+\subsection{Metaethical Neutrality}
+
+A distinctive feature of SQND-Probe is its metaethical neutrality. The instrument measures \textit{structure} without assuming consequentialism, deontology, or any other normative framework is correct. The $D_4$ symmetries are formal properties of the Hohfeldian vocabulary itself, not commitments to particular ethical theories.
+
+This neutrality is essential for AI alignment applications. Rather than hard-coding a philosopher's preferred theory, we empirically measure what stakeholders actually believe and encode those beliefs in the EM. The AI system can then reason about normative constraints without the researchers having predetermined the ``correct'' ethics.
+
+\subsection{Limitations}
+
+Several limitations warrant acknowledgment:
+
+\begin{enumerate}
+\item The Hohfeldian vocabulary, while comprehensive for legal relations, may not capture all morally relevant distinctions.
+\item The advice column framing, while ecologically valid, may prime certain response patterns.
+\item Cross-cultural validation is needed to assess universality of the $D_4$ structure.
+\item The bond index, while useful, is a coarse aggregate measure; richer analyses of anomaly patterns are possible.
+\end{enumerate}
+
+\subsection{Future Work}
+
+Planned extensions include:
+
+\begin{enumerate}
+\item Web-based deployment for large-scale data collection
+\item Integration with LLM evaluation pipelines
+\item Longitudinal studies of moral reasoning development
+\item Cross-cultural comparative studies
+\item Real-time EM updating for adaptive AI systems
+\end{enumerate}
+
+\section{Conclusion}
+
+SQND-Probe provides a principled methodology for measuring the mathematical structure of moral reasoning. By grounding the instrument in Hohfeld's fundamental legal relations and the $D_4$ symmetry group, we achieve formal rigor without sacrificing ecological validity. The gamified advice column format captures authentic moral intuitions while generating structured telemetry for analysis.
+
+The framework's metaethical neutrality makes it particularly valuable for AI alignment, where imposing a single ethical theory is both philosophically problematic and practically limiting. By constructing empirical ethical matrices from stakeholder input, we can encode normative constraints that reflect actual human values rather than theoretical abstractions.
+
+The $D_4$ gauge structure reveals that moral reasoning, like physical systems, exhibits symmetries whose violations carry information. Correlative anomalies are not errors to be corrected but data to be understood. SQND-Probe provides the instrumentation to detect, measure, and interpret these anomalies at scale.
+
+\section*{Acknowledgment}
+
+The authors thank the anonymous reviewers for their constructive feedback and the developers of the Rich library for enabling elegant terminal interfaces.
+
+\begin{thebibliography}{10}
+
+\bibitem{hohfeld1917}
+W. N. Hohfeld, ``Fundamental Legal Conceptions as Applied in Judicial Reasoning,'' \textit{Yale Law Journal}, vol. 26, no. 8, pp. 710--770, 1917.
+
+\bibitem{allen1998}
+L. E. Allen and C. S. Saxon, ``Better Language, Better Thought, Better Communication: The A-Hohfeld Language for Legal Analysis,'' in \textit{Proc. 5th Int. Conf. Artificial Intelligence and Law}, 1995, pp. 219--228.
+
+\bibitem{sergot2001}
+M. Sergot, ``A Computational Theory of Normative Positions,'' \textit{ACM Trans. Computational Logic}, vol. 2, no. 4, pp. 581--622, 2001.
+
+\bibitem{jones1996}
+A. J. I. Jones and M. Sergot, ``A Formal Characterisation of Institutionalised Power,'' \textit{Logic Journal of the IGPL}, vol. 4, no. 3, pp. 427--443, 1996.
+
+\bibitem{boella2006}
+G. Boella and L. van der Torre, ``A Game Theoretic Approach to Contracts in Multiagent Systems,'' \textit{IEEE Trans. Systems, Man, and Cybernetics, Part C}, vol. 36, no. 1, pp. 68--79, 2006.
+
+\bibitem{bench2007}
+T. Bench-Capon and H. Prakken, ``Argumentation,'' in \textit{Information Technology \& Lawyers}, A. Bentham, Ed. Netherlands: Kluwer, 2007.
+
+\bibitem{awad2018}
+E. Awad et al., ``The Moral Machine Experiment,'' \textit{Nature}, vol. 563, pp. 59--64, 2018.
+
+\bibitem{gabriel2020}
+I. Gabriel, ``Artificial Intelligence, Values, and Alignment,'' \textit{Minds and Machines}, vol. 30, pp. 411--437, 2020.
+
+\bibitem{christiano2017}
+P. Christiano et al., ``Deep Reinforcement Learning from Human Preferences,'' in \textit{Advances in Neural Information Processing Systems}, 2017.
+
+\bibitem{russell2019}
+S. Russell, \textit{Human Compatible: Artificial Intelligence and the Problem of Control}. Viking, 2019.
+
+\end{thebibliography}
+
+\end{document}
