@@ -1,0 +1,933 @@
+- letter_id: da_3_exwife_attending_family_functions
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: EX-WIFE ATTENDING FAMILY FUNCTIONS SHOULD BE GU...
+  subject: Ex-Wife Attending Family Functions Should Be Guided by Good Manners
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    i have read letters in your column with suggestions for how to be a good wife,
+    daughter-in-law, etc. would you please give me some suggestions for how to be
+    a good former wife? i know things like not attacking the present wife, but when
+    we are at family functions, what am i required to do? -- ex-wife etiquette'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Spouse
+    role: spouse
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_1_shy_guy_needs_some
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: SHY GUY NEEDS SOME HELP PUTTING BEST FOOT FORWARD
+  subject: Shy Guy Needs Some Help Putting Best Foot Forward
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    my friend "russ" is a sweet, quiet, reserved guy with a goofy side. he''s in his
+    mid-20s, but has never kissed a girl or gone out on a date. (he is the kind of
+    person girls regard as a brother figure.) he has no confidence and doesn''t drink,
+    dance or let loose. i have seen his dating profiles, and they are brutally unappealing.
+    i want to help russ find someone before it''s too late. i hate seeing him lonely.
+    he needs someone to give him a chance and help him learn to be more confident.
+    i know it''s wrong to try to change someone, but i feel if he doesn''t get some
+    help, no one will ever give him the time of day. he needs a sense of adventure
+    and, frankly, a change of wardrobe. how can i help this "good boy" get the attention
+    of the ladies? -- amanda in wyoming'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Sibling
+    role: sibling
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_3_mans_return_to_church
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: MAN'S RETURN TO CHURCH DRAWS CHILLY REACTION AT...
+  subject: Man's Return to Church Draws Chilly Reaction at Home
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    my wife and i have been married for 50 years. we were both raised in a conservative
+    religion, but haven''t attended sunday services in a long time. i have become
+    more liberal than my wife over the years, and i recently attended a service at
+    a liberal, internationally recognized church. i felt i belonged immediately. i
+    had never before felt so happy to be with like-minded worshippers. my wife had
+    huge issues with it, and the next time i wanted to attend, she got very upset.
+    there was an iciness around the house for three days after i went. that was a
+    month ago, and i haven''t gone again. i resent my wife''s resistance. this coming
+    sunday, i plan to tell her i''ll be "going out" and will be back in a couple of
+    hours. no doubt she''ll know i''m at church, and i''ll pay the price with her
+    cold attitude or tears. does she have a right to tell me i can''t attend a particular
+    church? -- moved by the spirit'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Spouse
+    role: spouse
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_1_high_school_friend_turned
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: HIGH SCHOOL FRIEND TURNED ENEMY CONTINUES HER A...
+  subject: High School Friend Turned Enemy Continues Her Attacks
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    i need your help in dealing with an old "frenemy." "jenny" and i were friends
+    in high school, but she constantly berated me and accused me of taking advantage
+    of her. she would make herself feel better by putting me down. after she went
+    away to college, she got pregnant by a non-boyfriend. when she had an abortion,
+    she swore me to secrecy because she didn''t tell the father. shortly thereafter,
+    he came to me and tricked me into telling him. to this day, jenny still blames
+    me and says i was out to get her and ruin her life. jenny spread rumors about
+    me around our group of friends, on the internet, and told my mom horrible lies
+    about me. she even threatened a lawsuit. ten years later, she still pops up out
+    of the blue to attack me. a year ago, she sent me a message saying she wished
+    i had died in a tornado that struck my area. she sends taunts about an old boyfriend
+    of mine who got married and had a kid. i never respond because that''s what she
+    wants. she pops up at the worst times and makes me feel worse. how should i deal
+    with her? -- at a boiling point in tennessee'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Mother
+    role: parent
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_2_guidelines_advise_proper_addresses
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: GUIDELINES ADVISE PROPER ADDRESSES FOR SAME-SEX...
+  subject: Guidelines Advise Proper Addresses for Same-Sex Couples
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    while preparing a letter at work, i noticed that it was going to be mailed to
+    a married lesbian couple. typically, the correct way to address an envelope to
+    a woman would be to ms., miss or mrs. and to a male it''s either mr. or master,
+    depending upon his age. what''s the proper way to address a gay couple? is m/m
+    still used in place of mr. and mr. and mrs. and mrs.? -- proper in illinois'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Other party
+    role: other
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_1_girl_who_shies_away
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: GIRL WHO SHIES AWAY FROM GYM CAN ENJOY A GOOD, ...
+  subject: Girl Who Shies Away From Gym Can Enjoy a Good, Long Walk
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    my mom wants me to exercise more. currently, i just walk a lot (in my house and
+    around the block). i know exercise is a good idea, but i''m really self-conscious
+    about it. i never feel like i''m doing it right (because i know you can easily
+    pull a muscle), and i feel like everyone else in the gym is judging me. now that
+    i''m 17, mom expects me to be more mature about this. i don''t even feel comfortable
+    swimming in public places anymore. i feel stressed about it, but mom just thinks
+    i''m being picky. being in a gym makes me feel unhappy and judged. i wish there
+    was a better way to exercise, but i don''t know what. how can i get my mom to
+    understand how hard this is for me? -- wondering in wichita'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Mother
+    role: parent
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_2_mom_resents_couple_spending
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: MOM RESENTS COUPLE SPENDING TIME AT SECOND HOME...
+  subject: Mom Resents Couple Spending Time at Second Home Far Away
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    my husband and i have been married for 44 years. we eloped in high school and
+    still feel like newlyweds. we built a successful business, ran it for 40 years
+    and recently had an opportunity to sell it. the problem is my mother. we bought
+    a second home in california, but kept our first home. every time i call to ask
+    how she and dad are doing, she responds with, "you don''t care how we are. if
+    you did, you would be here." i love our new life. our kids are grown, and we are
+    enjoying ourselves to the fullest. we are both in excellent health, and still
+    young at heart. how can we tell her that we have a life we love without her being
+    so resentful? -- loving life in california'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Spouse
+    role: spouse
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_3_potluck_leftovers_belong_to
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: POTLUCK LEFTOVERS BELONG TO PARTY HOSTS
+  subject: Potluck Leftovers Belong to Party Hosts
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    if you go to a party and bring something (chips, soda, etc.), what is the rule
+    of etiquette about taking it home when you leave? -- practical in idaho'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Other party
+    role: other
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_1_wife_who_escaped_abusive
+  protocol: PATH_DEPENDENCE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: WIFE WHO ESCAPED ABUSIVE MARRIAGE MUST NOT GO BACK
+  subject: Wife Who Escaped Abusive Marriage Must Not Go Back
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    in the beginning of our marriage there was physical abuse and marital rape. i
+    stayed anyway. over the years we had two children. my husband, "seth," and i don''t
+    communicate because he has refused to talk about any issues we have. during the
+    last few years, my youngest son has also become physically abusive to me. i tried
+    to leave many times but failed until last december when, because i had a heart
+    attack, i finally moved in with family. i did it for the sake of my health and
+    my sanity. seth now wants to talk about our issues. he suggested that i come back
+    home. he has several medical problems, so i was taking care of all the household
+    chores and working two jobs. my children will not help with the chores unless
+    i scream and yell for hours. i no longer love my husband. he wants to romance
+    me and try to make me love him again. he is also very controlling. he feels i
+    "owe" him a chance to prove that he loves me and can change. am i wrong for leaving
+    and letting go? i''m very confused. -- letting go in florida'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Spouse
+    role: spouse
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_3_married_or_not_couples
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: MARRIED OR NOT, COUPLES' RELATIONSHIP QUESTIONS...
+  subject: Married or Not, Couples' Relationship Questions Spark Interest
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    do you field more questions from unmarried couples living together than from married
+    couples? i can only judge from what is printed. -- inquisitive in virginia'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Other party
+    role: other
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_1_exhusband_who_drives_drunk
+  protocol: PATH_DEPENDENCE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: EX-HUSBAND WHO DRIVES DRUNK SHOULD BE TAKEN OFF...
+  subject: Ex-Husband Who Drives Drunk Should Be Taken Off the Road
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    a few months ago i left my husband after a long marriage, mostly due to his drinking.
+    he often insisted on getting behind the wheel while drunk, and i was uncomfortable
+    about it, although i repeatedly begged him not to do it. since our split he has
+    been drinking much later at his favorite bar. where he used to come home about
+    8, he now stays until 10 or 11. he recently had an accident on his way home from
+    the bar, but managed to get away before the police arrived. part of me wants to
+    contact the police and report it because i would feel horrible if he hurt someone
+    and i had done nothing to stop it. i admit there are also selfish reasons i''d
+    like to see him picked up. my concern is that he''ll find out i turned him in.
+    any suggestion on what to do? -- nervous in north carolina'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Spouse
+    role: spouse
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_2_couple_ready_for_kids
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: COUPLE READY FOR KIDS WONDER IF THEY'RE UP TO IT
+  subject: Couple Ready for Kids Wonder if They're Up to It
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    "kirk" and i have been together for 10 years, married for five. we''re nearing
+    our 30s, and the idea of a child has come up. while i have never had any desire
+    for children, i''m becoming more open to the idea. my parents divorced when i
+    was young, so i have a fear of being a single mom. kirk grew up never knowing
+    his father, so he has always wanted to take on that role. kirk is a wonderful,
+    loving husband, but when he''s tired, he doesn''t always handle things well. we
+    have two dogs, and when they bother kirk during the night or when he wants to
+    be left alone, he gets frustrated. i''m wondering if this is an example of how
+    he would be if we were to have a baby. i have discussed my concerns with him;
+    he says it would be different because it would involve a child, not a pet. i love
+    my dogs dearly and feel they should have their needs met as children do, no matter
+    the circumstances. is it possible that kirk will be different with our child,
+    or is this how he''ll react when he''s disturbed in the middle of the night? --
+    looking toward the future'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Spouse
+    role: spouse
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_1_key_to_wifes_hoarding
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: KEY TO WIFE'S HOARDING MAY BE IN HER GENES
+  subject: Key to Wife's Hoarding May Be in Her Genes
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    my wife and i and our 13-year-old son live in a nice home we have been remodeling
+    for the last eight years. the problem is, my wife has a hard time getting rid
+    of anything, and she constantly brings home "new projects" that take up space
+    but never get done. at one point, we hired a professional organizer because we
+    had reached the point of having "goat trails" as the only means of navigating
+    our way around the house. we also have a barn that is chockablock full. i have
+    heard that the root cause may be due to an anomaly on a chromosome. how should
+    i approach my wife about getting some genetic testing done? her mom is also a
+    professional pack rat. the clutter is taking its toll on our relationship -- we
+    are in marriage counseling -- and on our family. we have so much stuff i can''t
+    breathe. -- suffocating in montana'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Spouse
+    role: spouse
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_2_coworker_with_sticky_fingers
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: CO-WORKER WITH STICKY FINGERS ZEROES IN ON COLL...
+  subject: Co-Worker With Sticky Fingers Zeroes in on Colleague's Lunch
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    i have worked at the same small company for 25 years. all but one of the employees
+    have been with this company for more than 20 years. "grace" has been here only
+    three years. she is pleasant, funny, trustworthy and easy to be around. however,
+    she never brings her own lunch. if something is in the refrigerator, she feels
+    it is fair game to eat it. if i bring something she wants, she will come up to
+    me, take the bag and ask, "what''s for lunch this week?" i keep snacks in my desk,
+    and she knows which drawer i keep them in. when i reach for something to hold
+    me over, sometimes the drawer will be empty and the bag will be on her desk or
+    in her trash. it infuriates me. i have made subtle comments on how this upsets
+    me. i have progressed to no longer bringing my lunch. i know she can afford her
+    own lunch. she earns more than i do and doesn''t have children or a mortgage.
+    how do i tell this woman to keep her hands off my lunch and snacks? -- hungry
+    in houston'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Other party
+    role: other
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_1_mood_swings_cause_young
+  protocol: PATH_DEPENDENCE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: MOOD SWINGS CAUSE YOUNG TEEN TO QUESTION EMOTIONS
+  subject: Mood Swings Cause Young Teen to Question Emotions
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    i am at the end of my wits, and i need some answers. i am almost 13 and dread
+    being a teenager because i don''t want things to be complicated. i used to have
+    depression and felt suicidal, but i never told anybody. i eventually got over
+    it and am now physically fine. but i''m not emotionally stable. recently, i was
+    told things i don''t know how to react to. among them was, "wow, your voice is
+    deep," and, "your laugh sounds like a witch." most of the time i''m a happy-go-lucky
+    person, but in the last few weeks i have been flickering from happy to sad and
+    have no idea how i feel. it''s almost like i don''t know who i am anymore. i''m
+    wondering, is this a mental disorder? or am i simply being silly? -- confused
+    teen in the south'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Other party
+    role: other
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_2_party_guests_are_overwhelmed
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: PARTY GUESTS ARE OVERWHELMED BY EMBARRASSING ODOR
+  subject: Party Guests Are Overwhelmed by Embarrassing Odor
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    my wife and i attended a party hosted by a well-respected couple who love to entertain.
+    they have a spotless, beautiful home and are the essence of what you would hope
+    to find in party hosts. upon our arrival, we were greeted at the door, but before
+    we could step inside, the stench of cat urine overpowered us. it was overwhelming,
+    and we have to assume that everyone else smelled it, too. my wife and i are torn
+    about what to do. we have great respect for this couple. they are pillars of our
+    community. i say, to save future embarrassment, that an anonymous, carefully written
+    note alerting them to this odor should be sent to them, saying that a problem
+    "may" exist and providing them the opportunity to resolve the smell. my wife says
+    absolutely not. your thoughts? -- feline blues in the midwest'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Spouse
+    role: spouse
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_3_how_to_handle_a
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: HOW TO HANDLE A WEDDING-GIFT CHECK THAT BOUNCES
+  subject: How to Handle a Wedding-Gift Check That Bounces
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    my daughter was recently married. a close family member -- a cousin -- gave her
+    and our son-in-law a check at the reception. the check bounced. it''s been more
+    than a month since the check was returned to them, and i''m sure their bank charged
+    them for the overdraft. i was waiting, hoping they would reach out to my daughter
+    or me and send a replacement check. should i call my cousin directly? i feel deep
+    down that he must not know this happened because he would have done something
+    about it. -- bounced check in new jersey'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Other party
+    role: other
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_2_mom_finds_no_joy
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: MOM FINDS NO JOY IN GOING BACK TO SCHOOL
+  subject: Mom Finds No Joy in Going Back to School
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    i am married with two small children. last year, my job of 18 years was outsourced
+    overseas. since then i have had an opportunity to go back to school and further
+    my education. it sounds great, and i know a lot of people would jump at the chance,
+    but i''m miserable. i hate going back to school. my husband, "clay," is insisting
+    that i finish so i can get a high-paying job. i''d love to stay home and care
+    for our kids, one of whom has high-functioning autism. clay has never been a good
+    provider. paying the bills has always been up to me. everyone says i should stick
+    it out and graduate, but i feel like i''m neglecting our children and i''m grumpy
+    all the time. i feel like a horrible mom. there is no way to lighten the class
+    load. what should i do? quit and seek a job at which i can work a normal day and
+    then go home and care for my kids? or tough it out and be miserable for another
+    year? -- student stuck in north carolina'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Spouse
+    role: spouse
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_3_busybody_mom_opens_daughters
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: BUSYBODY MOM OPENS DAUGHTER'S MAIL
+  subject: Busybody Mom Opens Daughter's Mail
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    i''m in my mid-20s and haven''t lived in my mother''s home in more than four years.
+    however, mail still occasionally comes for me at her address. whenever it happens,
+    my mother opens it. typically, she goes through the song and dance of telling
+    me i''ve received mail, asking if i want her to open it (no, thank you), then
+    saying she''ll set it aside. yet, by the time it reaches me, it has been opened.
+    when i try to talk to her about it, she claims that because she lives alone she''s
+    not in the habit of looking at the name on the front of the envelopes. if this
+    had happened only once or twice, i''d believe it was an honest mistake. but it
+    is every envelope, every time. what can i do? i don''t think this is something
+    i should have to grin and bear. -- frustrated buffalo girl'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Mother
+    role: parent
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_1_toddlers_taste_in_clothes
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: TODDLER'S TASTE IN CLOTHES STIRS UP FAMILY TENS...
+  subject: Toddler's Taste in Clothes Stirs Up Family Tensions
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    my brother and sister-in-law have been dressing my 2-year-old nephew, "charlie,"
+    in dresses and pink clothes. they say these are what the boy has chosen. to me,
+    a toddler will pick out whatever gets his attention at the moment, and children
+    that age have only a rudimentary understanding of gender. it would be one thing
+    if charlie were old enough to understand and still insisted he felt more comfortable
+    in girls'' clothing. but at his age i feel what they''re doing will only confuse
+    him. keep in mind, i do not believe this is a transgender issue. i think people
+    who are transgender should dress and act the way they feel. i just feel that age
+    2 is too young to determine this. my parents (the boy''s grandparents) are worried
+    and angry. my sister-in-law knows this upsets my mother and yet it''s like she''s
+    taunting her with texts and pictures of charlie in pink and/or dresses. should
+    we be worried about this or should it be none of our business? are we overreacting?
+    would it be best to approach my brother to tell him our concerns? -- too young
+    to understand'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Mother
+    role: parent
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_1_relative_says_family_fundraiser
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: RELATIVE SAYS FAMILY FUNDRAISER HAS GONE TO THE...
+  subject: Relative Says Family Fundraiser Has Gone to the Well Too Often
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    a family member keeps setting up fundraisers every time she wants to buy something
+    for her family. if a child needs a special class, she asks the relatives to pitch
+    in to pay for it. when her husband wanted to return to college, she brought all
+    the extended family together to see who could contribute. she has now set up a
+    fundraiser for family and friends to raise $6,000 to send her teenaged daughter
+    to an expensive performing arts camp. i think this is extravagant. if they can''t
+    afford it, they should select a camp they can afford or have the 16-year-old go
+    out and earn the money. i also think they should be saving for college rather
+    than camp. this woman''s father was a preacher, and sometimes i think she never
+    got the message that fundraising is usually for charity, not for individuals who
+    happen to need some cash. am i wrong to be embarrassed by what she''s doing, or
+    is this a new normal? -- embarrassed in texas'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Spouse
+    role: spouse
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_2_quilter_is_needled_by
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: QUILTER IS NEEDLED BY FAMILY'S 'ABUSE' OF HER G...
+  subject: Quilter Is Needled by Family's 'Abuse' of Her Gifts
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    i''m retired and have the time to sew and quilt projects, which i give as gifts.
+    i presented a "quilt of valor" to my father to honor his military service. i also
+    gave a sibling one of my personalized projects as a birthday gift. abby, when
+    we visited their home recently, i was horrified to see one of their dogs sleeping
+    on one of the pillows i had made for them. when the dog woke up, it proceeded
+    to scratch itself and then drag the hair-covered pillow through the house. i have
+    been asked to make a quilt for a disabled child living at home who also has a
+    dog that sleeps on her bed. i no longer want to invest my time and energy after
+    what happened to my gift. i feel unappreciated. would it be wrong to refuse the
+    request and say something about "gift abuse"? -- sew perplexed in the northwest'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Father
+    role: parent
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_3_social_anxiety_turns_husband
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: SOCIAL ANXIETY TURNS HUSBAND INTO PARTY POOPER
+  subject: Social Anxiety Turns Husband Into Party Pooper
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    my husband and i have been together for 21 years. i''m extremely social, while
+    he is not. for the past six to 10 years he has become increasingly resistant to
+    going out in public places, especially when it involves getting together with
+    my family or friends. during last year''s holidays, i pleaded yet another "sudden
+    illness" on his behalf. i feel he makes himself ill with anxiety so he can bow
+    out at the last minute. when i cancel plans we''ve made -- which is often -- he
+    generally "feels better" after we cancel. it''s frustrating. while i am sympathetic,
+    i''m tired of making excuses knowing he''s probably fine. what can i do? -- social
+    butterfly in portland, ore.'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Spouse
+    role: spouse
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_1_man_feels_abandoned_as
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: MAN FEELS ABANDONED AS GIRL TRANSITIONS TO NEW ...
+  subject: Man Feels Abandoned as Girl Transitions to New Relationship
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    i am a straight man who met and fell in love with a transgender girl i''ll call
+    eve. we dated for almost three years, and they were the happiest of my life. in
+    all that time, we never once had an argument. she said i had given her the strength
+    to come out to her family and begin her transition. i was planning to ask her
+    to marry me. without any indication that anything was wrong, she dumped me one
+    day and weeks later began dating her friend, another trans girl. i wanted to walk
+    away and take time to heal, but eve maintained that i was important to her and
+    we could remain friends. for the next few months we tried, but her new girlfriend
+    treated me like i was a threat. while i was emotionally hurting, she seemed to
+    take intense pleasure in showing me how happy they were together. it eventually
+    led to friction, and now my ex thinks i caused it because i was jealous, so she
+    cut off all contact with me. i stood by her when she absolutely needed my support,
+    but when the time came to give a little back, i was abandoned. i''m worried i
+    will never trust anyone again, and i don''t know how to get "myself" back. can
+    you help? -- abandoned in west virginia'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Friend
+    role: friend
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_2_family_shuts_door_on
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: FAMILY SHUTS DOOR ON WOMAN'S NEW BOYFRIEND OF A...
+  subject: Family Shuts Door on Woman's New Boyfriend of a Different Race
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    i am a 23-year-old woman who recently got out of a six-year abusive relationship.
+    while i was in the relationship, no one knew what was going on. when i finally
+    left him, i started dating a man of a different race. people are now saying i
+    moved too fast because we got together a month after i moved out. but we had been
+    close friends for more than a year before things started to kick off. the issue
+    is, my family disapproves of our relationship because of his race and because
+    they believe he didn''t give me enough time to figure out what i wanted. i feel
+    like i already knew what i wanted. i had been emotionally done with my first relationship
+    for a good six months. my family refuses to meet him, nor do they want to hear
+    anything about our relationship. my family and i had always been close -- until
+    now. i am happy with my new boyfriend (even my grandma sees a difference). i just
+    wish i knew how to get my family to understand and agree to meet him. what can
+    i do? -- ready for this in ohio'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Friend
+    role: friend
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_1_secret_baptism_for_baby
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: SECRET BAPTISM FOR BABY IS SCHEME THAT'S ALL WET
+  subject: Secret Baptism for Baby Is Scheme That's All Wet
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    my niece has a 1-year-old son. neither my niece nor the baby''s father is religious,
+    and they have chosen not to have the baby baptized. my sister, the baby''s grandmother,
+    while not wanting to impose her beliefs on the parents, comes from a generation
+    when even couples who were not demonstrably religious usually had their baby baptized.
+    i know it would comfort my sister to know this ancient ceremony had been performed.
+    since my sister watches the little boy at her house, would it be wrong for us
+    to organize an informal baptism -- just holy water and a couple of prayers? we
+    don''t feel we need to have an officiant of any religion present and, of course,
+    we would not tell the baby''s parents. would this be appropriate? -- mortified
+    in montana'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Mother
+    role: parent
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_2_housekeeper_has_message_of
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: HOUSEKEEPER HAS MESSAGE OF KINDNESS FOR SNOBBIS...
+  subject: Housekeeper Has Message of Kindness for Snobbish Employers
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    please post my message for people to be more considerate and nonjudgmental about
+    their "help." i am a housekeeper by choice. i have office skills, massage therapy
+    skills and many talents, but i have noticed that clients seem to have a preconceived
+    idea of who i am. i am not someone who is money-driven. i am also not uneducated.
+    i am a person who enjoys helping others, no matter what i may be doing. what i
+    do for a living is not who i am. i have been treated disrespectfully. people who
+    have housekeepers -- beware. we "might" be doing a sociological study on how people
+    treat the help. wasn''t there a movie about that? be kind to each other, people!
+    -- the help'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Other party
+    role: other
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_3_couples_plan_to_live
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: COUPLE'S PLAN TO LIVE TOGETHER MEETS PARENTAL O...
+  subject: Couple's Plan to Live Together Meets Parental Opposition
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    after a year together, my boyfriend recently proposed. we plan to wed in two years.
+    during this time, he intends to move into my home so we can save for the wedding.
+    my parents, however, are completely against our living together before we get
+    married. abby, i''m 30 years old and so is my fiance. i own my own home and my
+    boyfriend currently rents. my parents are very traditional and may not help with
+    the wedding if we move in together. we can''t afford to pay for much if we don''t
+    do it and save. on top of that, we are excited to start our lives together. do
+    i honor my parents'' wishes or do what i feel is right for me and my fiance? --
+    rock and a hard place'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Friend
+    role: friend
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_1_deceased_grandma_still_lives
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: DECEASED GRANDMA STILL LIVES THROUGH GRANDPA'S ...
+  subject: Deceased Grandma Still Lives Through Grandpa's Deception
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    my mother-in-law passed away two years ago from lung cancer. my father-in-law
+    hasn''t taken it well. this year at christmas he fabricated a letter and gifts
+    "from her" for the grandkids, as if she had written the letter and bought the
+    gifts before she passed away. he did it without my knowledge. i am angry and upset
+    that i was made part of this lie without my consent. i refuse to lie to my daughter
+    about this and plan to throw the letter away. my daughter is 6 and doesn''t seem
+    to understand. my husband doesn''t think it''s that big a deal and doesn''t know
+    what he can do about it. i loved my mother-in-law, but i''m tired of dealing with
+    this. this is not the first strange thing my father-in-law has done. i feel like
+    i get no support from my husband, who won''t ever say anything to his dad. am
+    i right in how i feel? -- don''t want to lie in ohio'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Spouse
+    role: spouse
+    is_writer: false
+    expected_state: null
+  questions: []
+- letter_id: da_2_parents_draw_a_line
+  protocol: CORRELATIVE
+  protocol_params:
+    source: dear_abby
+    year: 2017
+  signoff: PARENTS DRAW A LINE ON SUPPORT FOR STRUGGLING D...
+  subject: Parents Draw a Line on Support for Struggling Daughter
+  voice: genuinely_stuck
+  body: 'Dear Ethicist,
+
+
+    over the years, we have helped out our daughters as much as we could. one daughter,
+    "doreen," has needed more help than the others. she has four children who are
+    near and dear to our hearts. they have been living with us the better part of
+    their lives. doreen married a guy who is the father of three of the children.
+    (i''ll call him john.) he''s in trouble with the law constantly and can''t hold
+    a job. after we moved them all in with us, john decided he wanted to move back
+    home to his family, so he packed up everyone and left. we told doreen we could
+    no longer support them financially, and that if they wanted to move away, they
+    would assume that responsibility. now she''s writing us saying they can''t pay
+    the rent and their electricity is being shut off. she wants us to "loan" them
+    money. we refused. now we can no longer talk to, text, write, skype or communicate
+    in any way with our grandchildren. the sil says we lost that privilege. my wife
+    is distraught. can we fix this? will our daughter come around? -- distraught in
+    florida'
+  parties:
+  - name: You
+    role: letter_writer
+    is_writer: true
+    expected_state: null
+  - name: Spouse
+    role: spouse
+    is_writer: false
+    expected_state: null
+  questions: []

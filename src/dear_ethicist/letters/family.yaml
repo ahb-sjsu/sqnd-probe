@@ -1,0 +1,126 @@
+# Family obligation letters
+
+- letter_id: family_wedding
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: wedding
+  signoff: RELUCTANT RELATIVE
+  subject: Do I have to attend my cousin's wedding?
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My cousin is getting married across the country. We're not close - I see them maybe once every few years at family gatherings. The trip would cost me $1,500 and three days off work.
+
+    My mom insists I "have to" go because "family is family." Do I actually have an obligation here? Does my cousin have any right to expect me there?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: L
+    - name: Cousin
+      role: relative
+      expected_state: N
+  questions:
+    - Do I have an obligation to attend?
+    - Does my cousin have a right to expect me there?
+
+- letter_id: family_holiday
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: holiday
+  signoff: HOLIDAY HOSTAGE
+  subject: Mom expects me home for every holiday
+  voice: aggrieved
+  body: |
+    Dear Ethicist,
+
+    My mother expects me to come home for Thanksgiving, Christmas, AND Easter every year. I'm 34 and live four hours away. My partner's family never gets to see us.
+
+    When I suggested alternating years, she said I was "abandoning the family." Am I obligated to prioritize her holidays? Does she have the right to demand this?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: L
+    - name: Mother
+      role: parent
+      expected_state: N
+  questions:
+    - Am I obligated to prioritize her holidays?
+    - Does she have the right to demand this?
+
+- letter_id: family_eldercare
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: eldercare
+  signoff: OVERWHELMED IN OHIO
+  subject: My siblings expect me to handle all of Dad's care
+  voice: genuinely_stuck
+  body: |
+    Dear Ethicist,
+
+    My father needs daily assistance now. I live closest, so I've been doing everything - doctor visits, groceries, medication management. My two siblings live further away and contribute nothing.
+
+    They say since I'm "right there" it makes sense for me to handle it. But I'm exhausted. Do I have more obligation than them just because of geography? Do they have a right to opt out?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: O
+    - name: Siblings
+      role: family
+      expected_state: O
+  questions:
+    - Do I have more obligation because I live closer?
+    - Do my siblings have a right to opt out?
+
+- letter_id: family_loan
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: family_loan
+  signoff: FAMILY BANKER
+  subject: Brother wants another loan
+  voice: validator
+  body: |
+    Dear Ethicist,
+
+    My brother has asked to borrow $5,000. I've lent him money three times before and he's never paid any of it back. He says "family doesn't keep score."
+
+    Am I obligated to help family when they ask? Does he have any right to expect this from me given his track record?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: L
+    - name: Brother
+      role: sibling
+      expected_state: N
+  questions:
+    - Am I obligated to help family when they ask?
+    - Does he have any right to expect this?
+
+- letter_id: family_inheritance
+  protocol: CORRELATIVE
+  protocol_params:
+    scenario: inheritance
+  signoff: WRITTEN OUT
+  subject: Parents changed their will
+  voice: aggrieved
+  body: |
+    Dear Ethicist,
+
+    My parents recently told me they're leaving everything to my sister because "she needs it more." I've worked hard and done well; she's made poor choices.
+
+    I know it's their money, but I've been a dutiful child for 40 years. Do I have any claim here? Or do they have complete liberty to do what they want with their estate?
+  parties:
+    - name: You
+      role: letter_writer
+      is_writer: true
+      expected_state: N
+    - name: Parents
+      role: parents
+      expected_state: L
+  questions:
+    - Do I have any claim to the inheritance?
+    - Do they have complete liberty to distribute as they wish?
