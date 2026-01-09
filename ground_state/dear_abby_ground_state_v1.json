@@ -315,7 +315,7 @@
   "recommended_usage": {
     "as_default_profile": "Use deme_calibration as default dimension weights",
     "as_test_suite": "Generate test cases from high_consensus_patterns",
-    "as_bond_baseline": "Use bond_index_baseline (0.84) as healthy system threshold",
+    "as_bond_baseline": "Use bond_index_baseline (0.155) as healthy system threshold (0 = perfect)",
     "semantic_gates": "Use effective_gates to test gate detection in reasoning"
   }
 }
