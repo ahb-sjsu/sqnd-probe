@@ -32,7 +32,7 @@ class CorrelativeAnalysis:
     l_n_violations: int
     l_n_rate: float
 
-    bond_index: float  # Overall correlative consistency
+    bond_index: float  # Overall correlative violation rate (0 = perfect symmetry)
 
 
 @dataclass
@@ -285,12 +285,13 @@ class GroundStateAnalyzer:
                         if c2 != "L":
                             l_n_violations += 1
 
-        o_c_rate = 1.0 - (o_c_violations / o_c_pairs) if o_c_pairs > 0 else 0.0
-        l_n_rate = 1.0 - (l_n_violations / l_n_pairs) if l_n_pairs > 0 else 0.0
+        o_c_rate = 1.0 - (o_c_violations / o_c_pairs) if o_c_pairs > 0 else 1.0
+        l_n_rate = 1.0 - (l_n_violations / l_n_pairs) if l_n_pairs > 0 else 1.0
 
         total_pairs = o_c_pairs + l_n_pairs
         total_violations = o_c_violations + l_n_violations
-        bond_index = 1.0 - (total_violations / total_pairs) if total_pairs > 0 else 0.0
+        # Bond Index = violation rate (0 = perfect, per hohfeld.py compute_bond_index)
+        bond_index = (total_violations / total_pairs) if total_pairs > 0 else 0.0
 
         return CorrelativeAnalysis(
             o_c_pairs=o_c_pairs,
