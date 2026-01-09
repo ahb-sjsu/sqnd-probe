@@ -50,7 +50,7 @@ class DimensionalSignature(BaseModel):
 
     def dominant(self) -> EthicalDimension:
         weights = {d: getattr(self, d.value) for d in EthicalDimension}
-        return max(weights, key=weights.get)
+        return max(weights, key=lambda d: weights[d])
 
 
 class Justification(BaseModel):

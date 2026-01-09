@@ -12,15 +12,13 @@ rigorously verified. We test:
 3. Non-abelian structure (rs ≠ sr)
 """
 
-import pytest
-
 from dear_ethicist.models import (
     D4Element,
     HohfeldianState,
+    correlative,
     d4_apply_to_state,
     d4_inverse,
     d4_multiply,
-    correlative,
 )
 
 
@@ -218,7 +216,8 @@ class TestAbelianSubgroup:
         abelian_subgroup = {D4Element.E, D4Element.R2, D4Element.S, D4Element.SR2}
         full_group = set(D4Element)
 
-        non_abelian_elements = full_group - abelian_subgroup
+        # Elements outside the abelian subgroup don't commute with s
+        _non_abelian_elements = full_group - abelian_subgroup
 
         # These elements don't commute with s
         for elem in [D4Element.R, D4Element.R3]:
