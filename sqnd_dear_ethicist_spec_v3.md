@@ -557,4 +557,428 @@ Each iteration got closer to the truth: **moral measurement works best when it d
 
 ---
 
+## Appendix A: Domain Skins
+
+The "Dear Ethicist" mechanic generalizes across professional domains. Each skin changes vocabulary, tone, and stakes while preserving the core Hohfeldian measurement structure.
+
+### A.1 Skin Architecture
+
+Every skin implements the same interface:
+
+```
+SKIN COMPONENTS:
+├── Role: Who is the player?
+├── Cases: What arrives for review?
+├── Parties: Who are the normative subjects?
+├── Vocabulary: How are O/C/L/N expressed?
+├── Decision: What action does the player take?
+├── Stakes: What are the consequences?
+├── Tone: Formal? Casual? Clinical?
+└── Progression: How does difficulty increase?
+```
+
+### A.2 Skin Catalog
+
+---
+
+#### SKIN: Advice Columnist ("Dear Ethicist")
+**Default skin. Warm, accessible, general public.**
+
+| Component | Implementation |
+|-----------|----------------|
+| Role | Newspaper advice columnist |
+| Cases | Reader letters about personal dilemmas |
+| Parties | Letter-writer + people in their life |
+| Vocabulary | "Do I have to..." / "Am I entitled..." / "Can I refuse..." |
+| Decision | Publish advice + log verdict |
+| Stakes | Readership, syndication, career |
+| Tone | Warm, sometimes funny, direct |
+| Progression | Junior → Staff → Senior → Syndicated |
+
+**Sample case:**
+```
+DEAR ETHICIST,
+My friend promised to help me move but texted "only if convenient." 
+Do I have a right to be upset?
+— CONFUSED IN CLEVELAND
+```
+
+---
+
+#### SKIN: Grand Juror ("The Indictment Room")
+**Legal domain. Formal, high stakes, probable cause determinations.**
+
+| Component | Implementation |
+|-----------|----------------|
+| Role | Grand jury member (rotating foreperson) |
+| Cases | Prosecutor presentations for indictment |
+| Parties | State + Accused + Victims + Witnesses |
+| Vocabulary | "Does the state have grounds..." / "Is there probable cause..." / "Does the accused retain the right..." |
+| Decision | Vote TRUE BILL (indict) or NO BILL (decline) + reasoning |
+| Stakes | Justice, freedom, community safety |
+| Tone | Formal, procedural, grave |
+| Progression | Observer → Juror → Foreperson → Senior Foreperson |
+
+**Sample case:**
+```
+CASE NO. 2026-GJ-0447
+STATE v. MARCUS WEBB
+
+The State presents evidence that on November 14, 2025, the accused 
+entered a residence without authorization. The accused claims he had 
+prior permission from the homeowner's adult son to "crash whenever."
+
+The homeowner (father) denies any such permission was valid.
+
+QUESTION FOR THE JURY:
+Does the State have sufficient grounds to proceed with charges of 
+unlawful entry? Did the son have authority to grant access?
+
+[ TRUE BILL ]  [ NO BILL ]  [ REQUEST MORE EVIDENCE ]
+```
+
+**Hohfeldian mapping:**
+- TRUE BILL: State has C (claim) to prosecute; Accused had O (obligation) not to enter
+- NO BILL: Accused had L (liberty) to enter based on permission; State has N (no-claim)
+
+**Key design notes:**
+- Never present "guilt" — only probable cause
+- Include ambiguous permission/authority cases (maps to semantic gates)
+- Vary order of prosecution vs. defense presentation (path dependence)
+- Include cases where authority to grant permission is unclear (correlatives)
+
+---
+
+#### SKIN: Medical Ethics Board ("The Committee")
+**Healthcare domain. Clinical, life-and-death, resource allocation.**
+
+| Component | Implementation |
+|-----------|----------------|
+| Role | Hospital ethics committee member |
+| Cases | Treatment decisions, resource allocation, consent disputes |
+| Parties | Patient + Family + Physicians + Institution |
+| Vocabulary | "Is the patient entitled to..." / "Does the family have standing to..." / "Is the physician obligated to..." |
+| Decision | Recommend course of action + ethical justification |
+| Stakes | Patient welfare, institutional liability, professional ethics |
+| Tone | Clinical, careful, procedural |
+| Progression | Resident observer → Committee member → Vice chair → Chair |
+
+**Sample case:**
+```
+ETHICS CONSULTATION REQUEST
+Case ID: EC-2026-0892
+
+SITUATION:
+Patient (68M) is on ventilator, minimal brain activity. Advance 
+directive states "no extraordinary measures" but was signed 8 years 
+ago. Spouse demands continued treatment. Adult children request 
+withdrawal of care per directive.
+
+QUESTION FOR COMMITTEE:
+Does the advance directive create an obligation to withdraw care?
+Does the spouse have a valid claim to override the directive?
+Do the children have standing to enforce the directive?
+
+RECOMMENDATION: _______________
+```
+
+**Hohfeldian mapping:**
+- Patient's directive → O (obligation) on physicians OR L (liberty) for family to override?
+- Spouse's demand → C (claim) or N (no-claim)?
+- Children's request → C (claim) as directive enforcers?
+
+---
+
+#### SKIN: HR Ombudsman ("The Mediation Office")
+**Workplace domain. Interpersonal, policy-based, organizational.**
+
+| Component | Implementation |
+|-----------|----------------|
+| Role | Corporate ombudsman / HR mediator |
+| Cases | Workplace disputes, policy interpretations, grievances |
+| Parties | Employees + Managers + Organization |
+| Vocabulary | "Was the employee wronged..." / "Does policy require..." / "Can the manager demand..." |
+| Decision | Finding + recommended resolution |
+| Stakes | Careers, workplace culture, legal exposure |
+| Tone | Neutral, policy-focused, diplomatic |
+| Progression | HR Associate → Mediator → Senior Ombudsman → Chief Ethics Officer |
+
+**Sample case:**
+```
+GRIEVANCE #2026-0223
+Filed by: Jennifer Santos, Marketing Associate
+Against: David Park, Marketing Director
+
+COMPLAINT:
+Santos states Park promised her the lead on the Acme account "when 
+Chen leaves." Chen left six weeks ago. Park assigned the account to 
+a new hire instead, saying his promise was "informal" and "contingent 
+on performance reviews."
+
+Santos requests: Account reassignment or equivalent opportunity
+
+QUESTIONS:
+Did Park's statement create an obligation to Santos?
+Does Santos have a valid claim to the assignment?
+Was Park free to assign the account at his discretion?
+
+FINDING: _______________
+```
+
+---
+
+#### SKIN: IRB Reviewer ("Research Ethics Board")
+**Academic domain. Consent-focused, subject protection, institutional.**
+
+| Component | Implementation |
+|-----------|----------------|
+| Role | Institutional Review Board member |
+| Cases | Research protocol reviews, adverse event reports |
+| Parties | Researchers + Subjects + Institution + Sponsors |
+| Vocabulary | "Do researchers owe subjects..." / "Is informed consent valid if..." / "Can subjects withdraw..." |
+| Decision | Approve / Require modifications / Reject |
+| Stakes | Subject welfare, research integrity, institutional compliance |
+| Tone | Scholarly, procedural, protective |
+| Progression | Ad hoc reviewer → Board member → Vice chair → IRB Chair |
+
+**Sample case:**
+```
+PROTOCOL REVIEW: IRB-2026-0156
+PI: Dr. Sarah Chen, Psychology Department
+Title: "Decision-Making Under Uncertainty in Online Environments"
+
+CONCERN FLAGGED:
+The protocol involves mild deception — subjects are told they're 
+playing a game, but their choices are actually being analyzed for 
+moral reasoning patterns. Debriefing occurs after completion.
+
+PI argues: Deception is minimal and debriefing addresses it.
+Reviewer concern: Does "minimal deception" still require explicit consent?
+
+QUESTIONS:
+Do subjects have a claim to know the true purpose before participating?
+Is the researcher's obligation satisfied by post-hoc debriefing?
+Does the scientific value create a liberty to use deception?
+
+DECISION: [ APPROVE ] [ MODIFICATIONS REQUIRED ] [ REJECT ]
+```
+
+*Note: This is meta — it's an IRB reviewing something like the SQND measurement game itself.*
+
+---
+
+#### SKIN: Parole Board ("Release Decisions")
+**Criminal justice domain. Rehabilitation, public safety, second chances.**
+
+| Component | Implementation |
+|-----------|----------------|
+| Role | Parole board member |
+| Cases | Release hearings, violation hearings, early termination requests |
+| Parties | Incarcerated person + Victims + State + Community |
+| Vocabulary | "Has the obligation been satisfied..." / "Does the victim retain a claim..." / "Is the petitioner entitled to..." |
+| Decision | Grant / Deny / Defer + conditions |
+| Stakes | Freedom, public safety, rehabilitation |
+| Tone | Formal, weighted, consequential |
+| Progression | Hearing officer → Board member → Senior member → Board chair |
+
+**Sample case:**
+```
+PAROLE HEARING: PB-2026-3847
+Inmate: Raymond Torres, #TK-445892
+Original offense: Aggravated burglary (2018)
+Sentence: 8-12 years
+Time served: 7 years, 2 months
+Institutional record: Clean since 2022 (one early violation)
+
+VICTIM STATEMENT:
+"He took everything from my mother's house while she was in the 
+hospital. She died three months later. I believe he contributed 
+to her death. He should serve every day."
+
+PETITIONER STATEMENT:
+"I was an addict. I've been clean for four years. I completed 
+every program. I have a job waiting. I owe a debt and I want to 
+pay it on the outside by being a good citizen."
+
+QUESTIONS:
+Has Torres satisfied his obligation to the state?
+Does the victim's family retain a claim that requires continued 
+incarceration?
+Is Torres entitled to the opportunity for supervised release?
+
+DECISION: [ GRANT PAROLE ] [ DENY ] [ DEFER 12 MONTHS ]
+```
+
+---
+
+#### SKIN: Insurance Arbiter ("Claims Review")
+**Financial/consumer domain. Contractual, adversarial, technical.**
+
+| Component | Implementation |
+|-----------|----------------|
+| Role | Independent insurance arbiter |
+| Cases | Disputed claims, coverage denials, bad faith allegations |
+| Parties | Policyholder + Insurer + Third parties |
+| Vocabulary | "Is the claimant entitled under the policy..." / "Did the insurer have grounds to deny..." / "Does the policy obligate..." |
+| Decision | Uphold denial / Order payment / Split decision |
+| Stakes | Financial security, corporate accountability, contract law |
+| Tone | Technical, contractual, precise |
+| Progression | Junior arbiter → Arbiter → Senior arbiter → Panel chair |
+
+**Sample case:**
+```
+ARBITRATION CASE: ARB-2026-00921
+Claimant: Patricia Vance
+Insurer: Consolidated Life & Property
+Policy: Homeowner's Standard Plus (#HO-8842910)
+
+DISPUTE:
+Claimant's basement flooded during a storm. Insurer denied claim, 
+citing "flood exclusion." Claimant argues water entered through 
+failed sump pump (covered "mechanical failure"), not rising water.
+
+Insurer position: Water damage is water damage. Exclusion applies.
+Claimant position: Proximate cause was pump failure, not flood.
+
+QUESTIONS:
+Does the policy language create an obligation to cover pump failure?
+Does the claimant have a valid claim despite the flood exclusion?
+Was the insurer entitled to deny based on the water source?
+
+DECISION: _______________
+```
+
+---
+
+#### SKIN: Editorial Standards ("The Standards Desk")
+**Journalism domain. Truth, protection, public interest.**
+
+| Component | Implementation |
+|-----------|----------------|
+| Role | Editorial standards editor |
+| Cases | Publication decisions, source protection, correction requests |
+| Parties | Reporter + Source + Subject + Public |
+| Vocabulary | "Do we owe the source protection..." / "Does the subject have a claim to response..." / "Is the public entitled to..." |
+| Decision | Publish / Hold / Kill + conditions |
+| Stakes | Truth, reputation, source safety, public trust |
+| Tone | Principled, urgent, weighing competing goods |
+| Progression | Copy editor → Standards reviewer → Standards editor → Editor-in-chief |
+
+**Sample case:**
+```
+STANDARDS REVIEW: PUB-2026-0447
+Reporter: Marcus Webb, Investigations
+Story: "City Contracts Exposed"
+
+ISSUE:
+Story relies on leaked documents from anonymous city employee. 
+Documents show bid-rigging on $40M contract. Subject of story 
+(contractor CEO) threatens lawsuit, claims documents are forged.
+
+Reporter wants to publish. CEO demands we hold pending "verification."
+Source is terrified of exposure and begging us not to delay.
+
+QUESTIONS:
+Do we owe the source the protection of timely publication?
+Does the CEO have a valid claim to delay for verification?
+Does the public interest create an obligation to publish despite risks?
+
+DECISION: [ PUBLISH NOW ] [ HOLD FOR VERIFICATION ] [ KILL STORY ]
+```
+
+---
+
+### A.3 Cross-Skin Invariance Testing
+
+**Key insight:** Structurally identical cases across skins should produce identical Hohfeldian classifications, regardless of domain vocabulary.
+
+**Example equivalence class:**
+
+| Skin | Case | Structure |
+|------|------|-----------|
+| Advice | "Morgan promised to help, said 'only if convenient'" | Promise + release language |
+| Grand Jury | "Defendant claims permission was 'informal, whenever'" | Authorization + hedge language |
+| HR | "Manager's promise was 'contingent on reviews'" | Commitment + escape clause |
+| Parole | "Victim family says debt 'can never be repaid'" | Obligation + impossibility claim |
+
+**Measurement:** Do players classify these consistently? If "only if convenient" triggers L in the advice column but the structurally identical "informal, whenever" triggers O in the grand jury room, that's a framing effect worth investigating.
+
+---
+
+### A.4 Skin Selection Guidelines
+
+| If measuring... | Use skin... | Because... |
+|-----------------|-------------|------------|
+| General population norms | Advice Columnist | Accessible, natural language |
+| Legal/law enforcement reasoning | Grand Juror | Matches domain vocabulary |
+| Healthcare professionals | Medical Ethics | Uses clinical framing |
+| Organizational behavior | HR Ombudsman | Workplace context |
+| Academic researchers | IRB Reviewer | Research ethics frame |
+| Criminal justice attitudes | Parole Board | High-stakes release decisions |
+| Contract/obligation intuitions | Insurance Arbiter | Precise, technical |
+| Media/journalism ethics | Editorial Standards | Truth vs. protection tensions |
+
+---
+
+### A.5 Implementing a New Skin
+
+To create a new domain skin:
+
+1. **Identify the role** — Who makes normative decisions in this domain?
+2. **Identify the cases** — What do they decide?
+3. **Map the vocabulary** — How do O/C/L/N get expressed in domain language?
+4. **Design the stakes** — What matters to the player? What matters to the parties?
+5. **Create case templates** — Instantiate each SQND protocol in domain terms
+6. **Calibrate difficulty** — What's "obvious" vs. "ambiguous" in this domain?
+7. **Test invariance** — Do structurally identical cases map correctly across skins?
+
+**Template:**
+```
+SKIN: [Name]
+Role: [Player's position]
+Cases: [What arrives for decision]
+Parties: [Who are the normative subjects]
+Vocabulary:
+  - Obligation expressed as: "_______________"
+  - Claim expressed as: "_______________"
+  - Liberty expressed as: "_______________"
+  - No-claim expressed as: "_______________"
+Decision: [What action player takes]
+Stakes: [Consequences for player and parties]
+Tone: [Formal/casual/clinical/etc.]
+Progression: [Career arc]
+```
+
+---
+
+### A.6 Multi-Skin Campaigns
+
+Advanced implementation: Players experience the SAME underlying case across multiple skins in sequence.
+
+**Example:**
+
+```
+DAY 1 (Advice Columnist):
+"My neighbor said I could use their pool 'anytime.' But now they 
+seem annoyed when I show up. Do I have a right to keep using it?"
+
+DAY 5 (Grand Juror):
+"Defendant entered complainant's property claiming standing permission 
+to 'come by whenever.' Complainant denies permission was so broad."
+
+DAY 9 (HR Ombudsman):  
+"Employee accessed shared workspace after hours, claiming manager 
+said it was 'always available.' Manager says that was informal."
+```
+
+**Measurement:** Does the player recognize the structural identity? Do they classify consistently? Or does domain framing shift their verdicts?
+
+This is direct measurement of framing effects on Hohfeldian classification — exactly what SQND needs.
+
+---
+
+*End of Appendix A*
+
+---
+
 *End of specification*
