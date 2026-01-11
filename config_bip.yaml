@@ -1,0 +1,66 @@
+# BIP Temporal Invariance Experiment Configuration
+# config_bip.yaml
+
+experiment:
+  name: "bip_temporal_invariance_v1"
+  seed: 42
+  device: "cuda"  # or "cpu" or "mps"
+
+data:
+  sefaria_path: "data/raw/Sefaria-Export"
+  dear_abby_path: "data/raw/dear_abby.csv"
+  processed_path: "data/processed"
+  max_sefaria_passages: null  # null = all
+  max_abby_passages: null
+  min_passage_length: 50  # characters
+  max_passage_length: 2000
+
+preprocessing:
+  lowercase: false
+  remove_punctuation: false
+  normalize_unicode: true
+
+bond_extraction:
+  method: "hybrid"  # "rule", "llm", "hybrid"
+  llm_model: "claude-3-haiku"  # for hybrid/llm
+  confidence_threshold: 0.7
+
+model:
+  encoder: "sentence-transformers/all-mpnet-base-v2"
+  d_model: 768
+  d_bond: 128  # bond/invariant latent dimension
+  d_label: 64  # label/temporal latent dimension
+  n_hohfeld_classes: 4
+  n_time_periods: 9
+  dropout: 0.1
+  max_length: 512
+
+training:
+  batch_size: 32
+  learning_rate: 0.00002
+  weight_decay: 0.01
+  warmup_steps: 1000
+  max_epochs: 50
+  early_stopping_patience: 5
+  gradient_clip: 1.0
+
+  # Loss weights
+  lambda_bip: 2.0        # BIP contrastive loss
+  lambda_adversarial: 1.0  # Time prediction adversarial
+  lambda_reconstruction: 0.1
+  lambda_hohfeld: 1.0
+  lambda_kl: 0.1
+
+evaluation:
+  metrics:
+    - "accuracy"
+    - "f1_macro"
+    - "transfer_gap"
+    - "embedding_similarity"
+    - "time_correlation"
+  significance_level: 0.001  # Very conservative
+
+logging:
+  wandb_project: "bip-temporal-invariance"
+  log_interval: 100
+  save_interval: 1000
