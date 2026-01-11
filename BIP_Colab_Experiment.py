@@ -21,8 +21,45 @@ Expected runtime: ~2-4 hours with free GPU
 print("Setting up BIP Temporal Invariance Experiment...")
 print("=" * 60)
 
+# Progress tracker
+TASKS = [
+    "Install dependencies",
+    "Clone Sefaria corpus (~8GB)",
+    "Clone sqnd-probe repo (Dear Abby data)",
+    "Preprocess corpora",
+    "Extract bond structures",
+    "Generate train/test splits",
+    "Train BIP model",
+    "Evaluate results"
+]
+task_status = {task: "pending" for task in TASKS}
+
+def print_progress():
+    """Print current progress checklist."""
+    print("\n" + "-" * 40)
+    print("PROGRESS:")
+    for task in TASKS:
+        status = task_status[task]
+        if status == "done":
+            mark = "[X]"
+        elif status == "running":
+            mark = "[>]"
+        else:
+            mark = "[ ]"
+        print(f"  {mark} {task}")
+    print("-" * 40 + "\n", flush=True)
+
+def mark_task(task, status):
+    """Update task status and print progress."""
+    task_status[task] = status
+    print_progress()
+
+print_progress()
+
 # Install required packages
+mark_task("Install dependencies", "running")
 !pip install -q torch transformers sentence-transformers scipy scikit-learn pandas numpy tqdm pyyaml
+mark_task("Install dependencies", "done")
 
 import os
 os.makedirs('data/raw', exist_ok=True)
@@ -47,10 +84,86 @@ print("DOWNLOADING DATA")
 print("=" * 60)
 
 # Clone Sefaria (works on Linux without path issues)
-print("\n[1/2] Cloning Sefaria corpus (~8GB, takes 5-10 minutes)...")
+mark_task("Clone Sefaria corpus (~8GB)", "running")
 print("=" * 60)
-!cd data/raw && git clone --depth 1 --progress https://github.com/Sefaria/Sefaria-Export.git 2>&1 || echo "Sefaria already exists"
+import subprocess
+import threading
+import time
+
+sefaria_path = 'data/raw/Sefaria-Export'
+
+def get_dir_size(path):
+    """Get directory size in bytes."""
+    try:
+        result = subprocess.run(['du', '-sb', path], capture_output=True, text=True)
+        if result.returncode == 0:
+            return int(result.stdout.split()[0])
+    except:
+        pass
+    return 0
+
+def monitor_download(path, stop_event, target_gb=8.0):
+    """Print download progress every 10 seconds. Warn if stalled."""
+    start_time = time.time()
+    last_size = 0
+    stall_count = 0
+
+    while not stop_event.is_set():
+        size_bytes = get_dir_size(path)
+        size_gb = size_bytes / (1024**3)
+        elapsed = time.time() - start_time
+        mins = int(elapsed // 60)
+        secs = int(elapsed % 60)
+
+        # Check if download is stalled
+        if size_bytes > 0 and size_bytes == last_size:
+            stall_count += 1
+            if stall_count >= 6:  # 60 seconds with no progress
+                print(f"    [{mins:02d}:{secs:02d}] WARNING: Download appears stalled! No progress for 60s", flush=True)
+        else:
+            stall_count = 0
+
+        if size_bytes > 0:
+            pct = min(100, (size_gb / target_gb) * 100)
+            speed_mb = (size_bytes - last_size) / (1024**2) / 10  # MB in last 10 sec
+            print(f"    [{mins:02d}:{secs:02d}] {size_gb:.2f} GB / ~{target_gb} GB ({pct:.0f}%) - {speed_mb:.1f} MB/s", flush=True)
+        else:
+            print(f"    [{mins:02d}:{secs:02d}] Connecting to GitHub...", flush=True)
+
+        last_size = size_bytes
+        stop_event.wait(10)  # Check every 10 seconds
+
+if not os.path.exists(sefaria_path) or not os.path.exists(f"{sefaria_path}/json"):
+    # Start progress monitor in background
+    stop_monitor = threading.Event()
+    monitor_thread = threading.Thread(target=monitor_download, args=(sefaria_path, stop_monitor))
+    monitor_thread.start()
+
+    try:
+        # No timeout - let it run, the progress monitor shows if it's working
+        result = subprocess.run(
+            ['git', 'clone', '--depth', '1',
+             'https://github.com/Sefaria/Sefaria-Export.git', sefaria_path],
+            capture_output=True,
+            text=True
+        )
+        if result.returncode != 0:
+            print(f"Git error: {result.stderr}")
+    except Exception as e:
+        print(f"ERROR during clone: {e}")
+    finally:
+        stop_monitor.set()
+        monitor_thread.join()
+
+    final_size = get_dir_size(sefaria_path) / (1024**3)
+    if final_size > 1:
+        print(f"    Download complete! Final size: {final_size:.2f} GB")
+    else:
+        print(f"    WARNING: Download may be incomplete. Size: {final_size:.2f} GB")
+else:
+    print("    Sefaria already exists, skipping clone.")
 print("=" * 60)
+mark_task("Clone Sefaria corpus (~8GB)", "done")
 
 # Count files
 !echo "Sefaria JSON files:" && find data/raw/Sefaria-Export/json -name "*.json" 2>/dev/null | wc -l
@@ -62,9 +175,23 @@ import pandas as pd
 from pathlib import Path
 
 # Clone the sqnd-probe repo to get the Dear Abby data
-print("Cloning sqnd-probe repo to get Dear Abby dataset...")
+mark_task("Clone sqnd-probe repo (Dear Abby data)", "running")
 print("=" * 60)
-!git clone --depth 1 --progress https://github.com/ahb-sjsu/sqnd-probe.git sqnd-probe-data 2>&1 || echo "Repo already cloned"
+sqnd_path = 'sqnd-probe-data'
+if not os.path.exists(sqnd_path):
+    process = subprocess.Popen(
+        ['git', 'clone', '--depth', '1', '--progress',
+         'https://github.com/ahb-sjsu/sqnd-probe.git', sqnd_path],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        bufsize=1
+    )
+    for line in process.stdout:
+        print(line, end='', flush=True)
+    process.wait()
+else:
+    print("sqnd-probe already cloned.")
 print("=" * 60)
 
 # Copy Dear Abby data from repo
@@ -86,6 +213,7 @@ df_check = pd.read_csv(dear_abby_path)
 print(f"Dear Abby dataset loaded: {len(df_check):,} entries")
 print(f"Columns: {list(df_check.columns)}")
 print(f"Year range: {df_check['year'].min():.0f} - {df_check['year'].max():.0f}")
+mark_task("Clone sqnd-probe repo (Dear Abby data)", "done")
 
 # ============================================================================
 # CELL 3: DATA CLASSES AND PREPROCESSING
@@ -350,6 +478,7 @@ def extract_bond_structure(passage: Passage) -> Dict:
 print("\n" + "=" * 60)
 print("PREPROCESSING DATA")
 print("=" * 60)
+mark_task("Preprocess corpora", "running")
 
 # Load corpora
 sefaria_passages = load_sefaria("data/raw/Sefaria-Export")
@@ -358,7 +487,10 @@ abby_passages = load_dear_abby("data/raw/dear_abby.csv")
 all_passages = sefaria_passages + abby_passages
 print(f"\nTotal passages: {len(all_passages)}")
 
+mark_task("Preprocess corpora", "done")
+
 # Extract bonds
+mark_task("Extract bond structures", "running")
 print("\nExtracting bond structures...")
 bond_structures = []
 for passage in tqdm(all_passages):
@@ -394,6 +526,8 @@ print("\nBy time period:")
 for period, count in sorted(by_period.items()):
     print(f"  {period}: {count:,}")
 
+mark_task("Extract bond structures", "done")
+
 # ============================================================================
 # CELL 7: GENERATE SPLITS
 # ============================================================================
@@ -401,6 +535,8 @@ for period, count in sorted(by_period.items()):
 print("\n" + "=" * 60)
 print("GENERATING SPLITS")
 print("=" * 60)
+
+mark_task("Generate train/test splits", "running")
 
 import random
 random.seed(42)
@@ -472,6 +608,7 @@ with open("data/splits/all_splits.json", 'w') as f:
     json.dump(splits, f, indent=2)
 
 print("\nSplits saved!")
+mark_task("Generate train/test splits", "done")
 
 # ============================================================================
 # CELL 8: MODEL DEFINITION
@@ -629,6 +766,8 @@ print("\n" + "=" * 60)
 print("TRAINING BIP MODEL")
 print("=" * 60)
 
+mark_task("Train BIP model", "running")
+
 # Config
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f"Using device: {device}")
@@ -741,6 +880,8 @@ else:
             torch.save(model.state_dict(), "models/checkpoints/best_model.pt")
             print("  Saved best model!")
 
+    mark_task("Train BIP model", "done")
+
 # ============================================================================
 # CELL 11: EVALUATION
 # ============================================================================
@@ -748,6 +889,8 @@ else:
 print("\n" + "=" * 60)
 print("EVALUATION")
 print("=" * 60)
+
+mark_task("Evaluate results", "running")
 
 if len(train_dataset) > 0:
     # Load best model
@@ -830,4 +973,9 @@ if len(train_dataset) > 0:
 
     """)
 
+mark_task("Evaluate results", "done")
+
+print("\n" + "=" * 60)
 print("EXPERIMENT COMPLETE")
+print("=" * 60)
+print_progress()
