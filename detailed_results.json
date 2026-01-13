@@ -1,0 +1,14 @@
+{
+  "ancient_to_modern": {
+    "time_acc": 0.0,
+    "hohfeld_acc": 0.48617581527243264,
+    "train_size": 3948012,
+    "test_size": 19748
+  },
+  "modern_to_ancient": {
+    "time_acc": 0.5404096458480476,
+    "hohfeld_acc": 0.049540914135808696,
+    "train_size": 19748,
+    "test_size": 19748
+  }
+}
