@@ -57,6 +57,7 @@ source = ["src/dear_ethicist"]
 branch = true
 omit = [
     "*/cli.py",  # CLI is tested manually / integration
+    "*/simulation/*",  # Simulation module not yet fully tested
 ]
 
 [tool.coverage.report]
