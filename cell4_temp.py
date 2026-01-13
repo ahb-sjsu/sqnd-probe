@@ -137,6 +137,7 @@ else:
 
     # ===== CLASSICAL CHINESE: Disabled (CText API blocks Colab) =====
     print("  Skipping CText API (blocked from Colab, using Wenyanwen instead)")
+    chinese_count = 0  # Initialize counter
 
     # ===== KAGGLE: Ancient Chinese Wenyanwen (132K texts, 552M chars) =====
     if chinese_count < MAX_PER_LANG:
