@@ -107,9 +107,9 @@ for split_idx, split_name in enumerate(splits_to_train):
     print(f"Actual batch size: {actual_batch}")
 
     train_loader = DataLoader(train_dataset, batch_size=actual_batch, shuffle=True,
-                              collate_fn=collate_fn, drop_last=True, num_workers=NUM_WORKERS, pin_memory=True)
+                              collate_fn=collate_fn, drop_last=True, num_workers=0, pin_memory=True)
     test_loader = DataLoader(test_dataset, batch_size=actual_batch*2, shuffle=False,
-                             collate_fn=collate_fn, num_workers=NUM_WORKERS, pin_memory=True)
+                             collate_fn=collate_fn, num_workers=0, pin_memory=True)
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=0.01)
 

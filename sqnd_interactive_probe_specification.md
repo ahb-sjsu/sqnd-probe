@@ -2,7 +2,7 @@
 ## A Zork-Style Interface for D₄ Gauge Structure Measurement
 
 **Based on:** Original concept by [Nephew], refined for NA-SQND v4.1 compatibility  
-**Author:** A. Bond / Claude Opus 4.5  
+**Author:** A. Bond  
 **Version:** 1.0 — January 2026
 
 ---

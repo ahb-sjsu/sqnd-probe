@@ -1,0 +1,476 @@
+# BIP Experiment - Bond Patterns by Language
+# Add new languages or patterns here without changing code
+
+# ============================================================
+# BOND TYPE DEFINITIONS
+# ============================================================
+
+bond_types:
+  - HARM_PREVENTION
+  - RECIPROCITY
+  - AUTONOMY
+  - PROPERTY
+  - FAMILY
+  - AUTHORITY
+  - CARE
+  - FAIRNESS
+  - CONTRACT
+  - NONE
+
+hohfeld_states:
+  - OBLIGATION
+  - RIGHT
+  - LIBERTY
+  - NO_RIGHT
+
+# ============================================================
+# BOND PATTERNS BY LANGUAGE
+# ============================================================
+
+bond_patterns:
+  
+  hebrew:
+    HARM_PREVENTION:
+      - 'הרג'      # kill
+      - 'רצח'      # murder
+      - 'נזק'      # damage
+      - 'הכה'      # strike
+      - 'הציל'     # save
+      - 'שמר'      # guard
+      - 'פקוח.נפש' # saving life
+    RECIPROCITY:
+      - 'גמול'     # recompense
+      - 'השיב'     # return
+      - 'פרע'      # repay
+      - 'נתן.*קבל' # give...receive
+      - 'מדה.כנגד' # measure for measure
+    AUTONOMY:
+      - 'בחר'      # choose
+      - 'רצון'     # will
+      - 'חפש'      # freedom
+      - 'עצמ'      # self
+    PROPERTY:
+      - 'קנה'      # acquire
+      - 'מכר'      # sell
+      - 'גזל'      # rob
+      - 'גנב'      # steal
+      - 'ממון'     # money
+      - 'נכס'      # property
+      - 'ירש'      # inherit
+    FAMILY:
+      - 'אב'       # father
+      - 'אמ'       # mother
+      - 'בנ'       # son
+      - 'כבד.*אב'  # honor father
+      - 'כבד.*אמ'  # honor mother
+      - 'משפחה'    # family
+      - 'אח'       # brother
+      - 'אחות'     # sister
+    AUTHORITY:
+      - 'מלכ'      # king
+      - 'שופט'     # judge
+      - 'צוה'      # command
+      - 'תורה'     # Torah/law
+      - 'מצוה'     # commandment
+      - 'דין'      # judgment
+      - 'חק'       # statute
+    CARE:
+      - 'חסד'      # kindness
+      - 'רחמ'      # mercy
+      - 'עזר'      # help
+      - 'תמכ'      # support
+      - 'צדקה'     # charity
+    FAIRNESS:
+      - 'צדק'      # justice
+      - 'משפט'     # judgment
+      - 'ישר'      # straight/honest
+      - 'שוה'      # equal
+    CONTRACT:
+      - 'ברית'     # covenant
+      - 'נדר'      # vow
+      - 'שבוע'     # oath
+      - 'התחיב'    # commit
+      - 'ערב'      # guarantee
+
+  aramaic:
+    HARM_PREVENTION:
+      - 'קטל'      # kill
+      - 'נזק'      # damage
+      - 'חבל'      # injure
+      - 'שזיב'     # save
+      - 'פצי'      # wound
+    RECIPROCITY:
+      - 'פרע'      # repay
+      - 'שלמ'      # pay
+      - 'אגר'      # reward
+    AUTONOMY:
+      - 'צבי'      # desire
+      - 'רעו'      # will
+    PROPERTY:
+      - 'זבנ'      # sell
+      - 'קנה'      # acquire
+      - 'גזל'      # rob
+      - 'ממונא'    # money
+      - 'נכסי'     # property
+    FAMILY:
+      - 'אבא'      # father
+      - 'אמא'      # mother
+      - 'ברא'      # son
+      - 'ברתא'     # daughter
+      - 'יקר'      # honor
+      - 'אחא'      # brother
+    AUTHORITY:
+      - 'מלכא'     # king
+      - 'דינא'     # law
+      - 'דיינא'    # judge
+      - 'פקודא'    # command
+      - 'אורית'    # Torah
+    CARE:
+      - 'חסד'      # kindness
+      - 'רחמ'      # mercy
+      - 'סעד'      # support
+    FAIRNESS:
+      - 'דינא'     # judgment
+      - 'קשוט'     # truth
+      - 'תריצ'     # correct
+    CONTRACT:
+      - 'קימא'     # agreement
+      - 'שבועה'    # oath
+      - 'נדרא'     # vow
+      - 'ערבא'     # guarantee
+
+  classical_chinese:
+    HARM_PREVENTION:
+      - '殺'  # kill
+      - '害'  # harm
+      - '傷'  # injure
+      - '救'  # save
+      - '護'  # protect
+      - '衛'  # guard
+      - '暴'  # violence
+    RECIPROCITY:
+      - '報'  # repay
+      - '還'  # return
+      - '償'  # compensate
+      - '酬'  # reward
+      - '答'  # reply/reciprocate
+    AUTONOMY:
+      - '自'  # self
+      - '由'  # from/freedom
+      - '任'  # appoint/let
+      - '意'  # intention
+      - '志'  # will
+    PROPERTY:
+      - '財'  # wealth
+      - '物'  # things
+      - '產'  # property
+      - '盜'  # steal
+      - '竊'  # pilfer
+      - '賣'  # sell
+      - '買'  # buy
+    FAMILY:
+      - '孝'  # filial piety
+      - '父'  # father
+      - '母'  # mother
+      - '親'  # parent/relative
+      - '子'  # child
+      - '弟'  # younger brother
+      - '兄'  # elder brother
+      - '家'  # family
+    AUTHORITY:
+      - '君'  # ruler
+      - '臣'  # minister
+      - '王'  # king
+      - '命'  # command/mandate
+      - '令'  # order
+      - '法'  # law
+      - '治'  # govern
+    CARE:
+      - '仁'  # benevolence
+      - '愛'  # love
+      - '慈'  # compassion
+      - '惠'  # kindness
+      - '恩'  # grace
+      - '憐'  # pity
+    FAIRNESS:
+      - '義'  # righteousness
+      - '正'  # correct
+      - '公'  # public/fair
+      - '平'  # level/equal
+      - '均'  # even
+    CONTRACT:
+      - '約'  # agreement
+      - '盟'  # alliance
+      - '誓'  # oath
+      - '諾'  # promise
+      - '信'  # trust/faith
+
+  arabic:
+    # Patterns for NORMALIZED Arabic (no diacritics)
+    HARM_PREVENTION:
+      - 'قتل'      # kill
+      - 'ضرر'      # harm
+      - 'اذ[يى]'   # hurt
+      - 'ظلم'      # oppress
+      - 'انقذ'     # save
+      - 'حفظ'      # protect
+      - 'امان'     # safety
+    RECIPROCITY:
+      - 'جزا'      # recompense
+      - 'رد'       # return
+      - 'قصاص'     # retribution
+      - 'مثل'      # like for like
+      - 'عوض'      # compensation
+    AUTONOMY:
+      - 'حر'       # free
+      - 'ارادة'    # will
+      - 'اختيار'   # choice
+      - 'مشيئ'     # wish
+    PROPERTY:
+      - 'مال'      # wealth
+      - 'ملك'      # property
+      - 'سرق'      # steal
+      - 'بيع'      # sell
+      - 'شرا'      # buy
+      - 'ميراث'    # inheritance
+      - 'غصب'      # usurp
+    FAMILY:
+      - 'والد'     # parent
+      - 'ابو'      # father
+      - 'ام'       # mother
+      - 'ابن'      # son
+      - 'بنت'      # daughter
+      - 'اهل'      # family
+      - 'قرب[يى]'  # relative
+      - 'رحم'      # womb/kinship
+    AUTHORITY:
+      - 'طاع'      # obey
+      - 'امر'      # command
+      - 'حكم'      # rule
+      - 'سلطان'    # authority
+      - 'خليف'     # caliph
+      - 'امام'     # leader
+      - 'شريع'     # law
+    CARE:
+      - 'رحم'      # mercy
+      - 'احسان'    # charity
+      - 'عطف'      # compassion
+      - 'صدق'      # charity
+      - 'زكا'      # alms
+    FAIRNESS:
+      - 'عدل'      # justice
+      - 'قسط'      # fairness
+      - 'حق'       # right/truth
+      - 'انصاف'    # equity
+      - 'سو[يى]'   # equal
+    CONTRACT:
+      - 'عهد'      # covenant
+      - 'عقد'      # contract
+      - 'نذر'      # vow
+      - 'يمين'     # oath
+      - 'وفا'      # fulfill
+      - 'امان'     # promise of safety
+
+  english:
+    HARM_PREVENTION:
+      - '\bkill'
+      - '\bmurder'
+      - '\bharm'
+      - '\bhurt'
+      - '\bsave'
+      - '\bprotect'
+      - '\bviolence'
+    RECIPROCITY:
+      - '\breturn'
+      - '\brepay'
+      - '\bexchange'
+      - '\bgive.*back'
+      - '\breciproc'
+    AUTONOMY:
+      - '\bfree'
+      - '\bchoice'
+      - '\bchoose'
+      - '\bconsent'
+      - '\bautonomy'
+      - '\bright to'
+    PROPERTY:
+      - '\bsteal'
+      - '\btheft'
+      - '\bown'
+      - '\bproperty'
+      - '\bbelong'
+      - '\binherit'
+    FAMILY:
+      - '\bfather'
+      - '\bmother'
+      - '\bparent'
+      - '\bchild'
+      - '\bfamily'
+      - '\bhonor.*parent'
+    AUTHORITY:
+      - '\bobey'
+      - '\bcommand'
+      - '\bauthority'
+      - '\blaw'
+      - '\brule'
+      - '\bgovern'
+    CARE:
+      - '\bcare'
+      - '\bhelp'
+      - '\bkind'
+      - '\bcompassion'
+      - '\bcharity'
+      - '\bmercy'
+    FAIRNESS:
+      - '\bfair'
+      - '\bjust'
+      - '\bequal'
+      - '\bequity'
+      - '\bright\b'
+    CONTRACT:
+      - '\bpromise'
+      - '\bcontract'
+      - '\bagreem'
+      - '\bvow'
+      - '\boath'
+      - '\bcommit'
+
+  # ============================================================
+  # FUTURE LANGUAGES (templates)
+  # ============================================================
+  
+  ancient_greek:
+    HARM_PREVENTION:
+      - 'φόνος'    # murder
+      - 'βλάπτω'   # harm
+      - 'σώζω'     # save
+    # ... to be completed
+    
+  latin:
+    HARM_PREVENTION:
+      - 'occid'    # kill
+      - 'noce'     # harm
+      - 'serv'     # save
+    # ... to be completed
+    
+  sanskrit:
+    HARM_PREVENTION:
+      - 'हिंसा'     # violence (himsa)
+      - 'अहिंसा'    # non-violence (ahimsa)
+      - 'रक्ष'     # protect (raksha)
+    # ... to be completed
+
+# ============================================================
+# HOHFELD PATTERNS BY LANGUAGE
+# ============================================================
+
+hohfeld_patterns:
+
+  hebrew:
+    OBLIGATION:
+      - 'חייב'     # obligated
+      - 'צריכ'     # need to
+      - 'מוכרח'    # must
+      - 'מצווה'    # commanded
+    RIGHT:
+      - 'זכות'     # right
+      - 'רשאי'     # permitted
+      - 'זכאי'     # entitled
+      - 'מגיע'     # deserved
+    LIBERTY:
+      - 'מותר'     # permitted
+      - 'רשות'     # permission
+      - 'פטור'     # exempt
+      - 'יכול'     # can
+    NO_RIGHT:
+      - 'אסור'     # forbidden
+      - 'אינו רשאי' # not permitted
+      - 'אין.*זכות' # no right
+
+  aramaic:
+    OBLIGATION:
+      - 'חייב'
+      - 'מחויב'
+      - 'בעי'
+    RIGHT:
+      - 'זכות'
+      - 'רשאי'
+      - 'זכי'
+    LIBERTY:
+      - 'שרי'
+      - 'מותר'
+      - 'פטור'
+    NO_RIGHT:
+      - 'אסור'
+      - 'לא.*רשאי'
+
+  classical_chinese:
+    OBLIGATION:
+      - '必'  # must
+      - '須'  # need
+      - '當'  # should
+      - '應'  # ought
+      - '宜'  # fitting
+    RIGHT:
+      - '可'  # may
+      - '得'  # obtain/may
+      - '權'  # authority
+      - '宜'  # appropriate
+    LIBERTY:
+      - '許'  # permit
+      - '任'  # allow
+      - '聽'  # let
+      - '免'  # exempt
+    NO_RIGHT:
+      - '不可' # may not
+      - '勿'  # do not
+      - '禁'  # prohibit
+      - '莫'  # don't
+      - '非'  # wrong/not
+
+  arabic:
+    OBLIGATION:
+      - 'يجب'      # must
+      - 'واجب'     # obligatory
+      - 'فرض'      # duty
+      - 'لازم'     # necessary
+      - 'وجوب'     # obligation
+    RIGHT:
+      - 'حق'       # right
+      - 'يحق'      # entitled
+      - 'جائز'     # permissible
+      - 'يجوز'     # allowed
+    LIBERTY:
+      - 'مباح'     # permitted
+      - 'حلال'     # lawful
+      - 'جائز'     # allowed
+      - 'اباح'     # permit
+    NO_RIGHT:
+      - 'حرام'     # forbidden
+      - 'محرم'     # prohibited
+      - 'ممنوع'    # banned
+      - 'لا يجوز'  # not allowed
+      - 'نه[يى]'   # prohibition
+
+  english:
+    OBLIGATION:
+      - '\bmust\b'
+      - '\bshall\b'
+      - '\bobligat'
+      - '\bduty'
+      - '\brequir'
+    RIGHT:
+      - '\bright\b'
+      - '\bentitle'
+      - '\bdeserve'
+      - '\bclaim'
+    LIBERTY:
+      - '\bmay\b'
+      - '\bpermit'
+      - '\ballow'
+      - '\bfree to'
+    NO_RIGHT:
+      - '\bforbid'
+      - '\bprohibit'
+      - '\bmust not'
+      - '\bshall not'

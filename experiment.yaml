@@ -1,0 +1,198 @@
+# BIP Experiment - Configuration
+# Tune hyperparameters and experiment settings here
+
+experiment:
+  name: "BIP_v9_native"
+  version: "9.1"
+  description: "Native-language moral pattern transfer without translation bridge"
+
+# ============================================================
+# MODEL ARCHITECTURE
+# ============================================================
+
+model:
+  encoder: "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+  z_bond_dim: 64
+  hidden_dim: 256
+  dropout: 0.1
+  
+  # Output heads
+  n_bond_classes: 10      # 9 bonds + NONE
+  n_language_classes: 5   # hebrew, aramaic, chinese, arabic, english
+  n_period_classes: 10    # various historical periods
+  n_hohfeld_classes: 4    # obligation, right, liberty, no_right
+
+# ============================================================
+# TRAINING HYPERPARAMETERS
+# ============================================================
+
+training:
+  # Batch sizes by GPU
+  batch_sizes:
+    A100: 512
+    L4: 512
+    T4: 192
+    default: 128
+  
+  # Learning rate
+  learning_rate: 2.0e-5
+  weight_decay: 0.01
+  
+  # Epochs
+  n_epochs: 5
+  
+  # Loss weights - CRITICAL for training stability
+  loss_weights:
+    bond: 1.0
+    language: 0.01      # adversarial - keep low!
+    period: 0.01        # adversarial - keep low!
+  
+  # Adversarial warmup
+  adversarial_warmup:
+    enabled: true
+    warmup_epochs: 2
+    start_lambda: 0.1
+    end_lambda: 1.0
+  
+  # Gradient accumulation (for smaller GPUs)
+  gradient_accumulation:
+    T4: 2
+    default: 1
+  
+  # Mixed precision
+  use_amp: true
+  
+  # Early stopping
+  early_stopping:
+    enabled: false
+    patience: 3
+    min_delta: 0.001
+
+# ============================================================
+# DATA SETTINGS
+# ============================================================
+
+data:
+  # Maximum samples per language (to prevent memory issues)
+  max_per_language: 100000
+  
+  # Text preprocessing
+  max_text_length: 1000
+  min_text_length: 20
+  max_token_length: 128
+  
+  # Require minimum Hebrew characters for Sefaria
+  min_hebrew_chars: 5
+  
+  # Test set limits
+  max_test_samples: 20000
+
+# ============================================================
+# SPLIT DEFINITIONS
+# ============================================================
+
+splits:
+  hebrew_to_others:
+    description: "Train on Hebrew, test on all others"
+    train_languages: ["hebrew"]
+    test_languages: ["aramaic", "arabic", "english", "classical_chinese"]
+    enabled: true
+    
+  semitic_to_non_semitic:
+    description: "Train on Semitic family, test on non-Semitic"
+    train_languages: ["hebrew", "aramaic", "arabic"]
+    test_languages: ["english", "classical_chinese"]
+    enabled: true
+    notes: "Key test - cross-family transfer"
+    
+  ancient_to_modern:
+    description: "Train on ancient texts, test on modern"
+    train_periods: ["BIBLICAL", "TANNAITIC", "AMORAIC", "CONFUCIAN", "DAOIST", "QURANIC", "HADITH"]
+    test_periods: ["RISHONIM", "ACHRONIM", "DEAR_ABBY"]
+    enabled: true
+    
+  mixed_baseline:
+    description: "Random 70/30 split across all data"
+    train_ratio: 0.7
+    enabled: true
+    notes: "Upper bound - what's achievable with mixed training"
+    
+  chinese_to_others:
+    description: "Train on Chinese, test on all others"
+    train_languages: ["classical_chinese"]
+    test_languages: ["hebrew", "aramaic", "arabic", "english"]
+    enabled: false
+    notes: "Only 55 Chinese samples - need more data"
+
+# ============================================================
+# BASELINE ABLATIONS
+# ============================================================
+
+baselines:
+  rule_baseline:
+    description: "Pattern matcher only, no neural network"
+    enabled: true
+    
+  shuffle_control:
+    description: "Shuffle labels within each language"
+    enabled: true
+    expected: "Transfer should collapse to chance"
+    
+  keyword_masking:
+    description: "Remove pattern-matching tokens from input"
+    enabled: true
+    expected: "If transfer holds, model learns beyond keywords"
+
+# ============================================================
+# EVALUATION THRESHOLDS
+# ============================================================
+
+evaluation:
+  # Transfer success thresholds
+  transfer_ratio_threshold: 1.5    # Must beat chance by 1.5x
+  strong_transfer_threshold: 2.0   # Strong evidence at 2x
+  
+  # Invariance thresholds (probe accuracy should be LOW)
+  invariance_margin: 0.15          # Within 15% of chance = invariant
+  
+  # Verdict criteria
+  verdict:
+    strongly_supported:
+      min_successful_splits: 2
+      min_baseline_checks: 2
+    supported:
+      min_successful_splits: 1
+      min_baseline_checks: 1
+    partial:
+      min_transfer_ratio: 1.3
+
+# ============================================================
+# OUTPUT PATHS
+# ============================================================
+
+paths:
+  data_dir: "data"
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  splits_dir: "data/splits"
+  models_dir: "models/checkpoints"
+  results_dir: "results"
+  
+  # Google Drive backup
+  drive_dir: "/content/drive/MyDrive/BIP_native_v9"
+  
+  # Output files
+  passages_file: "passages.jsonl"
+  bonds_file: "bonds.jsonl"
+  splits_file: "all_splits.json"
+  results_file: "final_results.json"
+
+# ============================================================
+# LOGGING
+# ============================================================
+
+logging:
+  print_every_n_batches: 100
+  save_checkpoints: true
+  save_to_drive: true
+  verbose: true

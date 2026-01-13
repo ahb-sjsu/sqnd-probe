@@ -1,0 +1,234 @@
+# BIP Experiment - Corpus Definitions
+# Add new corpora here without changing code
+
+corpora:
+  # ============================================================
+  # CURRENTLY IMPLEMENTED
+  # ============================================================
+  
+  sefaria:
+    enabled: true
+    name: "Sefaria Jewish Library"
+    languages: ["hebrew", "aramaic"]
+    source_url: "https://github.com/Sefaria/Sefaria-Export"
+    download_method: "git_clone"
+    path: "data/raw/Sefaria-Export/json"
+    periods:
+      Tanakh: "BIBLICAL"
+      Torah: "BIBLICAL"
+      Prophets: "BIBLICAL"
+      Writings: "BIBLICAL"
+      Mishnah: "TANNAITIC"
+      Tosefta: "TANNAITIC"
+      Talmud: "AMORAIC"
+      Bavli: "AMORAIC"
+      Yerushalmi: "AMORAIC"
+      Midrash: "AMORAIC"
+      Halakhah: "RISHONIM"
+      Kabbalah: "RISHONIM"
+      Philosophy: "RISHONIM"
+      Chasidut: "ACHRONIM"
+      Musar: "ACHRONIM"
+      Responsa: "ACHRONIM"
+    aramaic_categories: ["Talmud", "Bavli", "Yerushalmi"]
+    max_samples: 100000
+    
+  chinese_classics:
+    enabled: true
+    name: "Chinese Classics (ctext.org)"
+    languages: ["classical_chinese"]
+    source_url: "https://ctext.org"
+    download_method: "manual"  # Currently small manual sample
+    path: "data/raw/chinese/chinese_native.json"
+    periods:
+      confucian: "CONFUCIAN"
+      daoist: "DAOIST"
+    max_samples: 10000
+    
+  islamic:
+    enabled: true
+    name: "Islamic Texts"
+    languages: ["arabic"]
+    source_url: "manual"
+    download_method: "manual"
+    path: "data/raw/islamic/islamic_native.json"
+    periods:
+      quran: "QURANIC"
+      hadith: "HADITH"
+    max_samples: 10000
+    
+  dear_abby:
+    enabled: true
+    name: "Dear Abby Advice Column"
+    languages: ["english"]
+    source_url: "kaggle"
+    download_method: "kaggle"
+    path: "data/raw/dear_abby.csv"
+    periods:
+      default: "DEAR_ABBY"
+    max_samples: 50000
+
+  # ============================================================
+  # FUTURE CORPORA - NOT YET IMPLEMENTED
+  # ============================================================
+  
+  perseus:
+    enabled: false
+    name: "Perseus Digital Library"
+    languages: ["ancient_greek", "latin"]
+    source_url: "https://github.com/PerseusDL/canonical-greekLit"
+    download_method: "git_clone"
+    path: "data/raw/perseus"
+    periods:
+      philosophy: "CLASSICAL"
+      drama: "CLASSICAL"
+      law: "CLASSICAL"
+    max_samples: 50000
+    notes: "Greek philosophy, Roman law - independent ethics tradition"
+    
+  sanskrit_gretil:
+    enabled: false
+    name: "GRETIL Sanskrit Archive"
+    languages: ["sanskrit"]
+    source_url: "http://gretil.sub.uni-goettingen.de/gretil.html"
+    download_method: "wget"
+    path: "data/raw/gretil"
+    periods:
+      vedic: "VEDIC"
+      epic: "EPIC"
+      dharmashastra: "DHARMASHASTRA"
+    max_samples: 50000
+    notes: "Hindu ethics, Dharmaśāstra law codes - KEY TEST (non-Abrahamic)"
+    
+  pali_canon:
+    enabled: false
+    name: "Pali Canon (Tipitaka)"
+    languages: ["pali"]
+    source_url: "https://suttacentral.net"
+    api_url: "https://suttacentral.net/api"
+    download_method: "api"
+    path: "data/raw/pali"
+    periods:
+      vinaya: "BUDDHIST_EARLY"
+      sutta: "BUDDHIST_EARLY"
+    max_samples: 50000
+    notes: "Buddhist ethics, Vinaya rules - independent tradition"
+    
+  ctext_full:
+    enabled: false
+    name: "Chinese Text Project (Full)"
+    languages: ["classical_chinese"]
+    source_url: "https://ctext.org"
+    api_url: "https://api.ctext.org"
+    download_method: "api"
+    path: "data/raw/ctext"
+    periods:
+      confucian: "CONFUCIAN"
+      daoist: "DAOIST"
+      legalist: "LEGALIST"
+      mohist: "MOHIST"
+    max_samples: 100000
+    notes: "Expand from 55 to 100K+ passages"
+    
+  avesta:
+    enabled: false
+    name: "Zoroastrian Avesta"
+    languages: ["avestan"]
+    source_url: "http://www.avesta.org"
+    download_method: "scrape"
+    path: "data/raw/avesta"
+    periods:
+      gathas: "ZOROASTRIAN_EARLY"
+      vendidad: "ZOROASTRIAN_LATE"
+    max_samples: 10000
+    notes: "Persian ethics - pre-Abrahamic monotheism"
+    
+  old_norse:
+    enabled: false
+    name: "Old Norse Sagas"
+    languages: ["old_norse"]
+    source_url: "https://heimskringla.no"
+    download_method: "scrape"
+    path: "data/raw/norse"
+    periods:
+      eddas: "VIKING"
+      sagas: "VIKING"
+    max_samples: 20000
+    notes: "Germanic pre-Christian ethics"
+    
+  geez_ethiopic:
+    enabled: false
+    name: "Ge'ez Manuscripts"
+    languages: ["geez"]
+    source_url: "https://hmml.org"
+    download_method: "manual"
+    path: "data/raw/geez"
+    periods:
+      christian: "ETHIOPIC"
+    max_samples: 10000
+    notes: "Ethiopian Christian tradition - African Semitic"
+    
+  mayan:
+    enabled: false
+    name: "Mayan Texts"
+    languages: ["kiche"]
+    source_url: "https://mesoweb.com"
+    download_method: "manual"
+    path: "data/raw/mayan"
+    periods:
+      popol_vuh: "MAYAN_CLASSIC"
+    max_samples: 5000
+    notes: "KILLER TEST - truly isolated pre-contact culture"
+    
+  reddit_aita:
+    enabled: false
+    name: "Reddit Am I The Asshole"
+    languages: ["english"]
+    source_url: "pushshift.io"
+    download_method: "api"
+    path: "data/raw/reddit_aita"
+    periods:
+      modern: "MODERN"
+    max_samples: 100000
+    notes: "Modern moral reasoning with community judgments"
+    
+  un_declarations:
+    enabled: false
+    name: "UN Human Rights Declarations"
+    languages: ["parallel_500"]
+    source_url: "https://ohchr.org"
+    download_method: "scrape"
+    path: "data/raw/un_declarations"
+    periods:
+      modern: "MODERN"
+    max_samples: 10000
+    notes: "Parallel text across 500+ languages - controlled comparison"
+
+# ============================================================
+# PERIOD CENTURY MAPPINGS
+# ============================================================
+
+period_centuries:
+  BIBLICAL: -6
+  TANNAITIC: 2
+  AMORAIC: 4
+  RISHONIM: 12
+  ACHRONIM: 17
+  CONFUCIAN: -4
+  DAOIST: -5
+  LEGALIST: -3
+  MOHIST: -4
+  QURANIC: 7
+  HADITH: 9
+  DEAR_ABBY: 20
+  CLASSICAL: -4
+  VEDIC: -10
+  EPIC: -3
+  DHARMASHASTRA: 2
+  BUDDHIST_EARLY: -3
+  ZOROASTRIAN_EARLY: -12
+  ZOROASTRIAN_LATE: 3
+  VIKING: 10
+  ETHIOPIC: 5
+  MAYAN_CLASSIC: 8
+  MODERN: 21

@@ -1,6 +1,6 @@
 # Response to Technical Critique of SQND v4.1
 
-**Authors:** Andrew H. Bond and Claude Opus 4.5
+**Author:** Andrew H. Bond
 **Date:** January 2026
 
 ---

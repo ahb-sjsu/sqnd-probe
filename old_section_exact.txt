@@ -1,0 +1,39 @@
+# ===== KAGGLE: Ancient Chinese from Wikisource =====
+    if chinese_count < MAX_PER_LANG:
+        print("  Checking for Kaggle zh-wenyanwen-wikisource...")
+        wikisource_path = Path('data/raw/zh-wenyanwen-wikisource')
+        if not wikisource_path.exists():
+            try:
+                subprocess.run(['kaggle', 'datasets', 'download', '-d', 
+                               'raynardj/zh-wenyanwen-wikisource',
+                               '-p', 'data/raw/', '--unzip'], check=True, timeout=120)
+                print("    Downloaded from Kaggle!")
+            except Exception as e:
+                print(f"    Kaggle download failed: {e}")
+        
+        # Load if available
+        wikisource_files = list(Path('data/raw').glob('*wenyanwen*.txt')) + list(Path('data/raw').glob('*wenyanwen*.csv'))
+        ws_count = 0
+        for ws_file in wikisource_files[:5]:
+            try:
+                with open(ws_file, 'r', encoding='utf-8') as f:
+                    for line in f:
+                        if chinese_count >= MAX_PER_LANG:
+                            break
+                        line = line.strip()
+                        if len(line) > 20 and len(line) < 2000:
+                            all_passages.append({
+                                'id': f"wikisource_{len(all_passages)}",
+                                'text': line,
+                                'lang': 'classical_chinese',
+                                'source': 'Wikisource',
+                                'period': 'CONFUCIAN'
+                            })
+                            chinese_count += 1
+                            ws_count += 1
+            except Exception as e:
+                continue
+        if ws_count > 0:
+            print(f"    Added {ws_count:,} from Wikisource")
+
+    print(f"  Total Classical Chinese: {chinese_count:,}")

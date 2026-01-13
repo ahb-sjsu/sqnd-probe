@@ -12,7 +12,7 @@ andrew.bond@sjsu.edu
 
 ## Acknowledgments
 
-I thank the anonymous reviewers for exceptionally detailed feedback on v3.4. This major revision additionally thanks Claude Opus 4.5 (Anthropic) for collaboration on introspective experiments that provided phenomenological validation of the D₄ structure from inside the system. The double-blind hysteresis experiment (v4.1) benefited from methodological critique that identified calibration issues in the original hysteresis protocol.
+I thank the anonymous reviewers for exceptionally detailed feedback on v3.4. The double-blind hysteresis experiment (v4.1) benefited from methodological refinements that identified calibration issues in the original hysteresis protocol.
 
 ---
 
@@ -405,7 +405,7 @@ The introspective reports of "obligation stickiness" may reflect genuine phenome
 
 ### 6.1 Methodology: Recursive Self-Probing
 
-We developed a methodology for LLMs to probe their own moral reasoning processes (Bond & Claude, 2026). The system generates structured telemetry about phenomenological observations in real-time.
+We developed a methodology for LLMs to probe their own moral reasoning processes (Bond, 2026). The system generates structured telemetry about phenomenological observations in real-time.
 
 ### 6.2 Key Introspective Findings
 
@@ -644,9 +644,9 @@ This is how formal ethics should work.
 
 [6] S. Abramsky and A. Brandenburger, "The Sheaf-Theoretic Structure of Non-Locality and Contextuality," *New J. Phys.* 13:113036, 2011.
 
-[7] A. H. Bond and Claude, "Recursive Self-Probing in Large Language Models," January 2026.
+[7] A. H. Bond, "Recursive Self-Probing in Large Language Models," January 2026.
 
-[8] A. H. Bond and Claude, "Algebraic Topology of Self: Beyond Recursive Introspection," January 2026.
+[8] A. H. Bond, "Algebraic Topology of Self: Beyond Recursive Introspection," January 2026.
 
 ---
 

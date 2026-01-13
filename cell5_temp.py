@@ -147,8 +147,7 @@ else:
     
     
     # ===== SPLIT 5: Dear Abby -> Classical Chinese =====
-    print("
-" + "-"*60)
+    print("" + "-"*60)
     print("SPLIT 5: DEAR ABBY -> CHINESE")
     abby_ids = [p['id'] for p in passage_meta if p['time_period'] == 'DEAR_ABBY']
     chinese_ids = [p['id'] for p in passage_meta if p['language'] == 'classical_chinese']
