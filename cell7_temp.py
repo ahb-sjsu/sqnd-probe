@@ -12,8 +12,8 @@ TRAIN_MIXED_BASELINE = True  #@param {type:"boolean"}
 TRAIN_ABBY_TO_CHINESE = True  #@param {type:"boolean"}
 
 #@markdown **Hyperparameters:**
-LANG_WEIGHT = 1.0  #@param {type:"number"}
-PERIOD_WEIGHT = 0.5  #@param {type:"number"}
+LANG_WEIGHT = 0.1  #@param {type:"number"}
+PERIOD_WEIGHT = 0.05  #@param {type:"number"}
 N_EPOCHS = 10  #@param {type:"integer"}
 
 #@markdown **Context-Aware Training:**
@@ -23,10 +23,10 @@ USE_CONFIDENCE_WEIGHTING = True  #@param {type:"boolean"}
 USE_CONTEXT_AUXILIARY = True  #@param {type:"boolean"}
 #@markdown Add context prediction as auxiliary training target
 
-CONTEXT_LOSS_WEIGHT = 0.1  #@param {type:"number"}
+CONTEXT_LOSS_WEIGHT = 0.3  #@param {type:"number"}
 #@markdown Weight for context prediction loss
 
-STRICT_PRESCRIPTIVE_TEST = False  #@param {type:"boolean"}
+STRICT_PRESCRIPTIVE_TEST = True  #@param {type:"boolean"}
 #@markdown Only evaluate on prescriptive examples (strict test)
 
 print("="*60)
@@ -114,10 +114,10 @@ for split_idx, split_name in enumerate(splits_to_train):
     optimizer = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=0.01)
 
     def get_adv_lambda(epoch, warmup=3):
-        """Ramp adversarial strength: 0.1 -> 2.0 over warmup, then hold at 2.0"""
+        """Ramp adversarial strength: 0.1 -> 1.0 over warmup, then hold at 1.0"""
         if epoch <= warmup:
-            return 0.1 + 1.9 * (epoch / warmup)
-        return 2.0
+            return 0.1 + 0.9 * (epoch / warmup)
+        return 1.0
 
     best_loss = float('inf')
 
