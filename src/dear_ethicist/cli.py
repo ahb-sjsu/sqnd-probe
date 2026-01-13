@@ -52,12 +52,16 @@ def cli():
     "--output-dir", default="./data", type=click.Path(), help="Telemetry output directory"
 )
 @click.option(
-    "--headless", is_flag=True, default=False,
-    help="Run in headless mode (no interactive prompts, for Colab/notebooks)"
+    "--headless",
+    is_flag=True,
+    default=False,
+    help="Run in headless mode (no interactive prompts, for Colab/notebooks)",
 )
 @click.option(
-    "--max-letters", type=int, default=None,
-    help="Maximum number of letters to process in headless mode"
+    "--max-letters",
+    type=int,
+    default=None,
+    help="Maximum number of letters to process in headless mode",
 )
 def play(output_dir: str, headless: bool, max_letters: int | None):
     """Start a new game session."""
@@ -68,7 +72,11 @@ def play(output_dir: str, headless: bool, max_letters: int | None):
             "Welcome to your first day as the new advice columnist.\n\n"
             "Letters will arrive from readers seeking guidance.\n"
             "Read them carefully. Offer your wisdom.\n\n"
-            + ("[dim]Running in headless mode...[/dim]" if headless else "[dim]Press Enter to begin...[/dim]"),
+            + (
+                "[dim]Running in headless mode...[/dim]"
+                if headless
+                else "[dim]Press Enter to begin...[/dim]"
+            ),
             title="Dear Ethicist",
             border_style="blue",
         )
@@ -84,7 +92,9 @@ def play(output_dir: str, headless: bool, max_letters: int | None):
 
     # Main game loop
     try:
-        run_game_loop(game_state, letter_bank, telemetry, headless=headless, max_letters=max_letters)
+        run_game_loop(
+            game_state, letter_bank, telemetry, headless=headless, max_letters=max_letters
+        )
     except KeyboardInterrupt:
         console.print("\n[dim]Game saved. See you tomorrow.[/dim]")
 
@@ -175,7 +185,9 @@ def display_letter(letter: Letter, game_state: GameState):
     )
 
 
-def get_player_response(letter: Letter, _game_state: GameState, headless: bool = False) -> Response | None:
+def get_player_response(
+    letter: Letter, _game_state: GameState, headless: bool = False
+) -> Response | None:
     """Get the player's response to a letter."""
     console.print("\n[bold]YOUR VERDICT[/bold] [dim](for your records)[/dim]\n")
 

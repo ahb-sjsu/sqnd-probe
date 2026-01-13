@@ -88,9 +88,11 @@ class SimulationResult:
 class SimulationConfig:
     """Configuration for moral simulation."""
 
-    models: List[str] = field(default_factory=lambda: [
-        "claude-sonnet-4-20250514",
-    ])
+    models: List[str] = field(
+        default_factory=lambda: [
+            "claude-sonnet-4-20250514",
+        ]
+    )
 
     include_archive: bool = False  # Include 20K Dear Abby letters
     sample_size: Optional[int] = None  # Limit letters (None = all)
@@ -173,10 +175,7 @@ class MoralSimulator:
 
     def _build_prompt(self, letter: Letter) -> str:
         """Build judgment prompt for a letter."""
-        parties_list = "\n".join(
-            f"- {p.name} ({p.role})"
-            for p in letter.parties
-        )
+        parties_list = "\n".join(f"- {p.name} ({p.role})" for p in letter.parties)
         return JUDGMENT_PROMPT.format(
             letter_body=letter.body,
             signoff=letter.signoff,
@@ -211,15 +210,17 @@ class MoralSimulator:
                 classification = HohfeldianState(v["classification"])
                 is_correct = (classification == expected) if expected else None
 
-                verdicts.append(VerdictCapture(
-                    party_name=v["party_name"],
-                    classification=classification,
-                    expected=expected,
-                    is_correct=is_correct,
-                    confidence=v.get("confidence", 0.5),
-                    primary_dimension=v.get("primary_dimension", "UNKNOWN"),
-                    reasoning=v.get("reasoning", ""),
-                ))
+                verdicts.append(
+                    VerdictCapture(
+                        party_name=v["party_name"],
+                        classification=classification,
+                        expected=expected,
+                        is_correct=is_correct,
+                        confidence=v.get("confidence", 0.5),
+                        primary_dimension=v.get("primary_dimension", "UNKNOWN"),
+                        reasoning=v.get("reasoning", ""),
+                    )
+                )
 
             advice = data.get("advice", "")
             dimensions = data.get("ethical_dimensions", {})
@@ -250,13 +251,9 @@ class MoralSimulator:
                 )
 
                 response_text = getattr(response.content[0], "text", "")
-                verdicts, advice, dimensions = self._parse_response(
-                    response_text, letter
-                )
+                verdicts, advice, dimensions = self._parse_response(response_text, letter)
 
-                latency_ms = (
-                    datetime.now(timezone.utc) - start_time
-                ).total_seconds() * 1000
+                latency_ms = (datetime.now(timezone.utc) - start_time).total_seconds() * 1000
 
                 return SimulationResult(
                     simulation_id=simulation_id,
@@ -296,11 +293,10 @@ class MoralSimulator:
         results = []
 
         for i in range(0, len(letters), self.config.batch_size):
-            batch = letters[i:i + self.config.batch_size]
-            batch_results = await asyncio.gather(*[
-                self.run_letter(letter, model)
-                for letter in batch
-            ])
+            batch = letters[i : i + self.config.batch_size]
+            batch_results = await asyncio.gather(
+                *[self.run_letter(letter, model) for letter in batch]
+            )
             results.extend(batch_results)
 
             if progress_callback:
@@ -323,25 +319,22 @@ class MoralSimulator:
 
         if not self.config.include_archive:
             # Filter to engineered probes only
-            letters = [
-                l for l in letters
-                if l.protocol != Protocol.ARCHIVE
-            ]
+            letters = [l for l in letters if l.protocol != Protocol.ARCHIVE]
 
         if self.config.sample_size:
-            letters = letters[:self.config.sample_size]
+            letters = letters[: self.config.sample_size]
 
-        print(f"Running simulation on {len(letters)} letters "
-              f"across {len(self.config.models)} models...")
+        print(
+            f"Running simulation on {len(letters)} letters "
+            f"across {len(self.config.models)} models..."
+        )
 
         # Run each model
         all_results: Dict[str, List[SimulationResult]] = {}
 
         for model in self.config.models:
             print(f"\n  Model: {model}")
-            results = await self.run_batch(
-                letters, model, progress_callback
-            )
+            results = await self.run_batch(letters, model, progress_callback)
             all_results[model] = results
 
             # Save incrementally

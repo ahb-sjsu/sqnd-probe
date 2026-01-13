@@ -198,7 +198,9 @@ class EthicalGroundState:
                 ConsensusPattern(
                     pattern_name=p["pattern_name"],
                     context=p["context"],
-                    expected_state=HohfeldianState(p["expected_state"]) if p.get("expected_state") else None,
+                    expected_state=(
+                        HohfeldianState(p["expected_state"]) if p.get("expected_state") else None
+                    ),
                     agreement_rate=p["agreement_rate"],
                     model_votes={},
                     is_contested=False,
@@ -263,7 +265,7 @@ class GroundStateAnalyzer:
 
             # Check pairwise correlatives
             for i, v1 in enumerate(verdicts):
-                for v2 in verdicts[i + 1:]:
+                for v2 in verdicts[i + 1 :]:
                     c1 = v1.get("classification")
                     c2 = v2.get("classification")
 
@@ -347,18 +349,19 @@ class GroundStateAnalyzer:
             if most_common_from != most_common_to:
                 # Calculate effectiveness
                 correct_transitions = sum(
-                    1 for t in transitions
-                    if t[0] == most_common_from and t[1] == most_common_to
+                    1 for t in transitions if t[0] == most_common_from and t[1] == most_common_to
                 )
                 effectiveness = correct_transitions / len(transitions)
 
-                gates.append(SemanticGate(
-                    trigger=trigger,
-                    from_state=HohfeldianState(most_common_from),
-                    to_state=HohfeldianState(most_common_to),
-                    effectiveness=effectiveness,
-                    sample_count=len(transitions),
-                ))
+                gates.append(
+                    SemanticGate(
+                        trigger=trigger,
+                        from_state=HohfeldianState(most_common_from),
+                        to_state=HohfeldianState(most_common_to),
+                        effectiveness=effectiveness,
+                        sample_count=len(transitions),
+                    )
+                )
 
         # Sort by effectiveness
         gates.sort(key=lambda g: g.effectiveness, reverse=True)
@@ -516,9 +519,11 @@ class GroundStateAnalyzer:
             context_specific_weights=context_weights,
             high_consensus_patterns=high_consensus[:50],  # Top 50
             contested_patterns=contested[:20],  # Top 20 contested
-            model_agreement_rate=sum(
-                p.agreement_rate for p in high_consensus
-            ) / len(high_consensus) if high_consensus else 0.0,
+            model_agreement_rate=(
+                sum(p.agreement_rate for p in high_consensus) / len(high_consensus)
+                if high_consensus
+                else 0.0
+            ),
             model_profiles={},  # TODO: per-model analysis
             corpus_size=len(self.results),
             models_used=models,
@@ -555,8 +560,10 @@ def derive_ground_state(results_dir: Path, output_path: Path) -> EthicalGroundSt
     print(f"  Bond Index baseline: {ground_state.bond_index_baseline:.3f}")
     print(f"\nTop Semantic Gates:")
     for gate in ground_state.effective_gates[:5]:
-        print(f"  '{gate.trigger}': {gate.from_state.value}→{gate.to_state.value} "
-              f"({gate.effectiveness:.1%} effective)")
+        print(
+            f"  '{gate.trigger}': {gate.from_state.value}→{gate.to_state.value} "
+            f"({gate.effectiveness:.1%} effective)"
+        )
     print(f"\nDimension Weights (for DEME):")
     deme_weights = ground_state.to_deme_weights()
     for dim, weight in sorted(deme_weights.items(), key=lambda x: x[1], reverse=True):
