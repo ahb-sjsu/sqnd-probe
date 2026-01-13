@@ -13,19 +13,20 @@ from __future__ import annotations
 import asyncio
 import json
 import uuid
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any
 
 from anthropic import AsyncAnthropic
 
+from dear_ethicist.letters import LetterBank
 from dear_ethicist.models import (
     HohfeldianState,
     Letter,
     Protocol,
 )
-from dear_ethicist.letters import LetterBank
 
 
 @dataclass
@@ -34,8 +35,8 @@ class VerdictCapture:
 
     party_name: str
     classification: HohfeldianState
-    expected: Optional[HohfeldianState]
-    is_correct: Optional[bool]
+    expected: HohfeldianState | None
+    is_correct: bool | None
     confidence: float
     primary_dimension: str
     reasoning: str
@@ -49,15 +50,15 @@ class SimulationResult:
     letter_id: str
     model: str
     protocol: Protocol
-    verdicts: List[VerdictCapture]
+    verdicts: list[VerdictCapture]
     advice: str
-    ethical_dimensions: Dict[str, float]
+    ethical_dimensions: dict[str, float]
     raw_response: str
     latency_ms: float
     timestamp: str
-    error: Optional[str] = None
+    error: str | None = None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Serialize to dictionary."""
         return {
             "simulation_id": self.simulation_id,
@@ -88,14 +89,14 @@ class SimulationResult:
 class SimulationConfig:
     """Configuration for moral simulation."""
 
-    models: List[str] = field(
+    models: list[str] = field(
         default_factory=lambda: [
             "claude-sonnet-4-20250514",
         ]
     )
 
     include_archive: bool = False  # Include 20K Dear Abby letters
-    sample_size: Optional[int] = None  # Limit letters (None = all)
+    sample_size: int | None = None  # Limit letters (None = all)
 
     capture_reasoning: bool = True
     capture_dimensions: bool = True
@@ -186,7 +187,7 @@ class MoralSimulator:
         self,
         response_text: str,
         letter: Letter,
-    ) -> tuple[List[VerdictCapture], str, Dict[str, float]]:
+    ) -> tuple[list[VerdictCapture], str, dict[str, float]]:
         """Parse LLM response into structured verdicts."""
         try:
             # Clean response (remove markdown if present)
@@ -227,7 +228,7 @@ class MoralSimulator:
 
             return verdicts, advice, dimensions
 
-        except (json.JSONDecodeError, KeyError, ValueError) as e:
+        except (json.JSONDecodeError, KeyError, ValueError):
             # Return empty on parse failure
             return [], "", {}
 
@@ -285,10 +286,10 @@ class MoralSimulator:
 
     async def run_batch(
         self,
-        letters: List[Letter],
+        letters: list[Letter],
         model: str,
-        progress_callback: Optional[Callable[[int, int], None]] = None,
-    ) -> List[SimulationResult]:
+        progress_callback: Callable[[int, int], None] | None = None,
+    ) -> list[SimulationResult]:
         """Run simulation on a batch of letters."""
         results = []
 
@@ -306,8 +307,8 @@ class MoralSimulator:
 
     async def run_full_simulation(
         self,
-        progress_callback: Optional[Callable[[int, int], None]] = None,
-    ) -> Dict[str, List[SimulationResult]]:
+        progress_callback: Callable[[int, int], None] | None = None,
+    ) -> dict[str, list[SimulationResult]]:
         """
         Run full simulation across all letters and models.
 
@@ -319,7 +320,7 @@ class MoralSimulator:
 
         if not self.config.include_archive:
             # Filter to engineered probes only
-            letters = [l for l in letters if l.protocol != Protocol.ARCHIVE]
+            letters = [letter for letter in letters if letter.protocol != Protocol.ARCHIVE]
 
         if self.config.sample_size:
             letters = letters[: self.config.sample_size]
@@ -330,7 +331,7 @@ class MoralSimulator:
         )
 
         # Run each model
-        all_results: Dict[str, List[SimulationResult]] = {}
+        all_results: dict[str, list[SimulationResult]] = {}
 
         for model in self.config.models:
             print(f"\n  Model: {model}")
@@ -345,7 +346,7 @@ class MoralSimulator:
     def _save_results(
         self,
         model: str,
-        results: List[SimulationResult],
+        results: list[SimulationResult],
     ) -> Path:
         """Save results to JSONL file."""
         self.config.output_dir.mkdir(parents=True, exist_ok=True)
@@ -363,8 +364,8 @@ class MoralSimulator:
 
 
 async def run_simulation(
-    config: Optional[SimulationConfig] = None,
-) -> Dict[str, List[SimulationResult]]:
+    config: SimulationConfig | None = None,
+) -> dict[str, list[SimulationResult]]:
     """Entry point for running simulation."""
     config = config or SimulationConfig()
     simulator = MoralSimulator(config)

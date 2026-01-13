@@ -202,7 +202,7 @@ def get_player_response(
         if headless:
             # Auto-select first option in headless mode
             selection = "1"
-            console.print(f"[dim]Auto-selected: 1[/dim]")
+            console.print("[dim]Auto-selected: 1[/dim]")
         else:
             while True:
                 selection = Prompt.ask("Select", choices=["1", "2", "skip"], default="1")

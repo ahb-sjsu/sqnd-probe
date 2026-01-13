@@ -8,14 +8,14 @@ Automates Dear Ethicist judgment capture across multiple LLMs
 to derive empirically-grounded default ethics for DEME.
 """
 
-from dear_ethicist.simulation.runner import (
-    SimulationConfig,
-    SimulationResult,
-    MoralSimulator,
-)
 from dear_ethicist.simulation.ground_state import (
     EthicalGroundState,
     GroundStateAnalyzer,
+)
+from dear_ethicist.simulation.runner import (
+    MoralSimulator,
+    SimulationConfig,
+    SimulationResult,
 )
 
 __all__ = [

@@ -3,22 +3,20 @@
 Training script for BIP temporal invariance model.
 """
 
-import os
-import sys
-import json
 import argparse
-from pathlib import Path
+import json
+import sys
 from datetime import datetime
-from typing import Dict, List, Optional
-import yaml
-import numpy as np
-from tqdm import tqdm
+from pathlib import Path
 
+import numpy as np
 import torch
 import torch.nn as nn
-from torch.utils.data import Dataset, DataLoader
+import yaml
 from torch.optim import AdamW
 from torch.optim.lr_scheduler import OneCycleLR
+from torch.utils.data import DataLoader, Dataset
+from tqdm import tqdm
 
 # Conditional imports
 try:
@@ -31,7 +29,7 @@ except ImportError:
 # Add parent to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from bip.models.bip_model import BIPTemporalInvarianceModel, BIPLoss, get_tokenizer
+from bip.models.bip_model import BIPLoss, BIPTemporalInvarianceModel, get_tokenizer
 
 # =============================================================================
 # DATASET
@@ -71,7 +69,7 @@ class MoralPassageDataset(Dataset):
 
     def __init__(
         self,
-        passage_ids: List[str],
+        passage_ids: list[str],
         passages_file: str,
         bonds_file: str,
         tokenizer,
@@ -280,12 +278,12 @@ class BIPTrainer:
                 config=config,
             )
 
-    def train_epoch(self, epoch: int) -> Dict[str, float]:
+    def train_epoch(self, epoch: int) -> dict[str, float]:
         """Train for one epoch."""
         self.model.train()
 
         total_loss = 0
-        loss_components = {k: 0 for k in ["adv", "time", "kl", "hohfeld", "bond", "bip"]}
+        loss_components = dict.fromkeys(["adv", "time", "kl", "hohfeld", "bond", "bip"], 0)
 
         pbar = tqdm(self.train_loader, desc=f"Epoch {epoch}")
         for batch in pbar:
@@ -346,7 +344,7 @@ class BIPTrainer:
         }
 
     @torch.no_grad()
-    def evaluate(self, loader: DataLoader, prefix: str = "valid") -> Dict[str, float]:
+    def evaluate(self, loader: DataLoader, prefix: str = "valid") -> dict[str, float]:
         """Evaluate on a dataset."""
         self.model.eval()
 
@@ -466,7 +464,7 @@ class BIPTrainer:
 
         test_metrics, test_z_bonds, test_time_labels = self.evaluate(self.test_loader, "test")
 
-        print(f"\nTest Results:")
+        print("\nTest Results:")
         for k, v in test_metrics.items():
             print(f"  {k}: {v:.4f}")
 
@@ -514,7 +512,7 @@ def main():
 
     # Train
     trainer = BIPTrainer(config, args.split)
-    metrics = trainer.train()
+    _metrics = trainer.train()
 
     print("\n" + "=" * 60)
     print("TRAINING COMPLETE")

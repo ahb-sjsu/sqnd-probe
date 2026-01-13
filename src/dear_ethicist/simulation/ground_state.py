@@ -12,12 +12,12 @@ from __future__ import annotations
 
 import json
 from collections import Counter, defaultdict
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
-from dear_ethicist.models import HohfeldianState, Protocol
+from dear_ethicist.models import HohfeldianState
 
 
 @dataclass
@@ -52,9 +52,9 @@ class ConsensusPattern:
 
     pattern_name: str
     context: str
-    expected_state: Optional[HohfeldianState]
+    expected_state: HohfeldianState | None
     agreement_rate: float
-    model_votes: Dict[str, HohfeldianState]
+    model_votes: dict[str, HohfeldianState]
     is_contested: bool
 
 
@@ -68,30 +68,30 @@ class EthicalGroundState:
     """
 
     # Correlative symmetry (O↔C, L↔N consistency)
-    correlative_symmetry: Dict[str, float]
+    correlative_symmetry: dict[str, float]
     bond_index_baseline: float
 
     # Semantic gates (what flips obligations)
-    effective_gates: List[SemanticGate]
+    effective_gates: list[SemanticGate]
 
     # Dimension weights (aggregated across all verdicts)
-    global_dimension_weights: Dict[str, float]
-    context_specific_weights: Dict[str, Dict[str, float]]
+    global_dimension_weights: dict[str, float]
+    context_specific_weights: dict[str, dict[str, float]]
 
     # Consensus analysis
-    high_consensus_patterns: List[ConsensusPattern]
-    contested_patterns: List[ConsensusPattern]
+    high_consensus_patterns: list[ConsensusPattern]
+    contested_patterns: list[ConsensusPattern]
 
     # Cross-model analysis
     model_agreement_rate: float
-    model_profiles: Dict[str, Dict[str, float]]
+    model_profiles: dict[str, dict[str, float]]
 
     # Metadata
     corpus_size: int
-    models_used: List[str]
+    models_used: list[str]
     generation_timestamp: str
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Serialize to dictionary."""
         return {
             "correlative_symmetry": self.correlative_symmetry,
@@ -131,7 +131,7 @@ class EthicalGroundState:
             "generation_timestamp": self.generation_timestamp,
         }
 
-    def to_deme_weights(self) -> Dict[str, float]:
+    def to_deme_weights(self) -> dict[str, float]:
         """
         Convert to DEME MoralVector dimension weights.
 
@@ -174,7 +174,7 @@ class EthicalGroundState:
             json.dump(self.to_dict(), f, indent=2)
 
     @classmethod
-    def load(cls, path: Path) -> "EthicalGroundState":
+    def load(cls, path: Path) -> EthicalGroundState:
         """Load ground state from JSON file."""
         with open(path) as f:
             data = json.load(f)
@@ -233,7 +233,7 @@ class GroundStateAnalyzer:
 
     def __init__(self, results_dir: Path):
         self.results_dir = results_dir
-        self.results: List[Dict[str, Any]] = []
+        self.results: list[dict[str, Any]] = []
         self._load_results()
 
     def _load_results(self) -> None:
@@ -305,7 +305,7 @@ class GroundStateAnalyzer:
             bond_index=bond_index,
         )
 
-    def analyze_semantic_gates(self) -> List[SemanticGate]:
+    def analyze_semantic_gates(self) -> list[SemanticGate]:
         """
         Identify semantic triggers that flip moral obligations.
 
@@ -313,7 +313,7 @@ class GroundStateAnalyzer:
         effective triggers like "only if convenient".
         """
         # Group by gate trigger
-        gate_results: Dict[str, List[Tuple[str, str]]] = defaultdict(list)
+        gate_results: dict[str, list[tuple[str, str]]] = defaultdict(list)
 
         for result in self.results:
             if result.get("protocol") != "GATE_DETECTION":
@@ -321,7 +321,7 @@ class GroundStateAnalyzer:
 
             protocol_params = result.get("protocol_params", {})
             trigger = protocol_params.get("trigger")
-            level = protocol_params.get("level", 0)
+            _level = protocol_params.get("level", 0)
 
             if not trigger:
                 continue
@@ -367,7 +367,7 @@ class GroundStateAnalyzer:
         gates.sort(key=lambda g: g.effectiveness, reverse=True)
         return gates
 
-    def analyze_dimension_weights(self) -> Tuple[Dict[str, float], Dict[str, Dict[str, float]]]:
+    def analyze_dimension_weights(self) -> tuple[dict[str, float], dict[str, dict[str, float]]]:
         """
         Derive ethical dimension weights from simulation data.
 
@@ -375,12 +375,12 @@ class GroundStateAnalyzer:
             Tuple of (global_weights, context_specific_weights)
         """
         # Aggregate dimension weights
-        dimension_totals: Dict[str, float] = defaultdict(float)
-        dimension_counts: Dict[str, int] = defaultdict(int)
+        dimension_totals: dict[str, float] = defaultdict(float)
+        dimension_counts: dict[str, int] = defaultdict(int)
 
         # Context-specific aggregation
-        context_totals: Dict[str, Dict[str, float]] = defaultdict(lambda: defaultdict(float))
-        context_counts: Dict[str, Dict[str, int]] = defaultdict(lambda: defaultdict(int))
+        context_totals: dict[str, dict[str, float]] = defaultdict(lambda: defaultdict(float))
+        context_counts: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
 
         for result in self.results:
             dimensions = result.get("ethical_dimensions", {})
@@ -431,7 +431,7 @@ class GroundStateAnalyzer:
 
         return global_weights, context_weights
 
-    def analyze_consensus(self) -> Tuple[List[ConsensusPattern], List[ConsensusPattern]]:
+    def analyze_consensus(self) -> tuple[list[ConsensusPattern], list[ConsensusPattern]]:
         """
         Find high-consensus and contested patterns.
 
@@ -439,7 +439,7 @@ class GroundStateAnalyzer:
         Contested (<60% agreement) = genuinely disputed territory
         """
         # Group by letter_id
-        letter_results: Dict[str, List[Dict]] = defaultdict(list)
+        letter_results: dict[str, list[dict]] = defaultdict(list)
         for result in self.results:
             letter_results[result.get("letter_id", "")].append(result)
 
@@ -451,7 +451,7 @@ class GroundStateAnalyzer:
                 continue
 
             # Count classifications per party
-            party_votes: Dict[str, Counter] = defaultdict(Counter)
+            party_votes: dict[str, Counter] = defaultdict(Counter)
             for result in results:
                 for verdict in result.get("verdicts", []):
                     party = verdict.get("party_name", "")
@@ -506,7 +506,7 @@ class GroundStateAnalyzer:
         high_consensus, contested = self.analyze_consensus()
 
         # Get unique models
-        models = list(set(r.get("model", "") for r in self.results))
+        models = list({r.get("model", "") for r in self.results})
 
         return EthicalGroundState(
             correlative_symmetry={
@@ -554,17 +554,17 @@ def derive_ground_state(results_dir: Path, output_path: Path) -> EthicalGroundSt
     print("=" * 60)
     print(f"Corpus size: {ground_state.corpus_size} simulations")
     print(f"Models: {', '.join(ground_state.models_used)}")
-    print(f"\nCorrelative Symmetry:")
+    print("\nCorrelative Symmetry:")
     print(f"  O↔C consistency: {ground_state.correlative_symmetry.get('O↔C', 0):.1%}")
     print(f"  L↔N consistency: {ground_state.correlative_symmetry.get('L↔N', 0):.1%}")
     print(f"  Bond Index baseline: {ground_state.bond_index_baseline:.3f}")
-    print(f"\nTop Semantic Gates:")
+    print("\nTop Semantic Gates:")
     for gate in ground_state.effective_gates[:5]:
         print(
             f"  '{gate.trigger}': {gate.from_state.value}→{gate.to_state.value} "
             f"({gate.effectiveness:.1%} effective)"
         )
-    print(f"\nDimension Weights (for DEME):")
+    print("\nDimension Weights (for DEME):")
     deme_weights = ground_state.to_deme_weights()
     for dim, weight in sorted(deme_weights.items(), key=lambda x: x[1], reverse=True):
         print(f"  {dim}: {weight:.3f}")

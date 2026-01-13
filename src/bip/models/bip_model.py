@@ -10,12 +10,11 @@ Architecture:
 - Reconstruction decoder: Optional, ensures information preservation
 """
 
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from transformers import AutoModel, AutoTokenizer
-from typing import Dict, Optional, Tuple
-import math
 
 # =============================================================================
 # MODEL COMPONENTS
@@ -146,7 +145,7 @@ class BIPDisentangler(nn.Module):
         else:
             return mean
 
-    def forward(self, h: torch.Tensor) -> Dict[str, torch.Tensor]:
+    def forward(self, h: torch.Tensor) -> dict[str, torch.Tensor]:
         """
         Disentangle representation.
 
@@ -302,9 +301,9 @@ class BIPTemporalInvarianceModel(nn.Module):
         self,
         input_ids: torch.Tensor,
         attention_mask: torch.Tensor,
-        time_labels: Optional[torch.Tensor] = None,
+        _time_labels: torch.Tensor | None = None,
         adversarial_lambda: float = 1.0,
-    ) -> Dict[str, torch.Tensor]:
+    ) -> dict[str, torch.Tensor]:
         """
         Forward pass.
 
@@ -381,12 +380,12 @@ class BIPLoss(nn.Module):
 
     def forward(
         self,
-        outputs: Dict[str, torch.Tensor],
+        outputs: dict[str, torch.Tensor],
         time_labels: torch.Tensor,
-        hohfeld_labels: Optional[torch.Tensor] = None,
-        bond_labels: Optional[torch.Tensor] = None,
-        isomorphic_mask: Optional[torch.Tensor] = None,
-    ) -> Tuple[torch.Tensor, Dict[str, float]]:
+        hohfeld_labels: torch.Tensor | None = None,
+        bond_labels: torch.Tensor | None = None,
+        isomorphic_mask: torch.Tensor | None = None,
+    ) -> tuple[torch.Tensor, dict[str, float]]:
         """
         Compute total loss.
         """
