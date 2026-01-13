@@ -108,7 +108,7 @@ else:
     # ===== SPLIT 3: Ancient -> Modern =====
     print("\n" + "-"*60)
     print("SPLIT 3: ANCIENT -> MODERN")
-    ancient_periods = {'CLASSICAL', 'BIBLICAL', 'TANNAITIC', 'TALMUDIC', 'MIDRASHIC', 'MEDIEVAL'}
+    ancient_periods = {'BIBLICAL', 'TANNAITIC', 'AMORAIC', 'RISHONIM', 'ACHRONIM', 'CONFUCIAN', 'DAOIST', 'QURANIC', 'HADITH'}
     modern_periods = {'MODERN', 'DEAR_ABBY'}
     
     ancient_ids = [p['id'] for p in passage_meta if p['time_period'] in ancient_periods]
