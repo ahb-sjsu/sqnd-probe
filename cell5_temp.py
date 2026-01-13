@@ -64,13 +64,12 @@ else:
     print("\nBy language:")
     for lang, ids in sorted(by_lang.items(), key=lambda x: -len(x[1])):
         print(f"  {lang}: {len(ids):,}")
-
+    
     print("\nBy period:")
     for period, ids in sorted(by_period.items(), key=lambda x: -len(x[1])):
         print(f"  {period}: {len(ids):,}")
-
-    all_splits = {}
     
+    all_splits = {}
     # ===== SPLIT 1: Hebrew -> Others =====
     print("\n" + "-"*60)
     print("SPLIT 1: HEBREW -> OTHERS")
@@ -108,9 +107,14 @@ else:
     # ===== SPLIT 3: Ancient -> Modern =====
     print("\n" + "-"*60)
     print("SPLIT 3: ANCIENT -> MODERN")
-    ancient_periods = {'BIBLICAL', 'TANNAITIC', 'AMORAIC', 'RISHONIM', 'ACHRONIM', 'CONFUCIAN', 'DAOIST', 'QURANIC', 'HADITH'}
+    # Define modern periods explicitly, derive ancient dynamically
     modern_periods = {'MODERN', 'DEAR_ABBY'}
-    
+    all_periods = set(by_period.keys())
+    ancient_periods = all_periods - modern_periods
+
+    print(f"  Ancient periods: {sorted(ancient_periods)}")
+    print(f"  Modern periods: {sorted(modern_periods)}")
+
     ancient_ids = [p['id'] for p in passage_meta if p['time_period'] in ancient_periods]
     modern_ids = [p['id'] for p in passage_meta if p['time_period'] in modern_periods]
     random.shuffle(ancient_ids)
@@ -140,15 +144,17 @@ else:
     }
     print(f"  Train: {split_idx:,}")
     print(f"  Test: {len(all_ids) - split_idx:,}")
-
+    
+    
     # ===== SPLIT 5: Dear Abby -> Classical Chinese =====
-    print("\n" + "-"*60)
+    print("
+" + "-"*60)
     print("SPLIT 5: DEAR ABBY -> CHINESE")
     abby_ids = [p['id'] for p in passage_meta if p['time_period'] == 'DEAR_ABBY']
     chinese_ids = [p['id'] for p in passage_meta if p['language'] == 'classical_chinese']
     random.shuffle(abby_ids)
     random.shuffle(chinese_ids)
-
+    
     all_splits['abby_to_chinese'] = {
         'train_ids': abby_ids,
         'test_ids': chinese_ids,
@@ -157,6 +163,7 @@ else:
     }
     print(f"  Train (Dear Abby): {len(abby_ids):,}")
     print(f"  Test (Chinese): {len(chinese_ids):,}")
+
 
     # Save splits
     with open('data/splits/all_splits.json', 'w') as f:
