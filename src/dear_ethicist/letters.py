@@ -56,6 +56,10 @@ class LetterBank:
             return len(self._by_protocol[protocol])
         return len(self._letters)
 
+    def get_all_letters(self) -> list[Letter]:
+        """Get all letters in the bank."""
+        return list(self._letters.values())
+
 
 def parse_letter_from_dict(data: dict) -> Letter:
     """Parse a letter from a YAML dictionary."""

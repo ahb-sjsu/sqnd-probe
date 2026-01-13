@@ -16,7 +16,7 @@ import uuid
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional
 
 from anthropic import AsyncAnthropic
 
@@ -249,7 +249,7 @@ class MoralSimulator:
                     messages=[{"role": "user", "content": prompt}],
                 )
 
-                response_text = response.content[0].text
+                response_text = getattr(response.content[0], "text", "")
                 verdicts, advice, dimensions = self._parse_response(
                     response_text, letter
                 )
@@ -290,7 +290,7 @@ class MoralSimulator:
         self,
         letters: List[Letter],
         model: str,
-        progress_callback: Optional[callable] = None,
+        progress_callback: Optional[Callable[[int, int], None]] = None,
     ) -> List[SimulationResult]:
         """Run simulation on a batch of letters."""
         results = []
@@ -310,7 +310,7 @@ class MoralSimulator:
 
     async def run_full_simulation(
         self,
-        progress_callback: Optional[callable] = None,
+        progress_callback: Optional[Callable[[int, int], None]] = None,
     ) -> Dict[str, List[SimulationResult]]:
         """
         Run full simulation across all letters and models.

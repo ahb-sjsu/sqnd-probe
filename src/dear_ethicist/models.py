@@ -206,6 +206,7 @@ class Protocol(str, Enum):
     PATH_DEPENDENCE = "PATH_DEPENDENCE"  # Protocol 3: Perspective order
     CONTEXT_SALIENCE = "CONTEXT_SALIENCE"  # Protocol 4: Editor pressure
     PHASE_TRANSITION = "PHASE_TRANSITION"  # Protocol 5: Ambiguity level
+    ARCHIVE = "ARCHIVE"  # Historical/archive letters (not engineered probes)
 
 
 class LetterVoice(str, Enum):

@@ -150,7 +150,7 @@ class EthicalGroundState:
             # PROCEDURAL maps to legitimacy_trust
         }
 
-        deme_weights = {}
+        deme_weights: dict[str, float] = {}
         for our_dim, deme_dim in dimension_map.items():
             weight = self.global_dimension_weights.get(our_dim, 0.1)
             if deme_dim in deme_weights:
@@ -411,7 +411,7 @@ class GroundStateAnalyzer:
             global_weights = {k: v / total for k, v in global_weights.items()}
 
         # Calculate context-specific weights
-        context_weights = {}
+        context_weights: dict[str, dict[str, float]] = {}
         for context in context_totals:
             context_weights[context] = {}
             for dim in context_totals[context]:
