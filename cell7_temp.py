@@ -90,7 +90,7 @@ for split_idx, split_name in enumerate(splits_to_train):
         with open('data/processed/bonds.jsonl') as f:
             for line in f:
                 b = json.loads(line)
-                if b['bonds'].get('context') == 'prescriptive':
+                if b.get('context') == 'prescriptive':
                     prescriptive_ids.add(b['passage_id'])
         test_ids_to_use = [tid for tid in test_ids_to_use if tid in prescriptive_ids]
         print(f"  Filtered to {len(test_ids_to_use):,} prescriptive samples")
