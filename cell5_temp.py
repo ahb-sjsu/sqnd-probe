@@ -140,7 +140,24 @@ else:
     }
     print(f"  Train: {split_idx:,}")
     print(f"  Test: {len(all_ids) - split_idx:,}")
-    
+
+    # ===== SPLIT 5: Dear Abby -> Classical Chinese =====
+    print("\n" + "-"*60)
+    print("SPLIT 5: DEAR ABBY -> CHINESE")
+    abby_ids = [p['id'] for p in passage_meta if p['time_period'] == 'DEAR_ABBY']
+    chinese_ids = [p['id'] for p in passage_meta if p['language'] == 'classical_chinese']
+    random.shuffle(abby_ids)
+    random.shuffle(chinese_ids)
+
+    all_splits['abby_to_chinese'] = {
+        'train_ids': abby_ids,
+        'test_ids': chinese_ids,
+        'train_size': len(abby_ids),
+        'test_size': len(chinese_ids),
+    }
+    print(f"  Train (Dear Abby): {len(abby_ids):,}")
+    print(f"  Test (Chinese): {len(chinese_ids):,}")
+
     # Save splits
     with open('data/splits/all_splits.json', 'w') as f:
         json.dump(all_splits, f, indent=2)
