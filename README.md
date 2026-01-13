@@ -133,8 +133,14 @@ letters = load_all_letters(include_archive=True)
 ## CLI Commands
 
 ```bash
-# Play the game
+# Play the game (interactive)
 dear-ethicist play
+
+# Play in headless mode (for Colab/notebooks - no interactive prompts)
+dear-ethicist play --headless
+
+# Headless with limited letters
+dear-ethicist play --headless --max-letters 10
 
 # List available letters
 dear-ethicist list-letters
@@ -147,6 +153,17 @@ dear-ethicist preview --letter-id gate_promise_level5
 
 # Analyze a completed session
 dear-ethicist analyze ./data/session_xyz.jsonl
+```
+
+### Running in Google Colab
+
+Use the `run_dear_ethicist.ipynb` notebook or run headless mode:
+
+```python
+!git clone https://github.com/ahb-sjsu/sqnd-probe.git
+%cd sqnd-probe
+!pip install -e .
+!dear-ethicist play --headless --max-letters 5
 ```
 
 ## The Mathematical Framework
@@ -232,6 +249,13 @@ pytest tests/ -v
 ```
 
 All 15 tests verify D4 group axioms (R⁴=E, S²=E, SRS=R⁻¹) and model correctness.
+
+## Related Repositories
+
+| Repository | Description |
+|------------|-------------|
+| [ahb-sjsu/erisml-lib](https://github.com/ahb-sjsu/erisml-lib) | ErisML/DEME production library - the ethics engine |
+| [ahb-sjsu/non-abelian-sqnd](https://github.com/ahb-sjsu/non-abelian-sqnd) | NA-SQND theoretical research - papers and experiments |
 
 ## References
 
