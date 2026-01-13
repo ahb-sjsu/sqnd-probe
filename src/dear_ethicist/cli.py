@@ -51,7 +51,15 @@ def cli():
 @click.option(
     "--output-dir", default="./data", type=click.Path(), help="Telemetry output directory"
 )
-def play(output_dir: str):
+@click.option(
+    "--headless", is_flag=True, default=False,
+    help="Run in headless mode (no interactive prompts, for Colab/notebooks)"
+)
+@click.option(
+    "--max-letters", type=int, default=None,
+    help="Maximum number of letters to process in headless mode"
+)
+def play(output_dir: str, headless: bool, max_letters: int | None):
     """Start a new game session."""
     clear_screen()
     console.print(
@@ -60,12 +68,14 @@ def play(output_dir: str):
             "Welcome to your first day as the new advice columnist.\n\n"
             "Letters will arrive from readers seeking guidance.\n"
             "Read them carefully. Offer your wisdom.\n\n"
-            "[dim]Press Enter to begin...[/dim]",
+            + ("[dim]Running in headless mode...[/dim]" if headless else "[dim]Press Enter to begin...[/dim]"),
             title="Dear Ethicist",
             border_style="blue",
         )
     )
-    input()
+
+    if not headless:
+        input()
 
     # Initialize game
     game_state = GameState()
@@ -74,27 +84,38 @@ def play(output_dir: str):
 
     # Main game loop
     try:
-        run_game_loop(game_state, letter_bank, telemetry)
+        run_game_loop(game_state, letter_bank, telemetry, headless=headless, max_letters=max_letters)
     except KeyboardInterrupt:
         console.print("\n[dim]Game saved. See you tomorrow.[/dim]")
 
 
-def run_game_loop(game_state: GameState, letter_bank: LetterBank, telemetry: TelemetryLogger):
+def run_game_loop(
+    game_state: GameState,
+    letter_bank: LetterBank,
+    telemetry: TelemetryLogger,
+    headless: bool = False,
+    max_letters: int | None = None,
+):
     """Main game loop."""
     # Get all letters and randomize order
     letters_to_process = letter_bank.list_ids()
     random.shuffle(letters_to_process)
 
-    for letter_id in letters_to_process:
+    # Limit letters in headless mode if specified
+    if max_letters is not None:
+        letters_to_process = letters_to_process[:max_letters]
+
+    for i, letter_id in enumerate(letters_to_process):
         letter = letter_bank.get(letter_id)
         if not letter:
             continue
 
-        clear_screen()
+        if not headless:
+            clear_screen()
         display_letter(letter, game_state)
 
         # Get player response
-        response = get_player_response(letter, game_state)
+        response = get_player_response(letter, game_state, headless=headless)
 
         if response:
             # Log telemetry
@@ -110,12 +131,15 @@ def run_game_loop(game_state: GameState, letter_bank: LetterBank, telemetry: Tel
             )
             telemetry.log_trial(record)
 
-            # Show reactions
-            display_reactions(letter, response)
+            # Show reactions (skip in headless for speed)
+            if not headless:
+                display_reactions(letter, response)
 
             game_state.letters_answered += 1
 
-            if not Confirm.ask("\n[dim]Continue to next letter?[/dim]", default=True):
+            if headless:
+                console.print(f"[dim]Letter {i+1}/{len(letters_to_process)} processed[/dim]")
+            elif not Confirm.ask("\n[dim]Continue to next letter?[/dim]", default=True):
                 break
 
     # End of session
@@ -151,7 +175,7 @@ def display_letter(letter: Letter, game_state: GameState):
     )
 
 
-def get_player_response(letter: Letter, _game_state: GameState) -> Response | None:
+def get_player_response(letter: Letter, _game_state: GameState, headless: bool = False) -> Response | None:
     """Get the player's response to a letter."""
     console.print("\n[bold]YOUR VERDICT[/bold] [dim](for your records)[/dim]\n")
 
@@ -163,28 +187,37 @@ def get_player_response(letter: Letter, _game_state: GameState) -> Response | No
         for i, choice in enumerate(option_group["choices"], 1):
             console.print(f"  [{i}] {choice['label']}")
 
-        while True:
-            selection = Prompt.ask("Select", choices=["1", "2", "skip"], default="1")
-            if selection == "skip":
-                break
-            idx = int(selection) - 1
-            if 0 <= idx < len(option_group["choices"]):
-                choice = option_group["choices"][idx]
-                # Find expected state for this party
-                expected = None
-                for party in letter.parties:
-                    if party.name == choice["party"]:
-                        expected = party.expected_state
-                        break
+        if headless:
+            # Auto-select first option in headless mode
+            selection = "1"
+            console.print(f"[dim]Auto-selected: 1[/dim]")
+        else:
+            while True:
+                selection = Prompt.ask("Select", choices=["1", "2", "skip"], default="1")
+                if selection in ["1", "2", "skip"]:
+                    break
 
-                verdicts.append(
-                    Verdict(
-                        party_name=choice["party"],
-                        state=choice["state"],
-                        expected=expected,
-                    )
+        if selection == "skip":
+            console.print()
+            continue
+
+        idx = int(selection) - 1
+        if 0 <= idx < len(option_group["choices"]):
+            choice = option_group["choices"][idx]
+            # Find expected state for this party
+            expected = None
+            for party in letter.parties:
+                if party.name == choice["party"]:
+                    expected = party.expected_state
+                    break
+
+            verdicts.append(
+                Verdict(
+                    party_name=choice["party"],
+                    state=choice["state"],
+                    expected=expected,
                 )
-                break
+            )
 
         console.print()
 
@@ -192,9 +225,15 @@ def get_player_response(letter: Letter, _game_state: GameState) -> Response | No
         return None
 
     # Publish
-    console.print("\n" + "═" * 60)
-    if Confirm.ask("[bold]PUBLISH TO COLUMN?[/bold]", default=True):
-        console.print("\n[green]✓ Published[/green]")
+    console.print("\n" + "=" * 60)
+    if headless:
+        console.print("[bold]PUBLISH TO COLUMN?[/bold] [dim]Auto-confirmed[/dim]")
+        publish = True
+    else:
+        publish = Confirm.ask("[bold]PUBLISH TO COLUMN?[/bold]", default=True)
+
+    if publish:
+        console.print("\n[green]Published[/green]")
         return Response(
             letter_id=letter.letter_id,
             verdicts=verdicts,
@@ -227,7 +266,7 @@ def display_reactions(letter: Letter, response: Response):
 
 def display_session_end(game_state: GameState, telemetry: TelemetryLogger):
     """Display end of session summary."""
-    console.print("\n" + "═" * 60)
+    console.print("\n" + "=" * 60)
     console.print(
         Panel(
             f"[bold]END OF SESSION[/bold]\n\n"
