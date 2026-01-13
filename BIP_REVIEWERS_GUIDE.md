@@ -1,4 +1,4 @@
-# BIP v10.5 Reviewer's Guide
+# BIP v10.6 Reviewer's Guide
 ## Bond Invariance Principle: Cross-Lingual Moral Transfer in Embedding Space
 
 ---
@@ -102,19 +102,28 @@ Five experimental conditions test different transfer scenarios:
 ### 3.3 Model Architecture
 
 ```
-Input Text → Multilingual-MiniLM-L12 → [CLS] embedding
-                                            ↓
-                                    ┌───────┴───────┐
-                                    ↓               ↓
-                              Bond Head      Adversarial Heads
-                              (8 classes)    (Language, Period)
-                                    ↓               ↓
-                              Bond Loss    GRL → Adversarial Loss
+Input Text → Backbone Encoder → [CLS] embedding
+                                      ↓
+                              ┌───────┴───────┐
+                              ↓               ↓
+                        Bond Head      Adversarial Heads
+                        (8 classes)    (Language, Period)
+                              ↓               ↓
+                        Bond Loss    GRL → Adversarial Loss
 ```
 
-- **Backbone**: `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2`
+**Backbone Options** (v10.6):
+
+| Backbone | Model | Params | Hidden | Best For |
+|----------|-------|--------|--------|----------|
+| **MiniLM** | paraphrase-multilingual-MiniLM-L12-v2 | 118M | 384 | Fast baseline |
+| **LaBSE** | sentence-transformers/LaBSE | 471M | 768 | Cross-lingual alignment (recommended) |
+| **XLM-R-base** | xlm-roberta-base | 270M | 768 | Strong multilingual |
+| **XLM-R-large** | xlm-roberta-large | 550M | 1024 | Best representations |
+
 - **Bond Head**: 2-layer MLP → 8-class softmax
 - **Adversarial Heads**: Linear → N-class softmax (with gradient reversal)
+- **Projection**: Hidden → 512 → 64-dim z_bond space
 
 ---
 
@@ -159,12 +168,15 @@ def get_adv_lambda(epoch, warmup=3):
 
 ### 4.3 Hardware Optimization
 
-| GPU | VRAM | Batch Size | Tier |
-|-----|------|------------|------|
-| A100/L4 | ≥22GB | 512 | L4/A100 |
-| T4 | ≥14GB | 256 | T4 |
-| 2×T4 (Kaggle) | 32GB | 512 | 2xT4 |
-| Other | <14GB | 64-128 | MINIMAL |
+Batch sizes are now **backbone-specific** (v10.6):
+
+| GPU Tier | MiniLM | LaBSE | XLM-R-base | XLM-R-large |
+|----------|--------|-------|------------|-------------|
+| L4/A100 | 512 | 256 | 256 | 128 |
+| T4 | 256 | 128 | 128 | 64 |
+| 2×T4 (Kaggle) | 512 | 256 | 256 | 128 |
+| SMALL | 128 | 64 | 64 | 32 |
+| CPU | 64 | 32 | 32 | 16 |
 
 ---
 
@@ -310,12 +322,15 @@ hebrew_to_others RESULTS:
 8. Wang, Z., et al. (2020). "MiniLM: Deep Self-Attention Distillation for Task-Agnostic Compression of Pre-Trained Transformers." *NeurIPS*.
    - Efficient multilingual model
 
+9. Feng, F., et al. (2022). "Language-agnostic BERT Sentence Embedding." *ACL*.
+   - LaBSE: Cross-lingual sentence embeddings for 109 languages
+
 ### Related Work
 
-9. Hendrycks, D., et al. (2021). "Aligning AI With Shared Human Values." *ICLR*.
-   - ETHICS benchmark for moral reasoning
+10. Hendrycks, D., et al. (2021). "Aligning AI With Shared Human Values." *ICLR*.
+    - ETHICS benchmark for moral reasoning
 
-10. Jiang, L., et al. (2021). "Delphi: Towards Machine Ethics and Norms." *arXiv*.
+11. Jiang, L., et al. (2021). "Delphi: Towards Machine Ethics and Norms." *arXiv*.
     - Large-scale moral judgment model
 
 ---
@@ -331,14 +346,14 @@ hebrew_to_others RESULTS:
 
 # Local:
 pip install torch transformers sentence-transformers pandas tqdm scikit-learn
-python -m jupyter notebook BIP_v10.5_expanded.ipynb
+python -m jupyter notebook BIP_v10.6_expanded.ipynb
 ```
 
 ### Key Files
 
 | File | Purpose |
 |------|---------|
-| `BIP_v10.5_expanded.ipynb` | Main experiment notebook |
+| `BIP_v10.6_expanded.ipynb` | Main experiment notebook |
 | `data/processed/passages.jsonl` | Processed text passages |
 | `data/processed/bonds.jsonl` | Bond annotations |
 | `data/splits/all_splits.json` | Train/test split definitions |
