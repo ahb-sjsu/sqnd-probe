@@ -95,6 +95,15 @@ The experiment uses multi-lingual ethical texts spanning 3,000+ years:
 
 **Total**: ~100K+ passages with moral bond annotations
 
+**Automatic Augmentation** (if corpus sizes are below thresholds):
+
+| Dataset | Source | Size | Used For |
+|---------|--------|------|----------|
+| ETHICS | `hendrycks/ethics` | ~130K | English moral scenarios |
+| Social Chemistry 101 | `allenai/social_chem_101` | ~292K | English social norms |
+
+The notebook automatically augments under-represented languages if cached data has fewer than the minimum required samples (e.g., 100K for English).
+
 ### 3.2 Train/Test Splits
 
 Six experimental conditions test different transfer scenarios:
@@ -207,6 +216,39 @@ PREFETCH_URLS = [
 
 This reduces total loading time by overlapping network I/O with CPU-bound processing.
 
+### 4.5 Data Loading Flow
+
+The notebook uses a two-tier caching system:
+
+```
+Cell 1: Setup
+├── Mount Google Drive (or detect other storage)
+├── DRIVE_FILES = set(os.listdir(SAVE_DIR))  # O(1) lookup
+├── DRIVE_HAS_DATA = ('passages.jsonl' in DRIVE_FILES) and ('bonds.jsonl' in DRIVE_FILES)
+└── LOAD_FROM_DRIVE = USE_DRIVE_DATA and DRIVE_HAS_DATA and not REFRESH_DATA_FROM_SOURCE
+
+Cell 2: Download/Load Corpora
+├── IF LOAD_FROM_DRIVE:
+│   ├── Copy passages.jsonl, bonds.jsonl from Drive
+│   ├── Copy dear_abby.csv if os.path.exists(f'{SAVE_DIR}/dear_abby.csv')  # filesystem check
+│   └── SKIP_PROCESSING = True
+└── ELSE:
+    ├── Download Sefaria, Chinese, Dear Abby from sources
+    └── SKIP_PROCESSING = False
+
+Cell 4: Generate Passages
+├── IF SKIP_PROCESSING:
+│   └── Load from cached passages.jsonl, augment if needed
+└── ELSE:
+    ├── Process all raw corpora into passages
+    └── Save to Drive for next run
+```
+
+**Key Design Decisions**:
+- `DRIVE_FILES` is a `set` for O(1) membership testing
+- Dear Abby checks use `os.path.exists()` directly (not cached set) to handle files added after Cell 1 runs
+- Augmentation from HuggingFace datasets runs even with cached data if corpus sizes are below thresholds
+
 ---
 
 ## 5. Operation
@@ -222,21 +264,21 @@ This reduces total loading time by overlapping network I/O with CPU-bound proces
 
 | Cell | Name | Time | Description |
 |------|------|------|-------------|
-| 1 | Configuration | 1 min | Environment detection, Drive mount, GPU setup |
-| 2 | Imports | 30 sec | Load PyTorch, transformers, utilities |
-| 3 | Model Definition | 10 sec | Define BIPModel with adversarial heads |
-| 4 | Data Loading | 3-10 min | Parallel load of all corpora (faster in v10.8) |
-| 5 | Generate Splits | 1 min | Create 6 train/test splits |
-| 6 | Dataset Classes | 10 sec | Define NativeDataset, collate_fn |
-| 7 | **Training** | 20-40 min | Train on all splits, evaluate |
-| 8 | Linear Probe | 2 min | Independent invariance test |
-| 9 | Final Results | 1 min | Summary with verdict |
-| 10 | Download Results | 30 sec | Package results (Colab/Kaggle/local) |
+| 1 | Configuration & Setup | 1 min | Environment detection, Drive mount, GPU setup, install deps |
+| 2 | Download/Load Corpora | 1-5 min | Load from Drive cache OR download raw data from sources |
+| 3 | Patterns + Normalization | 10 sec | Define moral bond patterns, text normalization utilities |
+| 4 | Parallel Download + Stream | 3-10 min | Generate passages from all corpora (Sefaria, Chinese, Western, etc.) |
+| 5 | Generate Splits | 1 min | Create 6 train/test splits for cross-lingual experiments |
+| 6 | Model Architecture | 10 sec | Define BIPModel with bond head + adversarial heads |
+| 7 | **Train BIP Model** | 20-40 min | Train on all splits with gradient reversal, evaluate |
+| 8 | Linear Probe Test | 2 min | Independent invariance verification |
+| 9 | Final Results | 1 min | Summary table with BIP verdict |
+| 10 | Download Results | 30 sec | Package results for download (Colab/Kaggle/local) |
 
 ### 5.3 Cached Data
 
-If `USE_DRIVE_DATA=True` and cached data exists:
-- Cells 4-5 load from cache (~30 seconds)
+If `USE_DRIVE_DATA=True` and cached data exists (`passages.jsonl` + `bonds.jsonl`):
+- Cells 2 and 4 load from cache (~30 seconds total)
 - Total runtime: ~25 minutes
 
 To refresh data: Set `REFRESH_DATA_FROM_SOURCE=True`
@@ -348,6 +390,8 @@ western_to_eastern RESULTS:
 | Confidence weighting ineffective | Now handles numeric values (≥0.8 → 2x weight) |
 | Drive copy skipped on first run | Changed condition to check `SAVE_DIR` existence |
 | Cell 10 Colab-only crash | Added try/except with fallback for Kaggle/local |
+| DRIVE_FILES O(n) lookup | Changed from `list` to `set` for O(1) membership test |
+| Dear Abby not found on Drive | Cell 2 now uses `os.path.exists()` instead of cached set |
 
 ### 8.3 Performance Improvements
 
@@ -426,10 +470,12 @@ python -m jupyter notebook BIP_v10.8_expanded.ipynb
 | File | Purpose |
 |------|---------|
 | `BIP_v10.8_expanded.ipynb` | Main experiment notebook |
+| `data/raw/dear_abby.csv` | Dear Abby corpus (English modern) |
 | `data/processed/passages.jsonl` | Processed text passages |
 | `data/processed/bonds.jsonl` | Bond annotations |
 | `data/splits/all_splits.json` | Train/test split definitions |
 | `models/checkpoints/best_*.pt` | Trained model weights |
+| `{SAVE_DIR}/` | Persistent storage (Google Drive / Kaggle working dir) |
 
 ### Hyperparameter Cheat Sheet
 
@@ -446,6 +492,6 @@ python -m jupyter notebook BIP_v10.8_expanded.ipynb
 
 ---
 
-*Document Version: 2.0*
-*Last Updated: 2026*
+*Document Version: 2.2*
+*Last Updated: 2026-01-13*
 *Contact: [Andrew H. Bond]*
