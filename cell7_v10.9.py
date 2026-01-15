@@ -354,13 +354,29 @@ for split_idx, split_name in enumerate(splits_to_train):
             total_loss += loss.item()
             n_batches += 1
 
+            # Delete intermediate tensors to prevent memory accumulation
+            del input_ids, attention_mask, bond_labels, language_labels, period_labels
+            del out, loss, loss_bond, loss_lang, loss_period
+            if USE_CONFIDENCE_WEIGHTING:
+                del sample_weights
+            if USE_CONTEXT_AUXILIARY:
+                del context_labels, loss_context
+
         avg_loss = total_loss / n_batches
 
-        # Clear CUDA cache after each epoch to prevent memory accumulation
+        # Aggressive memory cleanup after each epoch
+        gc.collect()
         torch.cuda.empty_cache()
+        torch.cuda.synchronize()
 
-        mem_gb = torch.cuda.memory_allocated() / 1e9 if torch.cuda.is_available() else 0
-        print(f"Epoch {epoch}: Loss={avg_loss:.4f} (adv_lambda={adv_lambda:.2f}) [GPU: {mem_gb:.1f}GB]")
+        if torch.cuda.is_available():
+            mem_alloc = torch.cuda.memory_allocated() / 1e9
+            mem_reserved = torch.cuda.memory_reserved() / 1e9
+            print(
+                f"Epoch {epoch}: Loss={avg_loss:.4f} (adv_lambda={adv_lambda:.2f}) [GPU: {mem_alloc:.1f}GB alloc, {mem_reserved:.1f}GB reserved]"
+            )
+        else:
+            print(f"Epoch {epoch}: Loss={avg_loss:.4f} (adv_lambda={adv_lambda:.2f})")
 
         # Save checkpoint every epoch (for crash recovery)
         checkpoint = {
@@ -444,7 +460,9 @@ for split_idx, split_name in enumerate(splits_to_train):
     # GPU memory usage before cleanup
     if torch.cuda.is_available():
         mem = torch.cuda.memory_allocated() / 1e9
-        print(f"\n  GPU memory (before cleanup): {mem:.1f} GB / {VRAM_GB:.1f} GB ({mem/VRAM_GB*100:.0f}%)")
+        print(
+            f"\n  GPU memory (before cleanup): {mem:.1f} GB / {VRAM_GB:.1f} GB ({mem/VRAM_GB*100:.0f}%)"
+        )
 
     # Aggressive memory cleanup between splits
     # Step 1: Move model to CPU to release GPU memory
