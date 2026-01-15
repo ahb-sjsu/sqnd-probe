@@ -169,6 +169,15 @@ class BIPModel(nn.Module):
             "z": z,
         }
 
+    def get_bond_embedding(self, input_ids, attention_mask):
+        """Get z_bond embedding for geometric analysis."""
+        enc = self.encoder(input_ids, attention_mask)
+        if hasattr(enc, "pooler_output") and enc.pooler_output is not None:
+            pooled = enc.pooler_output
+        else:
+            pooled = enc.last_hidden_state[:, 0]
+        return self.z_proj(pooled)
+
 
 # Initialize tokenizer for selected backbone
 print(f"\nLoading tokenizer: {MODEL_NAME}")

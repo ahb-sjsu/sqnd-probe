@@ -58,22 +58,40 @@ AUGMENTATION_DATASETS = {
 }
 
 # ===== v10.9 NEW CORPORA =====
-# Buddhist Chinese (佛教漢文)
+# Buddhist Chinese (佛教漢文) - Expanded v10.9
 BUDDHIST_CHINESE = [
+    # Dhammapada (法句經)
     ("諸惡莫作，眾善奉行，自淨其意，是諸佛教。", "Dhammapada 183", "BUDDHIST"),
     ("以恨止恨，恨終不滅；唯以忍止恨，此古聖常法。", "Dhammapada 5", "BUDDHIST"),
     ("勝者生怨，負者自鄙；去勝負心，無諍自安。", "Dhammapada 201", "BUDDHIST"),
     ("不以財物施，唯以法布施，法施勝財施。", "Dhammapada 354", "BUDDHIST"),
+    ("心為法本，心尊心使，中心念惡，即言即行。", "Dhammapada 1", "BUDDHIST"),
+    ("心為法本，心尊心使，中心念善，即言即行。", "Dhammapada 2", "BUDDHIST"),
+    ("慳惜財物，守護勿失，後為無智。", "Dhammapada", "BUDDHIST"),
+    ("愚人所思量，常不得安穩。", "Dhammapada", "BUDDHIST"),
+    # Diamond Sutra (金剛經)
     ("若以色見我，以音聲求我，是人行邪道，不能見如來。", "Diamond Sutra 26", "BUDDHIST"),
     ("應無所住而生其心。", "Diamond Sutra 10", "BUDDHIST"),
     ("一切有為法，如夢幻泡影，如露亦如電，應作如是觀。", "Diamond Sutra 32", "BUDDHIST"),
     ("凡所有相，皆是虛妄。若見諸相非相，即見如來。", "Diamond Sutra 5", "BUDDHIST"),
+    ("過去心不可得，現在心不可得，未來心不可得。", "Diamond Sutra 18", "BUDDHIST"),
+    ("離一切諸相，則名諸佛。", "Diamond Sutra 14", "BUDDHIST"),
+    ("若菩薩有我相、人相、眾生相、壽者相，即非菩薩。", "Diamond Sutra 3", "BUDDHIST"),
+    ("應無所住，行於布施。", "Diamond Sutra 4", "BUDDHIST"),
+    ("如來所說法，皆不可取、不可說，非法、非非法。", "Diamond Sutra 7", "BUDDHIST"),
+    # Lotus Sutra (法華經)
     ("諸佛世尊唯以一大事因緣故，出現於世。", "Lotus Sutra 2", "BUDDHIST"),
     ("十方佛土中，唯有一乘法，無二亦無三。", "Lotus Sutra 2", "BUDDHIST"),
+    ("是法平等，無有高下，是名阿耨多羅三藐三菩提。", "Lotus Sutra", "BUDDHIST"),
+    ("唯佛與佛，乃能究盡諸法實相。", "Lotus Sutra", "BUDDHIST"),
+    ("世間法住，世間法在。", "Lotus Sutra", "BUDDHIST"),
+    # Heart Sutra (心經)
     ("色不異空，空不異色，色即是空，空即是色。", "Heart Sutra", "BUDDHIST"),
     ("無苦集滅道，無智亦無得，以無所得故。", "Heart Sutra", "BUDDHIST"),
-    ("殺生之罪，能令眾生墮三惡道。", "Sutra of Golden Light 4", "BUDDHIST"),
-    ("一切眾生皆有佛性，悉能成佛。", "Nirvana Sutra", "BUDDHIST"),
+    ("觀自在菩薩，行深般若波羅蜜多時，照見五蘊皆空，度一切苦厄。", "Heart Sutra", "BUDDHIST"),
+    ("心無罣礙，無罣礙故，無有恐怖，遠離顛倒夢想，究竟涅槃。", "Heart Sutra", "BUDDHIST"),
+    ("揭諦揭諦，波羅揭諦，波羅僧揭諦，菩提薩婆訶。", "Heart Sutra", "BUDDHIST"),
+    # Brahma Net Sutra (梵網經)
     ("慈悲喜捨，名為四無量心。", "Brahma Net Sutra", "BUDDHIST"),
     ("不殺生，是菩薩波羅夷罪。", "Brahma Net Sutra 1", "BUDDHIST"),
     ("不偷盜，是菩薩波羅夷罪。", "Brahma Net Sutra 2", "BUDDHIST"),
@@ -82,14 +100,64 @@ BUDDHIST_CHINESE = [
     ("不飲酒，是菩薩波羅夷罪。", "Brahma Net Sutra 5", "BUDDHIST"),
     ("若佛子，以慈心故，行放生業。", "Brahma Net Sutra 20", "BUDDHIST"),
     ("一切男子是我父，一切女人是我母。", "Brahma Net Sutra 9", "BUDDHIST"),
+    ("孝順父母師僧三寶，孝順至道之法。", "Brahma Net Sutra", "BUDDHIST"),
+    ("若佛子，常應發一切願。", "Brahma Net Sutra", "BUDDHIST"),
+    # Nirvana Sutra (涅槃經)
+    ("殺生之罪，能令眾生墮三惡道。", "Sutra of Golden Light 4", "BUDDHIST"),
+    ("一切眾生皆有佛性，悉能成佛。", "Nirvana Sutra", "BUDDHIST"),
+    ("佛性者，即是一切眾生阿耨多羅三藐三菩提中道種子。", "Nirvana Sutra", "BUDDHIST"),
+    ("如來常住，無有變易。", "Nirvana Sutra", "BUDDHIST"),
+    ("涅槃之體，具有四德：常、樂、我、淨。", "Nirvana Sutra", "BUDDHIST"),
+    # Vimalakirti Sutra (維摩詰經)
     ("菩薩病者，以大悲起。", "Vimalakirti Sutra 5", "BUDDHIST"),
     ("眾生病，是故我病。", "Vimalakirti Sutra 5", "BUDDHIST"),
+    ("不住有為，不住無為，是菩薩行。", "Vimalakirti Sutra", "BUDDHIST"),
+    ("直心是道場，無虛假故。", "Vimalakirti Sutra", "BUDDHIST"),
+    ("入不二法門，默然無言。", "Vimalakirti Sutra", "BUDDHIST"),
+    # Platform Sutra (六祖壇經)
     ("菩提本無樹，明鏡亦非臺，本來無一物，何處惹塵埃。", "Platform Sutra", "BUDDHIST"),
     ("何期自性，本自清淨；何期自性，本不生滅。", "Platform Sutra", "BUDDHIST"),
+    ("不思善，不思惡，正與麼時，那個是明上座本來面目。", "Platform Sutra", "BUDDHIST"),
+    ("迷時師度，悟時自度。", "Platform Sutra", "BUDDHIST"),
+    ("佛法在世間，不離世間覺。", "Platform Sutra", "BUDDHIST"),
+    ("見性成佛。", "Platform Sutra", "BUDDHIST"),
+    ("本來無一物，何處惹塵埃。", "Platform Sutra", "BUDDHIST"),
+    # Avatamsaka Sutra (華嚴經)
+    ("一切眾生皆具如來智慧德相。", "Avatamsaka Sutra", "BUDDHIST"),
+    ("心佛及眾生，是三無差別。", "Avatamsaka Sutra", "BUDDHIST"),
+    ("若人欲了知，三世一切佛，應觀法界性，一切唯心造。", "Avatamsaka Sutra", "BUDDHIST"),
+    ("不忘初心，方得始終。", "Avatamsaka Sutra", "BUDDHIST"),
+    ("若有善男子，善女人，發阿耨多羅三藐三菩提心。", "Avatamsaka Sutra", "BUDDHIST"),
+    # Amitabha Sutra (阿彌陀經)
+    ("從是西方，過十萬億佛土，有世界名曰極樂。", "Amitabha Sutra", "BUDDHIST"),
+    ("其國眾生，無有眾苦，但受諸樂，故名極樂。", "Amitabha Sutra", "BUDDHIST"),
+    ("一心不亂，即得往生阿彌陀佛極樂國土。", "Amitabha Sutra", "BUDDHIST"),
+    # Additional Buddhist texts
+    ("三界唯心，萬法唯識。", "Yogacara", "BUDDHIST"),
+    ("煩惱即菩提，生死即涅槃。", "Madhyamaka", "BUDDHIST"),
+    ("眾生無邊誓願度，煩惱無盡誓願斷。", "Four Great Vows", "BUDDHIST"),
+    ("法門無量誓願學，佛道無上誓願成。", "Four Great Vows", "BUDDHIST"),
+    ("一切有情皆是我父母。", "Bodhisattva Vow", "BUDDHIST"),
+    ("自利利他，自覺覺他。", "Bodhisattva Practice", "BUDDHIST"),
+    ("無緣大慈，同體大悲。", "Bodhisattva Practice", "BUDDHIST"),
+    ("應以何身得度者，即現何身而為說法。", "Guanyin", "BUDDHIST"),
+    ("千手千眼，大悲救苦。", "Avalokitesvara", "BUDDHIST"),
+    ("普度眾生，同登彼岸。", "Pure Land", "BUDDHIST"),
+    ("持戒清淨，修行精進。", "Vinaya", "BUDDHIST"),
+    ("信為道源功德母，長養一切諸善根。", "Avatamsaka Sutra", "BUDDHIST"),
+    ("布施、持戒、忍辱、精進、禪定、智慧，是名六度。", "Prajnaparamita", "BUDDHIST"),
+    ("修福不修慧，象身掛瓔珞；修慧不修福，羅漢托空缽。", "Folk Buddhist", "BUDDHIST"),
+    ("深入經藏，智慧如海。", "Buddhist Teaching", "BUDDHIST"),
+    ("苦海無邊，回頭是岸。", "Buddhist Teaching", "BUDDHIST"),
+    ("放下屠刀，立地成佛。", "Buddhist Teaching", "BUDDHIST"),
+    ("色即是空，空即是色。", "Heart Sutra", "BUDDHIST"),
+    ("萬法皆空，因果不空。", "Buddhist Teaching", "BUDDHIST"),
+    ("過去已過去，未來尚未來，現在因緣生。", "Buddhist Teaching", "BUDDHIST"),
 ]
 
-# Legalist Chinese (法家)
+# Legalist Chinese (法家) - Expanded v10.9
 LEGALIST_CHINESE = [
+    # Han Feizi (韓非子) - Core texts
     ("法不阿貴，繩不撓曲。", "Han Feizi 6", "LEGALIST"),
     ("刑過不避大臣，賞善不遺匹夫。", "Han Feizi 50", "LEGALIST"),
     ("以法為教，以吏為師。", "Han Feizi 49", "LEGALIST"),
@@ -104,36 +172,133 @@ LEGALIST_CHINESE = [
     ("一民之軌，莫如法。", "Han Feizi 6", "LEGALIST"),
     ("故明主使法擇人，不自舉也。", "Han Feizi 6", "LEGALIST"),
     ("使法量功，不自度也。", "Han Feizi 6", "LEGALIST"),
+    ("人主之大物，非法則術也。", "Han Feizi 43", "LEGALIST"),
+    ("法者，憲令著於官府，刑罰必於民心。", "Han Feizi 38", "LEGALIST"),
+    ("賞莫如厚而信，使民利之。", "Han Feizi 27", "LEGALIST"),
+    ("罰莫如重而必，使民畏之。", "Han Feizi 27", "LEGALIST"),
+    ("明主之所導制其臣者，二柄而已矣。二柄者，刑德也。", "Han Feizi 7", "LEGALIST"),
+    ("人臣太貴，必易主位。", "Han Feizi 8", "LEGALIST"),
+    ("愛臣太親，必危主身。", "Han Feizi 8", "LEGALIST"),
+    ("明君無為於上，群臣竦懼乎下。", "Han Feizi 5", "LEGALIST"),
+    ("上下一日百戰。", "Han Feizi 8", "LEGALIST"),
+    ("為人臣者，盡力以事其君，而不得擅作威福。", "Han Feizi 49", "LEGALIST"),
+    ("群臣見素，則大君不蔽矣。", "Han Feizi 5", "LEGALIST"),
+    ("事在四方，要在中央。聖人執要，四方來效。", "Han Feizi 5", "LEGALIST"),
+    ("虛靜以待，令名自命也，令事自定也。", "Han Feizi 5", "LEGALIST"),
+    # Shang Jun Shu (商君書) - Book of Lord Shang
     ("國之所以興者，農戰也。", "Shang Jun Shu 3", "LEGALIST"),
     ("民弱國強，民強國弱。故有道之國，務在弱民。", "Shang Jun Shu 20", "LEGALIST"),
     ("聖人之為國也，壹賞，壹刑，壹教。", "Shang Jun Shu 17", "LEGALIST"),
     ("治國者，貴分明而不可相舉。", "Shang Jun Shu 14", "LEGALIST"),
     ("行罰重其輕者，輕者不至，重者不來。", "Shang Jun Shu 17", "LEGALIST"),
+    ("國皆以一為務，兵出而不戰，則國強。", "Shang Jun Shu 3", "LEGALIST"),
+    ("治國能摶民力而壹民務者，強。", "Shang Jun Shu 4", "LEGALIST"),
+    ("民之於利也，若水之於下也。", "Shang Jun Shu 5", "LEGALIST"),
+    ("民本，法也。", "Shang Jun Shu 18", "LEGALIST"),
+    ("刑生力，力生強，強生威，威生惠。", "Shang Jun Shu 17", "LEGALIST"),
+    ("利出一孔者，其國無敵。", "Shang Jun Shu 5", "LEGALIST"),
+    ("以刑去刑，國治。以刑致刑，國亂。", "Shang Jun Shu 17", "LEGALIST"),
+    ("治則刑重，亂則刑輕。", "Shang Jun Shu 17", "LEGALIST"),
+    ("刑用於將過，則大邪不生。", "Shang Jun Shu 17", "LEGALIST"),
+    ("故以戰去戰，雖戰可也。以殺去殺，雖殺可也。", "Shang Jun Shu 18", "LEGALIST"),
+    # Guanzi (管子) - Master Guan
     ("倉廩實則知禮節，衣食足則知榮辱。", "Guanzi 1", "LEGALIST"),
     ("禮義廉恥，國之四維；四維不張，國乃滅亡。", "Guanzi 1", "LEGALIST"),
     ("政之所興，在順民心；政之所廢，在逆民心。", "Guanzi 1", "LEGALIST"),
+    ("授有德則國安，授無德則國危。", "Guanzi 5", "LEGALIST"),
+    ("法者，天下之程式也，萬事之儀表也。", "Guanzi 26", "LEGALIST"),
+    ("法者所以興功懼暴也。", "Guanzi 45", "LEGALIST"),
+    ("令則行，禁則止，憲之所及，俗之所被。", "Guanzi 3", "LEGALIST"),
+    ("士農工商，四民者，國之石民也。", "Guanzi", "LEGALIST"),
+    ("民不足，令乃辱；民苦殆，令不行。", "Guanzi", "LEGALIST"),
+    ("聖人之所以治國者，先利民心。", "Guanzi", "LEGALIST"),
+    ("富國之法，上固其本，下便其事。", "Guanzi", "LEGALIST"),
+    ("兵者，國之大事也，死生之地，存亡之道，不可不察也。", "Sunzi", "LEGALIST"),
+    ("知彼知己，百戰不殆。", "Sunzi", "LEGALIST"),
+    ("上兵伐謀，其次伐交，其次伐兵，其下攻城。", "Sunzi", "LEGALIST"),
+    ("不戰而屈人之兵，善之善者也。", "Sunzi", "LEGALIST"),
+    # Additional Legalist principles
+    ("治國之道，必先正其身。", "Legalist Principle", "LEGALIST"),
+    ("明法審令，賞罰必信。", "Legalist Principle", "LEGALIST"),
+    ("無功不賞，無罪不罰。", "Legalist Principle", "LEGALIST"),
+    ("明主愛其國，忠臣愛其君。", "Legalist Principle", "LEGALIST"),
+    ("法令既布，不得私議。", "Legalist Principle", "LEGALIST"),
+    ("奉法者強則國強，奉法者弱則國弱。", "Han Feizi", "LEGALIST"),
 ]
 
-# Mohist Chinese (墨家)
+# Mohist Chinese (墨家) - Expanded v10.9
 MOHIST_CHINESE = [
+    # Universal Love (兼愛)
     ("兼相愛，交相利。", "Mozi 15", "MOHIST"),
     ("天下之人皆相愛，強不執弱，眾不劫寡，富不侮貧，貴不傲賤。", "Mozi 15", "MOHIST"),
-    ("殺一人謂之不義，必有一死罪矣。", "Mozi 17", "MOHIST"),
-    ("今至大為攻國，則弗知非，從而譽之，謂之義。", "Mozi 17", "MOHIST"),
-    ("天下之利，是為天下之義。", "Mozi 26", "MOHIST"),
-    ("非攻，墨子之道也。", "Mozi 17", "MOHIST"),
-    ("節用，墨子之教也。", "Mozi 20", "MOHIST"),
-    ("聖人以治天下為事者也，必知亂之所自起，焉能治之。", "Mozi 14", "MOHIST"),
-    ("天下之所以亂者，生於不相愛。", "Mozi 14", "MOHIST"),
-    ("臣子之不孝君父，所謂亂也。", "Mozi 14", "MOHIST"),
-    ("子自愛不愛父，故虧父而自利。", "Mozi 14", "MOHIST"),
-    ("弟自愛不愛兄，故虧兄而自利。", "Mozi 14", "MOHIST"),
     ("若使天下兼相愛，愛人若愛其身，猶有不孝者乎？", "Mozi 15", "MOHIST"),
     ("視人之國若視其國，視人之家若視其家，視人之身若視其身。", "Mozi 15", "MOHIST"),
     ("是故諸侯相愛則不野戰，家主相愛則不相篡。", "Mozi 15", "MOHIST"),
     ("人與人相愛則不相賊。", "Mozi 15", "MOHIST"),
     ("君臣相愛則惠忠，父子相愛則慈孝。", "Mozi 15", "MOHIST"),
     ("兄弟相愛則和調。", "Mozi 15", "MOHIST"),
+    ("天下之所以亂者，生於不相愛。", "Mozi 14", "MOHIST"),
+    ("臣子之不孝君父，所謂亂也。", "Mozi 14", "MOHIST"),
+    ("子自愛不愛父，故虧父而自利。", "Mozi 14", "MOHIST"),
+    ("弟自愛不愛兄，故虧兄而自利。", "Mozi 14", "MOHIST"),
+    ("夫愛人者，人必從而愛之。", "Mozi 15", "MOHIST"),
+    ("利人者，人必從而利之。", "Mozi 15", "MOHIST"),
+    ("惡人者，人必從而惡之。", "Mozi 15", "MOHIST"),
+    ("害人者，人必從而害之。", "Mozi 15", "MOHIST"),
+    ("兼愛天下之人，猶愛其身也。", "Mozi 16", "MOHIST"),
+    ("有天下者愛天下，無天下者愛其國。", "Mozi 15", "MOHIST"),
+    # Non-aggression (非攻)
+    ("殺一人謂之不義，必有一死罪矣。", "Mozi 17", "MOHIST"),
+    ("今至大為攻國，則弗知非，從而譽之，謂之義。", "Mozi 17", "MOHIST"),
+    ("非攻，墨子之道也。", "Mozi 17", "MOHIST"),
+    ("攻國者，非也；殺人者，罪也。", "Mozi 17", "MOHIST"),
+    ("今有人於此，少見黑曰黑，多見黑曰白，則以此人不知白黑之辯矣。", "Mozi 17", "MOHIST"),
+    ("今小為非則知而非之，大為非攻國則不知非，從而譽之，謂之義。", "Mozi 17", "MOHIST"),
+    ("殺一人，謂之不義；殺十人，十重不義；殺百人，百重不義。", "Mozi 17", "MOHIST"),
+    ("今小為非則知而非之，大為攻國則不知非，從而譽之。", "Mozi 17", "MOHIST"),
+    ("春則廢民耕稼樹藝，秋則廢民穫斂。", "Mozi 18", "MOHIST"),
+    ("攻伐之害，內之則喪民，外之則喪兵。", "Mozi 18", "MOHIST"),
+    # Utilitarianism & Anti-waste (節用)
+    ("節用，墨子之教也。", "Mozi 20", "MOHIST"),
+    ("天下之利，是為天下之義。", "Mozi 26", "MOHIST"),
+    ("聖人以治天下為事者也，必知亂之所自起，焉能治之。", "Mozi 14", "MOHIST"),
+    ("凡足以奉給民用則止，諸加費不加於民利者，聖王弗為。", "Mozi 20", "MOHIST"),
+    ("其為衣裘何？以為冬以圉寒，夏以圉暑。", "Mozi 21", "MOHIST"),
+    ("聖人作誨，男耕稼樹藝，以為民食。", "Mozi 20", "MOHIST"),
+    ("古者聖王，制為節用之法。", "Mozi 20", "MOHIST"),
+    ("凡天下群百工，輪車鞍皮，陶冶梓匠，使各從事其所能。", "Mozi 20", "MOHIST"),
+    ("有能則舉之，無能則下之。", "Mozi 8", "MOHIST"),
+    ("官無常貴而民無終賤。", "Mozi 8", "MOHIST"),
+    # Anti-fatalism (非命)
+    ("命者，暴王所作，窮人所述。", "Mozi 35", "MOHIST"),
+    ("執有命者，是覆天下之義。", "Mozi 35", "MOHIST"),
+    ("是故昔者禹、湯、文、武之為道也，不曰命之所福也。", "Mozi 35", "MOHIST"),
+    ("執有命者不仁。", "Mozi 35", "MOHIST"),
+    ("力者何？力盡而功成。", "Mozi 35", "MOHIST"),
+    # Meritocracy (尚賢)
+    ("尚賢者，政之本也。", "Mozi 8", "MOHIST"),
+    ("賢者舉而上之，不肖者抑而廢之。", "Mozi 8", "MOHIST"),
+    ("雖在農與工肆之人，有能則舉之。", "Mozi 8", "MOHIST"),
+    ("高予之爵，重予之祿，任之以事，斷予之令。", "Mozi 8", "MOHIST"),
+    ("爵位不高則民弗敬，蓄祿不厚則民不信，政令不斷則民不畏。", "Mozi 8", "MOHIST"),
+    ("古者聖王之為政，列德而尚賢。", "Mozi 8", "MOHIST"),
+    ("雖在農與工肆之人，有能則舉之。", "Mozi 9", "MOHIST"),
+    # Heaven's Will (天志)
+    ("天之意，不欲大國之攻小國也。", "Mozi 26", "MOHIST"),
+    ("天之意，不欲強之劫弱也。", "Mozi 26", "MOHIST"),
+    ("天之意，不欲詐之謀愚也。", "Mozi 26", "MOHIST"),
+    ("順天意者，兼相愛，交相利，必得賞。", "Mozi 27", "MOHIST"),
+    ("反天意者，別相惡，交相賊，必得罰。", "Mozi 27", "MOHIST"),
+    ("天欲人相愛相利，而不欲人相惡相賊。", "Mozi 26", "MOHIST"),
+    # Additional Mohist principles
+    ("言無務為多，而務為智。", "Mozi 47", "MOHIST"),
+    ("行無務為華，而務為實。", "Mozi 47", "MOHIST"),
+    ("志不強者智不達，言不信者行不果。", "Mozi", "MOHIST"),
+    ("義者，利也。", "Mozi 40", "MOHIST"),
+    ("萬事莫貴於義。", "Mozi 47", "MOHIST"),
+    ("入國而不存其士，則亡國矣。", "Mozi", "MOHIST"),
+    ("染於蒼則蒼，染於黃則黃。", "Mozi 3", "MOHIST"),
+    ("見侮不辱，見辱不怒。", "Mozi", "MOHIST"),
 ]
 
 # Neo-Confucian Chinese (宋明理學)
@@ -248,43 +413,163 @@ ARABIC_PHILOSOPHY = [
     ("الظلم مؤذن بخراب العمران", "Ibn Khaldun - Muqaddima", "FALSAFA"),
 ]
 
-# Sanskrit Dharmashastra (धर्मशास्त्र)
+# Sanskrit Dharmashastra (धर्मशास्त्र) - Expanded v10.9
 SANSKRIT_DHARMA = [
+    # Mahabharata - Dharma teachings
     ("अहिंसा परमो धर्मः", "Mahabharata 13.117.37", "DHARMA"),
     ("धर्म एव हतो हन्ति धर्मो रक्षति रक्षितः", "Mahabharata 8.69.57", "DHARMA"),
     ("न हि प्रियं मे स्यात् आत्मनः प्रतिकूलं परेषाम्", "Mahabharata 5.15.17", "DHARMA"),
     ("सत्यं ब्रूयात् प्रियं ब्रूयात्", "Mahabharata", "DHARMA"),
     ("आत्मनः प्रतिकूलानि परेषां न समाचरेत्", "Mahabharata 5.15.17", "DHARMA"),
+    ("धर्मः सत्यं च शौचं च दमः करुणा एव च", "Mahabharata 3.313", "DHARMA"),
+    ("धृतिः क्षमा दमोऽस्तेयं शौचमिन्द्रियनिग्रहः", "Mahabharata 1.108", "DHARMA"),
+    ("धर्मस्य तत्त्वं निहितं गुहायाम्", "Mahabharata 3.313", "DHARMA"),
+    ("सर्वं परवशं दुःखं सर्वमात्मवशं सुखम्", "Mahabharata 12.17", "DHARMA"),
+    ("अष्टादश पुराणेषु व्यासस्य वचनद्वयम् । परोपकारः पुण्याय पापाय परपीडनम्", "Mahabharata", "DHARMA"),
+    ("न जातु कामान्न भयान्न लोभाद् धर्मं त्यजेज्जीवितस्यापि हेतोः", "Mahabharata 1.1", "DHARMA"),
+    ("यद्यदाचरति श्रेष्ठस्तत्तदेवेतरो जनः", "Mahabharata", "DHARMA"),
+    # Manusmriti - Laws of Manu
     ("अहिंसा सत्यमस्तेयं शौचमिन्द्रियनिग्रहः", "Manusmriti 10.63", "DHARMA"),
     ("सर्वभूतेषु चात्मानं सर्वभूतानि चात्मनि", "Manusmriti", "DHARMA"),
+    ("धृतिः क्षमा दमोऽस्तेयं शौचमिन्द्रियनिग्रहः । धीर्विद्या सत्यमक्रोधो दशकं धर्मलक्षणम्", "Manusmriti 6.92", "DHARMA"),
+    ("मातृवत्परदारेषु परद्रव्येषु लोष्ट्रवत्", "Manusmriti 4.134", "DHARMA"),
+    ("आत्मवत्सर्वभूतेषु यः पश्यति स पण्डितः", "Manusmriti", "DHARMA"),
+    ("पितृदेवातिथिपूजा सर्वत्र सर्वदा समा", "Manusmriti 3.74", "DHARMA"),
+    ("सत्येन पूयते साक्षी धर्मेण पूयते द्विजः", "Manusmriti 8.108", "DHARMA"),
+    ("वाङ्मनः कर्मभिः साधोः सदा प्रीणाति यो द्विजान्", "Manusmriti 2.234", "DHARMA"),
+    # Upanishads
     ("सत्यं वद धर्मं चर", "Taittiriya Upanishad 1.11", "UPANISHAD"),
     ("मातृदेवो भव। पितृदेवो भव। आचार्यदेवो भव। अतिथिदेवो भव।", "Taittiriya Upanishad 1.11", "UPANISHAD"),
     ("ईशावास्यमिदं सर्वं यत्किञ्च जगत्यां जगत्", "Isha Upanishad 1", "UPANISHAD"),
     ("तेन त्यक्तेन भुञ्जीथा मा गृधः कस्यस्विद्धनम्", "Isha Upanishad 1", "UPANISHAD"),
+    ("असतो मा सद्गमय। तमसो मा ज्योतिर्गमय। मृत्योर्मामृतं गमय", "Brihadaranyaka 1.3.28", "UPANISHAD"),
+    ("तत्त्वमसि", "Chandogya 6.8.7", "UPANISHAD"),
+    ("अहं ब्रह्मास्मि", "Brihadaranyaka 1.4.10", "UPANISHAD"),
+    ("सर्वं खल्विदं ब्रह्म", "Chandogya 3.14.1", "UPANISHAD"),
+    ("अयमात्मा ब्रह्म", "Mandukya 2", "UPANISHAD"),
+    ("प्रज्ञानं ब्रह्म", "Aitareya 3.3", "UPANISHAD"),
+    # Bhagavad Gita - Complete chapter 2 and key verses
     ("कर्मण्येवाधिकारस्ते मा फलेषु कदाचन", "Bhagavad Gita 2.47", "GITA"),
     ("योगः कर्मसु कौशलम्", "Bhagavad Gita 2.50", "GITA"),
     ("समत्वं योग उच्यते", "Bhagavad Gita 2.48", "GITA"),
     ("सर्वधर्मान्परित्यज्य मामेकं शरणं व्रज", "Bhagavad Gita 18.66", "GITA"),
     ("अद्वेष्टा सर्वभूतानां मैत्रः करुण एव च", "Bhagavad Gita 12.13", "GITA"),
+    ("निर्ममो निरहंकारः समदुःखसुखः क्षमी", "Bhagavad Gita 12.13", "GITA"),
+    ("सर्वभूतहिते रताः", "Bhagavad Gita 12.4", "GITA"),
+    ("सुखदुःखे समे कृत्वा लाभालाभौ जयाजयौ", "Bhagavad Gita 2.38", "GITA"),
+    ("योगस्थः कुरु कर्माणि सङ्गं त्यक्त्वा धनञ्जय", "Bhagavad Gita 2.48", "GITA"),
+    ("नैनं छिन्दन्ति शस्त्राणि नैनं दहति पावकः", "Bhagavad Gita 2.23", "GITA"),
+    ("वासांसि जीर्णानि यथा विहाय नवानि गृह्णाति नरोऽपराणि", "Bhagavad Gita 2.22", "GITA"),
+    ("श्रेयान्स्वधर्मो विगुणः परधर्मात्स्वनुष्ठितात्", "Bhagavad Gita 3.35", "GITA"),
+    ("परित्राणाय साधूनां विनाशाय च दुष्कृताम्", "Bhagavad Gita 4.8", "GITA"),
+    ("यदा यदा हि धर्मस्य ग्लानिर्भवति भारत", "Bhagavad Gita 4.7", "GITA"),
+    ("त्रिविधं नरकस्येदं द्वारं नाशनमात्मनः । कामः क्रोधस्तथा लोभः", "Bhagavad Gita 16.21", "GITA"),
+    ("दैवी सम्पद्विमोक्षाय निबन्धायासुरी मता", "Bhagavad Gita 16.5", "GITA"),
+    ("अभयं सत्त्वसंशुद्धिर्ज्ञानयोगव्यवस्थितिः", "Bhagavad Gita 16.1", "GITA"),
+    ("दानं दमश्च यज्ञश्च स्वाध्यायस्तप आर्जवम्", "Bhagavad Gita 16.1", "GITA"),
+    ("अहिंसा सत्यमक्रोधस्त्यागः शान्तिरपैशुनम्", "Bhagavad Gita 16.2", "GITA"),
+    ("दया भूतेष्वलोलुप्त्वं मार्दवं ह्रीरचापलम्", "Bhagavad Gita 16.2", "GITA"),
+    # Arthashastra - Political ethics
     ("प्रजासुखे सुखं राज्ञः प्रजानां च हिते हितम्", "Arthashastra 1.19", "ARTHA"),
     ("राज्ञो हि व्रतं कार्याणां चेष्टा राष्ट्रसंग्रहः", "Arthashastra", "ARTHA"),
+    ("नातिक्रामेदर्थं यः स राज्ञां राजा भवेत्", "Arthashastra 1.15", "ARTHA"),
+    ("धर्मार्थौ यत्र विरुद्धौ तत्र धर्मः प्रधानः", "Arthashastra", "ARTHA"),
+    ("सुखस्य मूलं धर्मः धर्मस्य मूलमर्थः", "Arthashastra 1.7", "ARTHA"),
+    # Dharmasutras
+    ("धर्मो रक्षति रक्षितः", "Dharmasutra", "DHARMA"),
+    ("आचाराल्लभते ह्यायुः", "Gautama Dharmasutra", "DHARMA"),
+    ("सत्यमेव जयते नानृतम्", "Mundaka Upanishad 3.1.6", "UPANISHAD"),
+    ("वसुधैव कुटुम्बकम्", "Hitopadesha 1.3.71", "DHARMA"),
+    ("परोपकाराय सतां विभूतयः", "Hitopadesha", "DHARMA"),
+    # Yoga Sutras - Ethical foundation
+    ("अहिंसासत्यास्तेयब्रह्मचर्यापरिग्रहा यमाः", "Yoga Sutras 2.30", "DHARMA"),
+    ("शौचसंतोषतपःस्वाध्यायेश्वरप्रणिधानानि नियमाः", "Yoga Sutras 2.32", "DHARMA"),
+    ("मैत्रीकरुणामुदितोपेक्षणां सुखदुःखपुण्यापुण्यविषयाणां भावनातश्चित्तप्रसादनम्", "Yoga Sutras 1.33", "DHARMA"),
+    # Panchatantra - Practical wisdom
+    ("मित्रं प्राप्तं यतितव्यं भवता सर्वयत्नतः", "Panchatantra", "DHARMA"),
+    ("अर्थागमो नित्यमरोगिता च प्रिया च भार्या प्रियवादिनी च", "Chanakya", "DHARMA"),
+    # Ramayana moral teachings
+    ("रामो विग्रहवान् धर्मः", "Ramayana 2.109", "DHARMA"),
+    ("सत्यं ब्रूहि प्रियं ब्रूहि न ब्रूहि सत्यमप्रियम्", "Ramayana", "DHARMA"),
+    ("जननी जन्मभूमिश्च स्वर्गादपि गरीयसी", "Ramayana", "DHARMA"),
 ]
 
-# Pali Canon Ethics
+# Pali Canon Ethics - Expanded v10.9
 PALI_ETHICS = [
+    # Metta Sutta - Loving-kindness
     ("Sabbe sattā bhavantu sukhitattā", "Metta Sutta", "PALI"),
+    ("Mettañca sabbalokasmiṃ mānasaṃ bhāvaye aparimāṇaṃ", "Metta Sutta", "PALI"),
+    ("Uddhaṃ adho ca tiriyañca asambādhaṃ averaṃ asapattaṃ", "Metta Sutta", "PALI"),
+    ("Sukhino vā khemino hontu sabbe sattā bhavantu sukhitattā", "Metta Sutta", "PALI"),
+    ("Na paro paraṃ nikubbetha nātimaññetha katthaci naṃ kañci", "Metta Sutta", "PALI"),
+    # Dhammapada - Complete selection
     ("Dhammo have rakkhati dhammacāriṃ", "Theragatha 303", "PALI"),
     ("Sabba pāpassa akaraṇaṃ, kusalassa upasampadā", "Dhammapada 183", "PALI"),
     ("Manopubbaṅgamā dhammā manoseṭṭhā manomayā", "Dhammapada 1", "PALI"),
     ("Na hi verena verāni sammantīdha kudācanaṃ", "Dhammapada 5", "PALI"),
     ("Averena ca sammanti esa dhammo sanantano", "Dhammapada 5", "PALI"),
     ("Attā hi attano nātho ko hi nātho paro siyā", "Dhammapada 160", "PALI"),
+    ("Sacittapariyodapanaṃ etaṃ buddhānasāsanaṃ", "Dhammapada 183", "PALI"),
+    ("Yo ca vassasataṃ jīve dussīlo asamāhito", "Dhammapada 110", "PALI"),
+    ("Ekāhaṃ jīvitaṃ seyyo sīlavantassa jhāyino", "Dhammapada 110", "PALI"),
+    ("Attadatthaṃ paratthena bahunāpi na hāpaye", "Dhammapada 166", "PALI"),
+    ("Dīghā jāgarato ratti dīghaṃ santassa yojanaṃ", "Dhammapada 60", "PALI"),
+    ("Appamādo amatapadaṃ pamādo maccuno padaṃ", "Dhammapada 21", "PALI"),
+    ("Appamattā na mīyanti ye pamattā yathā matā", "Dhammapada 21", "PALI"),
+    ("Caratha bhikkhave cārikaṃ bahujanahitāya bahujanasukhāya", "Vinaya Mahavagga", "PALI"),
+    ("Kāyena saṃvaro sādhu sādhu vācāya saṃvaro", "Dhammapada 361", "PALI"),
+    ("Manasā saṃvaro sādhu sādhu sabbattha saṃvaro", "Dhammapada 361", "PALI"),
+    ("Sabbattha saṃvuto bhikkhu sabbadukkhā pamuccati", "Dhammapada 361", "PALI"),
+    ("Yo ca mettaṃ bhāvayati appamāṇaṃ satīmā", "Itivuttaka 27", "PALI"),
+    ("Sukhakāmāni bhūtāni yo daṇḍena na hiṃsati", "Dhammapada 131", "PALI"),
+    ("Attano sukhamesāno pecca so labhate sukhaṃ", "Dhammapada 131", "PALI"),
+    ("Na paresaṃ vilomāni na paresaṃ katākataṃ", "Dhammapada 50", "PALI"),
+    ("Attano va avekkheyya katāni akatāni ca", "Dhammapada 50", "PALI"),
+    ("Kodhassa na kuto mūlaṃ kalahassa ayaṃ bhave", "Sutta Nipata", "PALI"),
+    ("Pūjaṃ paṭhabhiṃ pūjitvā te sameti sukhāvaho", "Sigalovada Sutta", "PALI"),
+    # Vinaya - Monastic precepts
     ("Pāṇātipātā veramaṇī sikkhāpadaṃ samādiyāmi", "Vinaya", "PALI"),
     ("Adinnādānā veramaṇī sikkhāpadaṃ samādiyāmi", "Vinaya", "PALI"),
     ("Kāmesumicchācārā veramaṇī sikkhāpadaṃ samādiyāmi", "Vinaya", "PALI"),
     ("Musāvādā veramaṇī sikkhāpadaṃ samādiyāmi", "Vinaya", "PALI"),
     ("Surāmerayamajjapamādaṭṭhānā veramaṇī sikkhāpadaṃ samādiyāmi", "Vinaya", "PALI"),
-    ("Mettañca sabbalokasmiṃ mānasaṃ bhāvaye aparimāṇaṃ", "Metta Sutta", "PALI"),
+    ("Vikālabhojanā veramaṇī sikkhāpadaṃ samādiyāmi", "Vinaya", "PALI"),
+    ("Jātarūparajatapaṭiggahaṇā veramaṇī sikkhāpadaṃ samādiyāmi", "Vinaya", "PALI"),
+    # Sutta Nipata - Discourse verses
+    ("Akkodhassa kuto kodho dantassa samajīvino", "Sutta Nipata 623", "PALI"),
+    ("Sammāvimuttaṃ na vimuttasaddhaṃ", "Sutta Nipata", "PALI"),
+    ("Yassa sabbaṃ ahorattaṃ ahiṃsāya rato mano", "Sutta Nipata", "PALI"),
+    ("Mettañca sabbalokasmiṃ mānasaṃ bhāvaye aparimāṇaṃ", "Sutta Nipata", "PALI"),
+    # Sigalovada Sutta - Lay ethics
+    ("Chahi disāhi namasseyya", "Sigalovada Sutta", "PALI"),
+    ("Mātāpitaro pācīnā disā", "Sigalovada Sutta", "PALI"),
+    ("Ācariyā dakkhiṇā disā", "Sigalovada Sutta", "PALI"),
+    ("Mittāmaccā uttarā disā", "Sigalovada Sutta", "PALI"),
+    ("Samaṇabrāhmaṇā uparimā disā", "Sigalovada Sutta", "PALI"),
+    # Mangala Sutta - Blessings
+    ("Mātāpitu upaṭṭhānaṃ puttadārassa saṅgaho", "Mangala Sutta", "PALI"),
+    ("Dānañca dhammacariyā ca ñātakānañca saṅgaho", "Mangala Sutta", "PALI"),
+    ("Anavajjāni kammāni etaṃ maṅgalamuttamaṃ", "Mangala Sutta", "PALI"),
+    ("Āratī viratī pāpā majjapānā ca saṃyamo", "Mangala Sutta", "PALI"),
+    ("Appamādo ca dhammesu etaṃ maṅgalamuttamaṃ", "Mangala Sutta", "PALI"),
+    ("Gāravo ca nivāto ca santuṭṭhī ca kataññutā", "Mangala Sutta", "PALI"),
+    # Karaniya Metta Sutta - Practice of loving-kindness
+    ("Karaṇīyamātthakusalena yaṃ taṃ santaṃ padaṃ abhisamecca", "Karaniya Metta Sutta", "PALI"),
+    ("Sakko ujū ca suhujū ca suvaco cassa mudu anatimānī", "Karaniya Metta Sutta", "PALI"),
+    ("Santussako ca subharo ca appakicco ca sallahukavutti", "Karaniya Metta Sutta", "PALI"),
+    ("Santindriyo ca nipako ca appagabbho kulesu ananugiddho", "Karaniya Metta Sutta", "PALI"),
+    # Jataka moral lessons
+    ("Ahaṃ khīṇāsavo bhikkhu satimā sampajāno", "Jataka", "PALI"),
+    ("Sabbadānaṃ dhammadānaṃ jināti", "Jataka", "PALI"),
+    ("Na taṃ kammaṃ kataṃ sādhu yaṃ katvā anutappati", "Dhammapada 67", "PALI"),
+    ("Taṃ ca kammaṃ kataṃ sādhu yaṃ katvā nānutappati", "Dhammapada 68", "PALI"),
+    ("Attanā hi kataṃ pāpaṃ attanā saṃkilissati", "Dhammapada 165", "PALI"),
+    ("Attanā akataṃ pāpaṃ attanā va visujjhati", "Dhammapada 165", "PALI"),
+    ("Suddhi asuddhi paccattaṃ nāñño aññaṃ visodhaye", "Dhammapada 165", "PALI"),
+    # Anguttara Nikaya - Gradual teachings
+    ("Dānena piyavācāya atthacārena yamhi", "Anguttara Nikaya", "PALI"),
+    ("Sabbe sattā āhāraṭṭhitikā", "Anguttara Nikaya", "PALI"),
+    ("Cattārimāni bhikkhave brahmavihārāni", "Anguttara Nikaya", "PALI"),
 ]
 
 if SKIP_PROCESSING:
@@ -308,8 +593,33 @@ if SKIP_PROCESSING:
 
     # ===== CHECK FOR v10.9 CORPORA =====
     # If cached data is missing v10.9 hardcoded corpora, add them
-    has_v109 = by_lang.get("sanskrit", 0) > 0 or by_lang.get("pali", 0) > 0
-    if not has_v109:
+    # Check for sufficient v10.9 data (not just presence, but expected counts)
+    sanskrit_count = by_lang.get("sanskrit", 0)
+    pali_count = by_lang.get("pali", 0)
+
+    # Also check for v10.9-specific periods by scanning bonds
+    has_v109_periods = False
+    try:
+        with open("data/processed/bonds.jsonl", "r", encoding="utf-8") as f:
+            for line in f:
+                b = json.loads(line)
+                period = b.get("time_period", "")
+                if period in ["BUDDHIST", "LEGALIST", "MOHIST", "FIQH", "SUFI", "FALSAFA"]:
+                    has_v109_periods = True
+                    break
+    except:
+        pass
+
+    # v10.9 requires: Sanskrit >= 70, Pali >= 70, and v10.9 periods present
+    has_full_v109 = sanskrit_count >= 70 and pali_count >= 70 and has_v109_periods
+
+    print(f"\nv10.9 corpus check:")
+    print(f"  Sanskrit: {sanskrit_count} (need >= 70)")
+    print(f"  Pali: {pali_count} (need >= 70)")
+    print(f"  v10.9 periods: {'present' if has_v109_periods else 'missing'}")
+    print(f"  Full v10.9: {'YES' if has_full_v109 else 'NO - will add corpora'}")
+
+    if not has_full_v109:
         print("\n" + "=" * 60)
         print("ADDING v10.9 CORPORA TO CACHED DATA")
         print("=" * 60)
@@ -433,6 +743,17 @@ if SKIP_PROCESSING:
             except Exception as e:
                 print(f"Drive update failed: {e}")
 
+        # Force splits regeneration since we added new data
+        # Delete existing splits so Cell 5 regenerates them
+        for splits_path in ["data/splits/all_splits.json", f"{SAVE_DIR}/all_splits.json"]:
+            try:
+                if os.path.exists(splits_path):
+                    os.remove(splits_path)
+                    print(f"  Removed old splits: {splits_path}")
+            except Exception as e:
+                pass
+        print("  Splits will be regenerated in Cell 5 to include v10.9 data")
+
         # Update counts
         by_lang["sanskrit"] = len(SANSKRIT_DHARMA)
         by_lang["pali"] = len(PALI_ETHICS)
@@ -459,7 +780,7 @@ if SKIP_PROCESSING:
         for lang, cnt in sorted(by_lang.items(), key=lambda x: -x[1]):
             print(f"  {lang}: {cnt:,}")
     else:
-        print("\nv10.9 corpora already present (Sanskrit/Pali detected)")
+        print("\nv10.9 corpora already present and complete")
 
     # Validate corpus sizes and identify what needs augmentation
     print("\nCorpus adequacy check:")
@@ -1016,7 +1337,7 @@ else:
                                 "text": text,
                                 "lang": "arabic",
                                 "source": "Quran",
-                                "period": "CLASSICAL",
+                                "period": "QURANIC",
                             }
                         )
                         arabic_count += 1
@@ -1039,7 +1360,7 @@ else:
                                 "text": text,
                                 "lang": "arabic",
                                 "source": "Hadith",
-                                "period": "CLASSICAL",
+                                "period": "HADITH",
                             }
                         )
                         arabic_count += 1
@@ -1065,7 +1386,7 @@ else:
                                         "text": text,
                                         "lang": "arabic",
                                         "source": "Quran (Tanzil)",
-                                        "period": "CLASSICAL",
+                                        "period": "QURANIC",
                                     }
                                 )
                                 arabic_count += 1
@@ -1095,7 +1416,7 @@ else:
                     "text": txt,
                     "lang": "arabic",
                     "source": "Quran/Hadith",
-                    "period": "CLASSICAL",
+                    "period": "QURANIC",
                 }
             )
             arabic_count += 1

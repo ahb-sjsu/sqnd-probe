@@ -95,6 +95,7 @@ except Exception:
 from sklearn.metrics import f1_score
 import gc
 
+
 # @markdown **Splits to train:**
 TRAIN_HEBREW_TO_OTHERS = True  # @param {type:"boolean"}
 TRAIN_SEMITIC_TO_NON_SEMITIC = True  # @param {type:"boolean"}
@@ -124,8 +125,8 @@ USE_CONTEXT_AUXILIARY = True  # @param {type:"boolean"}
 CONTEXT_LOSS_WEIGHT = 0.33  # @param {type:"number"}
 # @markdown Weight for context prediction loss
 
-STRICT_PRESCRIPTIVE_TEST = True  # @param {type:"boolean"}
-# @markdown Only evaluate on prescriptive examples (strict test)
+STRICT_PRESCRIPTIVE_TEST = False  # @param {type:"boolean"}
+# @markdown Only evaluate on prescriptive examples (reduces test set ~97%!)
 
 print("=" * 60)
 print("TRAINING BIP MODEL")
@@ -190,7 +191,32 @@ for split_idx, split_name in enumerate(splits_to_train):
         print("To fix: Add more data to the test languages/periods")
         continue
 
-    model = BIPModel().to(device)
+    # Create model with OOM recovery
+    def create_model_with_retry():
+        """Create model, cleaning up GPU memory if OOM occurs."""
+        try:
+            return BIPModel().to(device)
+        except torch.cuda.OutOfMemoryError:
+            print("  OOM on model creation - cleaning up and retrying...")
+            # Clean up any existing model in globals
+            _g = globals()
+            for _var in ["model", "analyzer", "encoder"]:
+                if _var in _g and _g[_var] is not None:
+                    try:
+                        if hasattr(_g[_var], "cpu"):
+                            _g[_var].cpu()
+                        _g[_var] = None
+                    except:
+                        pass
+            # Force cleanup
+            gc.collect()
+            gc.collect()
+            torch.cuda.empty_cache()
+            torch.cuda.synchronize()
+            # Retry
+            return BIPModel().to(device)
+
+    model = create_model_with_retry()
 
     train_dataset = NativeDataset(
         set(split["train_ids"]),
@@ -256,8 +282,20 @@ for split_idx, split_name in enumerate(splits_to_train):
         return 1.0
 
     best_loss = float("inf")
+    start_epoch = 1
 
-    for epoch in range(1, N_EPOCHS + 1):
+    # Check for existing checkpoint to resume from
+    checkpoint_path = f"models/checkpoints/latest_{split_name}.pt"
+    if os.path.exists(checkpoint_path):
+        print(f"  Found checkpoint, resuming...")
+        checkpoint = torch.load(checkpoint_path, map_location=device)
+        model.load_state_dict(checkpoint["model_state"])
+        optimizer.load_state_dict(checkpoint["optimizer_state"])
+        start_epoch = checkpoint["epoch"] + 1
+        best_loss = checkpoint["best_loss"]
+        print(f"  Resuming from epoch {start_epoch}, best_loss={best_loss:.4f}")
+
+    for epoch in range(start_epoch, N_EPOCHS + 1):
         model.train()
         total_loss = 0
         n_batches = 0
@@ -317,7 +355,22 @@ for split_idx, split_name in enumerate(splits_to_train):
             n_batches += 1
 
         avg_loss = total_loss / n_batches
-        print(f"Epoch {epoch}: Loss={avg_loss:.4f} (adv_lambda={adv_lambda:.2f})")
+
+        # Clear CUDA cache after each epoch to prevent memory accumulation
+        torch.cuda.empty_cache()
+
+        mem_gb = torch.cuda.memory_allocated() / 1e9 if torch.cuda.is_available() else 0
+        print(f"Epoch {epoch}: Loss={avg_loss:.4f} (adv_lambda={adv_lambda:.2f}) [GPU: {mem_gb:.1f}GB]")
+
+        # Save checkpoint every epoch (for crash recovery)
+        checkpoint = {
+            "epoch": epoch,
+            "model_state": model.state_dict(),
+            "optimizer_state": optimizer.state_dict(),
+            "loss": avg_loss,
+            "best_loss": best_loss,
+        }
+        torch.save(checkpoint, f"models/checkpoints/latest_{split_name}.pt")
 
         if avg_loss < best_loss:
             best_loss = avg_loss
@@ -388,14 +441,38 @@ for split_idx, split_name in enumerate(splits_to_train):
         f"  High confidence: {high_conf:,}/{len(test_dataset):,} ({high_conf/len(test_dataset)*100:.1f}%)"
     )
 
-    # GPU memory usage
+    # GPU memory usage before cleanup
     if torch.cuda.is_available():
         mem = torch.cuda.memory_allocated() / 1e9
-        print(f"\n  GPU memory: {mem:.1f} GB / {VRAM_GB:.1f} GB ({mem/VRAM_GB*100:.0f}%)")
+        print(f"\n  GPU memory (before cleanup): {mem:.1f} GB / {VRAM_GB:.1f} GB ({mem/VRAM_GB*100:.0f}%)")
 
-    del model, train_dataset, test_dataset
-    gc.collect()
+    # Aggressive memory cleanup between splits
+    # Step 1: Move model to CPU to release GPU memory
+    model.cpu()
+
+    # Step 2: Delete all references
+    del model, train_dataset, test_dataset, train_loader, test_loader, optimizer
+    if USE_AMP and scaler:
+        del scaler
+
+    # Step 3: Force garbage collection (multiple passes)
+    for _ in range(3):
+        gc.collect()
+
+    # Step 4: Clear CUDA cache
     torch.cuda.empty_cache()
+    torch.cuda.synchronize()
+
+    # Step 5: Re-create scaler for next split
+    if USE_AMP:
+        scaler = torch.amp.GradScaler("cuda")
+
+    # GPU memory after cleanup
+    if torch.cuda.is_available():
+        mem_after = torch.cuda.memory_allocated() / 1e9
+        print(f"  GPU memory (after cleanup): {mem_after:.1f} GB (freed {mem - mem_after:.1f} GB)")
+        if mem_after > 1.0:
+            print(f"  WARNING: {mem_after:.1f} GB still allocated - may cause OOM on next split")
 
 print("\n" + "=" * 60)
 print("TRAINING COMPLETE")
