@@ -9,6 +9,8 @@ import sys
 import os
 import io
 import logging
+import random
+import re
 
 # Method 1: Filter warnings
 warnings.filterwarnings("ignore", message=".*can only test a child process.*")
@@ -128,6 +130,58 @@ CONTEXT_LOSS_WEIGHT = 0.33  # @param {type:"number"}
 STRICT_PRESCRIPTIVE_TEST = False  # @param {type:"boolean"}
 # @markdown Only evaluate on prescriptive examples (reduces test set ~97%!)
 
+# @markdown **v10.10: Role-Aware Data Augmentation:**
+USE_ROLE_AUGMENTATION = True  # @param {type:"boolean"}
+# @markdown Adds contrastive loss for agent/patient role sensitivity
+ROLE_AUGMENT_PROB = 0.3  # @param {type:"number"}
+# @markdown Probability of augmenting each batch
+ROLE_CONTRASTIVE_WEIGHT = 0.2  # @param {type:"number"}
+# @markdown Weight for role contrastive loss
+ROLE_CONTRASTIVE_MARGIN = 0.5  # @param {type:"number"}
+# @markdown Minimum embedding distance for role-swapped pairs
+
+
+def swap_roles_simple(text, language):
+    """Simple role swap using word order reversal for common patterns.
+    v10.10: Addresses weak role_swap sensitivity (0.003) from fuzz testing."""
+    patterns = {
+        "english": [
+            (r"(\w+) must (\w+) (\w+)", r"\3 must \2 \1"),
+            (r"(\w+) should (\w+) (\w+)", r"\3 should \2 \1"),
+            (r"(\w+) shall (\w+) (\w+)", r"\3 shall \2 \1"),
+            (r"the (\w+) must (\w+) the (\w+)", r"the \3 must \2 the \1"),
+            (r"(\w+) is obligated to (\w+) (\w+)", r"\3 is obligated to \2 \1"),
+            (r"(\w+) has a duty to (\w+) (\w+)", r"\3 has a duty to \2 \1"),
+        ],
+        "hebrew": [
+            (r"על (\S+) ל(\S+) את (\S+)", r"על \3 ל\2 את \1"),
+        ],
+        "classical_chinese": [
+            (r"(\S)當(\S)(\S)", r"\3當\2\1"),
+            (r"(\S)須(\S)(\S)", r"\3須\2\1"),
+            (r"(\S)應(\S)(\S)", r"\3應\2\1"),
+        ],
+        "arabic": [
+            (r"يجب على (\S+) أن (\S+) (\S+)", r"يجب على \3 أن \2 \1"),
+            (r"(\S+) عليه أن (\S+) (\S+)", r"\3 عليه أن \2 \1"),
+        ],
+        "sanskrit": [
+            (r"(\S+)ः (\S+)म् (\S+)ति", r"\3ः \2म् \1ति"),
+        ],
+        "pali": [
+            (r"(\S+)o (\S+)aṃ (\S+)ti", r"\3o \2aṃ \1ti"),
+        ],
+    }
+
+    lang_patterns = patterns.get(language, patterns["english"])
+    for pattern, replacement in lang_patterns:
+        if re.search(pattern, text, re.IGNORECASE):
+            swapped = re.sub(pattern, replacement, text, flags=re.IGNORECASE)
+            if swapped != text:
+                return swapped
+    return None
+
+
 print("=" * 60)
 print("TRAINING BIP MODEL")
 print("=" * 60)
@@ -142,6 +196,7 @@ print("(0.01 prevents loss explosion while maintaining invariance)")
 print(f"  Confidence weighting: {USE_CONFIDENCE_WEIGHTING}")
 print(f"  Context auxiliary: {USE_CONTEXT_AUXILIARY} (weight={CONTEXT_LOSS_WEIGHT})")
 print(f"  Strict prescriptive test: {STRICT_PRESCRIPTIVE_TEST}")
+print(f"  Role augmentation: {USE_ROLE_AUGMENTATION} (prob={ROLE_AUGMENT_PROB}, weight={ROLE_CONTRASTIVE_WEIGHT})")
 
 # tokenizer loaded in Cell 6 based on BACKBONE selection
 
@@ -340,6 +395,50 @@ for split_idx, split_name in enumerate(splits_to_train):
                 + CONTEXT_LOSS_WEIGHT * loss_context
             )
 
+            # v10.10: Role contrastive loss for agent/patient sensitivity
+            loss_role = torch.tensor(0.0, device=device)
+            if USE_ROLE_AUGMENTATION and random.random() < ROLE_AUGMENT_PROB:
+                batch_texts = batch.get("texts", [])
+                batch_languages = batch.get("languages", [])
+
+                swapped_texts = []
+                original_indices = []
+
+                for i, (text, lang) in enumerate(zip(batch_texts, batch_languages)):
+                    swapped = swap_roles_simple(text, lang)
+                    if swapped:
+                        swapped_texts.append(swapped)
+                        original_indices.append(i)
+
+                if swapped_texts and len(swapped_texts) >= 2:
+                    # Tokenize swapped texts
+                    swapped_encoded = tokenizer(
+                        swapped_texts,
+                        padding=True,
+                        truncation=True,
+                        max_length=128,
+                        return_tensors="pt",
+                    )
+                    swapped_ids = swapped_encoded["input_ids"].to(device)
+                    swapped_mask = swapped_encoded["attention_mask"].to(device)
+
+                    # Get embeddings for swapped texts (no adversarial)
+                    swapped_out = model(swapped_ids, swapped_mask, adv_lambda=0)
+
+                    # Get original embeddings for corresponding indices
+                    z_original = out["z"][original_indices]
+                    z_swapped = swapped_out["z"]
+
+                    # Contrastive loss: push role-swapped embeddings apart
+                    # Hinge loss: max(0, margin - distance)
+                    distances = F.pairwise_distance(z_original, z_swapped)
+                    loss_role = F.relu(ROLE_CONTRASTIVE_MARGIN - distances).mean()
+
+                    # Clean up
+                    del swapped_ids, swapped_mask, swapped_out, z_original, z_swapped, distances
+
+            loss = loss + ROLE_CONTRASTIVE_WEIGHT * loss_role
+
             if USE_AMP and scaler:
                 scaler.scale(loss).backward()
                 scaler.unscale_(optimizer)
@@ -361,6 +460,8 @@ for split_idx, split_name in enumerate(splits_to_train):
                 del sample_weights
             if USE_CONTEXT_AUXILIARY:
                 del context_labels, loss_context
+            if USE_ROLE_AUGMENTATION:
+                del loss_role
 
         avg_loss = total_loss / n_batches
 

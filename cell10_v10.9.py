@@ -3,7 +3,7 @@
 
 import zipfile
 
-zip_path = "BIP_v10.8_results.zip"
+zip_path = "BIP_v10.9_results.zip"
 print("Creating download package...")
 
 with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:

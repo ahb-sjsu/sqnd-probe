@@ -21,6 +21,12 @@ BACKBONE = "MiniLM"  # @param ["MiniLM", "LaBSE", "XLM-R-base", "XLM-R-large"]
 # @markdown - **XLM-R-base**: Strong multilingual, 270M params
 # @markdown - **XLM-R-large**: Strongest representations, 550M params
 
+# @markdown ---
+# @markdown ## Output Options
+CREATE_DOWNLOAD_ZIP = False  # @param {type:"boolean"}
+# @markdown - **CREATE_DOWNLOAD_ZIP**: Create and download a zip file of results (optional)
+# @markdown - Results are always persisted to Google Drive regardless of this setting
+
 # Backbone configurations
 BACKBONE_CONFIGS = {
     "MiniLM": {

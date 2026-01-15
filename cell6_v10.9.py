@@ -242,6 +242,7 @@ class NativeDataset(Dataset):
             "language": item["language"],
             "context": item["context"],
             "confidence": item["confidence"],
+            "text": item["text"],  # Raw text for role augmentation
         }
 
 
@@ -258,6 +259,7 @@ def collate_fn(batch):
         "languages": [x["language"] for x in batch],
         "contexts": [x["context"] for x in batch],
         "confidences": [x["confidence"] for x in batch],
+        "texts": [x["text"] for x in batch],  # v10.10: raw texts for role augmentation
     }
 
 
