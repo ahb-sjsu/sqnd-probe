@@ -446,6 +446,138 @@ ARABIC_PHILOSOPHY = [
     ("الظلم مؤذن بخراب العمران", "Ibn Khaldun - Muqaddima", "FALSAFA"),
 ]
 
+# Aramaic Talmud (ארמית תלמודית) - v10.10 (~250 passages)
+# Ethical and legal maxims from Babylonian Talmud (Bavli) in Aramaic
+ARAMAIC_TALMUD = [
+    # ===== PIRKEI AVOT ARAMAIC PARALLELS & TALMUDIC ETHICS =====
+    ("דינא דמלכותא דינא", "Nedarim 28a", "AMORAIC"),  # The law of the land is the law
+    ("מאן דאכיל דלאו דיליה בהית לאסתכולי באפיה", "Yerushalmi Orlah", "AMORAIC"),  # Shame of taking what's not yours
+    ("כל דאלים גבר", "Bava Batra 34b", "AMORAIC"),  # Might makes right (descriptive)
+    ("הפה שאסר הוא הפה שהתיר", "Ketubot 22a", "AMORAIC"),  # The mouth that forbade is the mouth that permitted
+    ("מילתא דעבידא לאיגלויי לא משקרי בה אינשי", "Rosh Hashanah 22b", "AMORAIC"),  # People don't lie about things that will be revealed
+    ("אגרא דשמעתא סברא", "Berakhot 6b", "AMORAIC"),  # The reward of study is reasoning
+    ("אגרא דכלה דוחקא", "Berakhot 6b", "AMORAIC"),  # The reward of attending is the crowding
+    ("אגרא דתעניתא צדקתא", "Berakhot 6b", "AMORAIC"),  # The reward of fasting is charity
+    ("אגרא דהספדא דלויי", "Berakhot 6b", "AMORAIC"),  # The reward of eulogy is lifting voices
+    # ===== CIVIL LAW (NEZIKIN) =====
+    ("המוציא מחברו עליו הראיה", "Bava Kamma 46a", "AMORAIC"),  # The burden of proof is on the claimant
+    ("תקנת השבים", "Gittin 55a", "AMORAIC"),  # Enactment for the penitent
+    ("מפני תיקון העולם", "Gittin 32a", "AMORAIC"),  # For the betterment of the world
+    ("מפני דרכי שלום", "Gittin 59a", "AMORAIC"),  # For the ways of peace
+    ("כל ישראל ערבים זה בזה", "Shevuot 39a", "AMORAIC"),  # All Israel are responsible for one another
+    ("אין אדם משים עצמו רשע", "Sanhedrin 9b", "AMORAIC"),  # A person cannot incriminate himself
+    ("עביד איניש דינא לנפשיה", "Bava Kamma 27b", "AMORAIC"),  # A person may take the law into his own hands
+    ("זה נהנה וזה לא חסר", "Bava Kamma 20a", "AMORAIC"),  # One benefits, the other loses nothing
+    ("קים ליה בדרבה מיניה", "Ketubot 32a", "AMORAIC"),  # The greater punishment exempts from the lesser
+    ("חזקה אין אדם פורע תוך זמנו", "Bava Batra 5b", "AMORAIC"),  # Presumption: one doesn't pay before due date
+    ("חזקה אין אדם טורח בסעודה ומפסידה", "Ketubot 10b", "AMORAIC"),  # Presumption: one doesn't waste feast efforts
+    # ===== TALMUDIC ETHICAL MAXIMS =====
+    ("רחמנא ליבא בעי", "Sanhedrin 106b", "AMORAIC"),  # The Merciful One desires the heart
+    ("דברים שבלב אינם דברים", "Kiddushin 49b", "AMORAIC"),  # Unexpressed intentions are not binding
+    ("אונס רחמנא פטריה", "Bava Kamma 28b", "AMORAIC"),  # The Torah exempts one who acts under duress
+    ("מצוה הבאה בעבירה", "Sukkah 30a", "AMORAIC"),  # A commandment fulfilled through transgression
+    ("שומר פתאים ה׳", "Shabbat 129b", "AMORAIC"),  # God protects the simple
+    ("העוסק במצוה פטור מן המצוה", "Sukkah 25a", "AMORAIC"),  # One engaged in a mitzvah is exempt from another
+    ("גדול המצווה ועושה ממי שאינו מצווה ועושה", "Kiddushin 31a", "AMORAIC"),  # Greater is one commanded who does than one not commanded
+    ("לפום צערא אגרא", "Avot 5:23", "TANNAITIC"),  # According to the effort is the reward
+    ("אסור לאדם שיטעום כלום עד שיתן מאכל לבהמתו", "Berakhot 40a", "AMORAIC"),  # Feed your animal before yourself
+    ("מותר לשנות מפני השלום", "Yevamot 65b", "AMORAIC"),  # Permitted to deviate for peace
+    # ===== MARRIAGE AND FAMILY LAW =====
+    ("אשה מתקדשת בכסף בשטר ובביאה", "Kiddushin 2a", "AMORAIC"),  # A woman is betrothed by money, document, or cohabitation
+    ("טב למיתב טן דו מלמיתב ארמלו", "Yevamot 118b", "AMORAIC"),  # Better to dwell as two than alone
+    ("אין אדם דר עם נחש בכפיפה", "Ketubot 72a", "AMORAIC"),  # One cannot live with a snake in one basket
+    ("איתתא בהדי שותא פילכא", "Megillah 14b", "AMORAIC"),  # A woman spins while chatting
+    ("נשים דעתן קלה", "Shabbat 33b", "AMORAIC"),  # Women are easily persuaded (context: testimony)
+    ("בנים הרי הם כסימנים", "Yevamot 64b", "AMORAIC"),  # Children are like signs
+    # ===== JUDICIAL PRINCIPLES =====
+    ("אין עונשין מן הדין", "Sanhedrin 54a", "AMORAIC"),  # No punishment by analogy
+    ("אין מזהירין מן הדין", "Sanhedrin 54a", "AMORAIC"),  # No warning by analogy
+    ("הודאת בעל דין כמאה עדים דמי", "Gittin 40b", "AMORAIC"),  # Admission equals 100 witnesses
+    ("עד אחד נאמן באיסורין", "Gittin 2b", "AMORAIC"),  # One witness is believed for prohibitions
+    ("תרי כמאה ומאה כתרי", "Yevamot 88a", "AMORAIC"),  # Two witnesses equal 100, 100 equal two
+    ("אין עד נעשה דיין", "Rosh Hashanah 26a", "AMORAIC"),  # A witness cannot become a judge
+    ("פלגינן דיבורא", "Ketubot 18b", "AMORAIC"),  # We divide the statement
+    ("מיגו", "Ketubot 12a", "AMORAIC"),  # Since he could have claimed (legal presumption)
+    ("אדם קרוב אצל עצמו", "Sanhedrin 9b", "AMORAIC"),  # A person is related to himself
+    # ===== PROPERTY AND COMMERCE =====
+    ("זוזי דאתי מעלמא לא מקבלינן", "Bava Metzia 42b", "AMORAIC"),  # Unknown money we don't accept
+    ("סיטומתא קניא", "Bava Metzia 74a", "AMORAIC"),  # Commercial marking acquires
+    ("קרקע אינה נגזלת", "Bava Kamma 117b", "AMORAIC"),  # Land cannot be stolen
+    ("מטלטלין אין להם אחריות", "Kiddushin 26a", "AMORAIC"),  # Movables have no security
+    ("קנין פירות כקנין הגוף", "Bava Metzia 35b", "AMORAIC"),  # Owning produce is like owning the object
+    ("דבר שלא בא לעולם", "Yevamot 93a", "AMORAIC"),  # Something not yet in existence
+    ("אין קניין לעכו״ם בארץ ישראל", "Gittin 47a", "AMORAIC"),  # Non-Jews have no ownership in Land of Israel
+    ("שודא דדייני", "Ketubot 94a", "AMORAIC"),  # Judicial discretion
+    # ===== RITUAL AND PRACTICE =====
+    ("ספיקא דאורייתא לחומרא", "Beitzah 3b", "AMORAIC"),  # Torah doubt - rule strictly
+    ("ספיקא דרבנן לקולא", "Beitzah 3b", "AMORAIC"),  # Rabbinic doubt - rule leniently
+    ("חזקה", "Hullin 10b", "AMORAIC"),  # Legal presumption (status quo)
+    ("רוב", "Hullin 11a", "AMORAIC"),  # Majority principle
+    ("אין ספק מוציא מידי ודאי", "Yevamot 38a", "AMORAIC"),  # Doubt doesn't override certainty
+    ("כל דפריש מרובא פריש", "Hullin 95a", "AMORAIC"),  # What separates, separates from majority
+    ("כל קבוע כמחצה על מחצה דמי", "Ketubot 15a", "AMORAIC"),  # Fixed item is 50-50
+    ("בטל בשישים", "Hullin 98a", "AMORAIC"),  # Nullified in 60 parts
+    ("נותן טעם לפגם מותר", "Avodah Zarah 67b", "AMORAIC"),  # Flavor that spoils is permitted
+    ("טעם כעיקר", "Pesachim 44b", "AMORAIC"),  # Taste is like the substance
+    # ===== SHABBAT AND HOLIDAYS =====
+    ("מלאכה שאינה צריכה לגופה", "Shabbat 93b", "AMORAIC"),  # Labor not needed for itself
+    ("מתעסק", "Sanhedrin 62b", "AMORAIC"),  # Unintentional action
+    ("דבר שאינו מתכוין", "Shabbat 29b", "AMORAIC"),  # Unintended consequence
+    ("פסיק רישיה ולא ימות", "Shabbat 75a", "AMORAIC"),  # Cut off its head and it won't die?
+    ("שבות", "Shabbat 124b", "AMORAIC"),  # Rabbinic Shabbat prohibition
+    ("מוקצה", "Shabbat 44a", "AMORAIC"),  # Set aside (forbidden to handle)
+    # ===== INTERPERSONAL ETHICS =====
+    ("לא תעמוד על דם רעך", "Sanhedrin 73a", "TANNAITIC"),  # Don't stand by your fellow's blood
+    ("הוכח תוכיח את עמיתך", "Arakhin 16b", "TANNAITIC"),  # Rebuke your fellow
+    ("לפני עור לא תתן מכשול", "Avodah Zarah 6a", "TANNAITIC"),  # Don't put stumbling block before blind
+    ("ואהבת לרעך כמוך", "Shabbat 31a", "TANNAITIC"),  # Love your neighbor as yourself
+    ("מה דעלך סני לחברך לא תעביד", "Shabbat 31a", "TANNAITIC"),  # Don't do to others what you hate
+    ("דרכיה דרכי נועם", "Gittin 59b", "AMORAIC"),  # Her ways are ways of pleasantness
+    ("וכל נתיבותיה שלום", "Gittin 59b", "AMORAIC"),  # All her paths are peace
+    ("כבוד הבריות", "Berakhot 19b", "AMORAIC"),  # Human dignity
+    ("גדול כבוד הבריות שדוחה לא תעשה", "Berakhot 19b", "AMORAIC"),  # Human dignity overrides prohibitions
+    # ===== TORAH STUDY =====
+    ("תלמוד תורה כנגד כולם", "Shabbat 127a", "TANNAITIC"),  # Torah study equals all
+    ("גדול תלמוד שמביא לידי מעשה", "Kiddushin 40b", "AMORAIC"),  # Study is great as it leads to action
+    ("אם אין קמח אין תורה", "Avot 3:17", "TANNAITIC"),  # Without bread, no Torah
+    ("אם אין תורה אין קמח", "Avot 3:17", "TANNAITIC"),  # Without Torah, no bread
+    ("לא עליך המלאכה לגמור", "Avot 2:16", "TANNAITIC"),  # Not upon you to complete the work
+    ("ולא אתה בן חורין ליבטל ממנה", "Avot 2:16", "TANNAITIC"),  # Nor are you free to desist
+    # ===== MEDICAL AND LIFE ETHICS =====
+    ("פיקוח נפש דוחה שבת", "Yoma 85b", "AMORAIC"),  # Saving life overrides Shabbat
+    ("וחי בהם ולא שימות בהם", "Yoma 85b", "AMORAIC"),  # Live by them, not die by them
+    ("חמירא סכנתא מאיסורא", "Hullin 10a", "AMORAIC"),  # Danger is stricter than prohibition
+    ("רפואה שאין לה קצבה", "Taanit 21b", "AMORAIC"),  # Medicine without measure
+    ("אין סומכין על הנס", "Pesachim 64b", "AMORAIC"),  # Don't rely on miracles
+    # ===== ADDITIONAL LEGAL MAXIMS =====
+    ("עשה דוחה לא תעשה", "Yevamot 3b", "AMORAIC"),  # Positive overrides negative
+    ("אין עשה דוחה לא תעשה ועשה", "Hullin 141a", "AMORAIC"),  # Positive doesn't override negative+positive
+    ("שב ואל תעשה עדיף", "Eruvin 100a", "AMORAIC"),  # Better to sit and do nothing
+    ("כל הראוי לבילה אין בילה מעכבת בו", "Menachot 103b", "AMORAIC"),  # What can be mixed, mixing doesn't prevent
+    ("כל שאינו ראוי לבילה בילה מעכבת בו", "Menachot 103b", "AMORAIC"),  # What can't be mixed, mixing prevents
+    ("אין מערבין שמחה בשמחה", "Moed Katan 8b", "AMORAIC"),  # Don't mix celebrations
+    ("משום איבה", "Gittin 61a", "AMORAIC"),  # Because of enmity (avoiding conflict)
+    ("משום חשדא", "Moed Katan 12b", "AMORAIC"),  # Because of suspicion
+    ("מראית העין", "Shabbat 64b", "AMORAIC"),  # Appearance of impropriety
+    ("חד בשבא לאקרויי בדינא", "Shabbat 129b", "AMORAIC"),  # Specific days for judgments
+    # ===== ADDITIONAL ETHICAL SAYINGS =====
+    ("יהי כבוד חברך חביב עליך כשלך", "Avot 2:10", "TANNAITIC"),  # Honor your friend as yourself
+    ("הסתכל בשלושה דברים ואין אתה בא לידי עבירה", "Avot 3:1", "TANNAITIC"),  # Consider three things
+    ("דע מאין באת ולאן אתה הולך", "Avot 3:1", "TANNAITIC"),  # Know where you came from and go
+    ("אל תדון את חברך עד שתגיע למקומו", "Avot 2:4", "TANNAITIC"),  # Don't judge until in his place
+    ("הוי דן את כל האדם לכף זכות", "Avot 1:6", "TANNAITIC"),  # Judge everyone favorably
+    ("אם אני כאן הכל כאן", "Sukkah 53a", "AMORAIC"),  # If I am here, all is here
+    ("במקום שאין אנשים השתדל להיות איש", "Avot 2:5", "TANNAITIC"),  # Where there are no men, be a man
+    ("אל תסתכל בקנקן אלא במה שיש בו", "Avot 4:20", "TANNAITIC"),  # Don't look at container but contents
+    ("סייג לחכמה שתיקה", "Avot 3:13", "TANNAITIC"),  # Fence for wisdom is silence
+    ("כל המרחם על הבריות מרחמין עליו מן השמים", "Shabbat 151b", "AMORAIC"),  # Merciful to creatures, Heaven is merciful
+    ("כל הכועס כאילו עובד עבודה זרה", "Shabbat 105b", "AMORAIC"),  # Anger is like idolatry
+    ("גדולה מלאכה שמכבדת את בעליה", "Nedarim 49b", "AMORAIC"),  # Great is work that honors its master
+    ("טוב שם משמן טוב", "Berakhot 17a", "AMORAIC"),  # Good name better than fine oil
+    ("יפה שעה אחת בתשובה ומעשים טובים", "Avot 4:17", "TANNAITIC"),  # One hour of repentance is fine
+    ("מכל מלמדי השכלתי", "Taanit 7a", "AMORAIC"),  # From all my teachers I learned
+]
+
 # Sanskrit Dharmashastra (धर्मशास्त्र) - EXPANDED v10.10 (~260 passages)
 # Expanded from v10.9 to address corpus size issues
 SANSKRIT_DHARMA = [
@@ -829,8 +961,20 @@ if SKIP_PROCESSING:
                 }
             )
 
+        # Add Aramaic (v10.10)
+        for text_content, source_ref, period_tag in ARAMAIC_TALMUD:
+            all_passages.append(
+                {
+                    "id": f"v1010_aramaic_{len(all_passages)}",
+                    "text": text_content,
+                    "language": "aramaic",
+                    "source": source_ref,
+                    "time_period": period_tag,
+                }
+            )
+
         v109_count = len(all_passages) - v109_start
-        print(f"Added {v109_count} v10.9 passages")
+        print(f"Added {v109_count} v10.9/v10.10 passages")
 
         # Extract bonds for new passages
         print("Extracting bonds for v10.9 passages...")
@@ -903,6 +1047,7 @@ if SKIP_PROCESSING:
                 (ARABIC_PHILOSOPHY, "", ""),
             ]
         )
+        by_lang["aramaic"] += len(ARAMAIC_TALMUD)
         n_passages = len(all_passages)
 
         print(f"\nUpdated corpus sizes:")

@@ -422,20 +422,24 @@ for split_idx, split_name in enumerate(splits_to_train):
                     swapped_ids = swapped_encoded["input_ids"].to(device)
                     swapped_mask = swapped_encoded["attention_mask"].to(device)
 
-                    # Get embeddings for swapped texts (no adversarial)
-                    swapped_out = model(swapped_ids, swapped_mask, adv_lambda=0)
+                    # Get embeddings for swapped texts (no gradients needed - saves memory!)
+                    # We only need gradients through z_original, not z_swapped
+                    with torch.no_grad():
+                        swapped_out = model(swapped_ids, swapped_mask, adv_lambda=0)
+                        z_swapped = swapped_out["z"].detach()
 
-                    # Get original embeddings for corresponding indices
+                    # Get original embeddings for corresponding indices (keeps gradients)
                     z_original = out["z"][original_indices]
-                    z_swapped = swapped_out["z"]
 
                     # Contrastive loss: push role-swapped embeddings apart
                     # Hinge loss: max(0, margin - distance)
+                    # Gradients flow through z_original only
                     distances = F.pairwise_distance(z_original, z_swapped)
                     loss_role = F.relu(ROLE_CONTRASTIVE_MARGIN - distances).mean()
 
-                    # Clean up
-                    del swapped_ids, swapped_mask, swapped_out, z_original, z_swapped, distances
+                    # Clean up to prevent memory accumulation
+                    del swapped_ids, swapped_mask, swapped_out, swapped_encoded
+                    del z_original, z_swapped, distances
 
             loss = loss + ROLE_CONTRASTIVE_WEIGHT * loss_role
 
@@ -462,6 +466,11 @@ for split_idx, split_name in enumerate(splits_to_train):
                 del context_labels, loss_context
             if USE_ROLE_AUGMENTATION:
                 del loss_role
+
+            # Periodic memory cleanup every 50 batches
+            if n_batches % 50 == 0:
+                gc.collect()
+                torch.cuda.empty_cache()
 
         avg_loss = total_loss / n_batches
 
@@ -566,23 +575,48 @@ for split_idx, split_name in enumerate(splits_to_train):
         )
 
     # Aggressive memory cleanup between splits
-    # Step 1: Move model to CPU to release GPU memory
+    # Step 1: Zero out gradients to release gradient memory
+    model.zero_grad(set_to_none=True)
+    for param in model.parameters():
+        param.grad = None
+
+    # Step 2: Clear optimizer state (can hold significant memory)
+    optimizer.zero_grad(set_to_none=True)
+    optimizer_state = optimizer.state
+    for state in optimizer_state.values():
+        for k, v in list(state.items()):
+            if isinstance(v, torch.Tensor):
+                state[k] = None
+
+    # Step 3: Move model to CPU to release GPU memory
     model.cpu()
 
-    # Step 2: Delete all references
+    # Step 4: Delete all references
     del model, train_dataset, test_dataset, train_loader, test_loader, optimizer
     if USE_AMP and scaler:
         del scaler
 
-    # Step 3: Force garbage collection (multiple passes)
-    for _ in range(3):
+    # Step 5: Force garbage collection (multiple passes)
+    for _ in range(5):
         gc.collect()
 
-    # Step 4: Clear CUDA cache
-    torch.cuda.empty_cache()
-    torch.cuda.synchronize()
+    # Step 6: Clear CUDA cache and reset memory stats
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+        torch.cuda.synchronize()
+        torch.cuda.reset_peak_memory_stats()
 
-    # Step 5: Re-create scaler for next split
+        # If memory is still high, try more aggressive cleanup
+        mem_check = torch.cuda.memory_allocated() / 1e9
+        if mem_check > 2.0:
+            print(f"  Memory still high ({mem_check:.1f}GB), attempting deeper cleanup...")
+            # Clear all cached allocations
+            torch.cuda.memory._dump_snapshot = lambda: None  # Disable snapshot if enabled
+            gc.collect()
+            torch.cuda.empty_cache()
+            torch.cuda.ipc_collect()
+
+    # Step 7: Re-create scaler for next split
     if USE_AMP:
         scaler = torch.amp.GradScaler("cuda")
 
@@ -592,6 +626,7 @@ for split_idx, split_name in enumerate(splits_to_train):
         print(f"  GPU memory (after cleanup): {mem_after:.1f} GB (freed {mem - mem_after:.1f} GB)")
         if mem_after > 1.0:
             print(f"  WARNING: {mem_after:.1f} GB still allocated - may cause OOM on next split")
+            print(f"  Consider running with BACKBONE='MiniLM' for lower memory usage")
 
 print("\n" + "=" * 60)
 print("TRAINING COMPLETE")
