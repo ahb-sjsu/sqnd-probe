@@ -1,4 +1,4 @@
-# BIP v10.8 Reviewer's Guide
+# BIP v10.9 Reviewer's Guide
 ## Bond Invariance Principle: Cross-Lingual Moral Transfer in Embedding Space
 
 ---
@@ -66,7 +66,7 @@ The **gradient reversal layer** (GRL) flips the sign of gradients during backpro
 | Metric | Target | Interpretation |
 |--------|--------|----------------|
 | Bond F1 (macro) | >1.5x chance (>0.15) | Model detects moral structure |
-| Language Accuracy | ~20% (1/5 languages) | Cannot identify source language |
+| Language Accuracy | ~12.5% (1/8 languages) | Cannot identify source language |
 | Cross-lingual Transfer | >1.0x on unseen languages | Bonds transfer across languages |
 
 ---
@@ -75,25 +75,42 @@ The **gradient reversal layer** (GRL) flips the sign of gradients during backpro
 
 ### 3.1 Dataset Composition
 
-The experiment uses multi-lingual ethical texts spanning 3,000+ years:
+The experiment uses multi-lingual ethical texts spanning 3,000+ years across **8 languages** and **26 time periods**:
 
 | Source | Language | Period | Content |
 |--------|----------|--------|---------|
 | Sefaria | Hebrew | Biblical, Tannaitic, Amoraic | Torah, Mishnah, Talmud |
 | Sefaria | Aramaic | Tannaitic, Amoraic | Gemara, Targum |
-| Sefaria | Arabic | Medieval | Maimonides, commentaries |
-| Wenyanwen (Kaggle) | Classical Chinese | Confucian | Siku Quanshu (四库全书) |
+| Kaggle quran-nlp | Arabic | Quranic, Hadith | Quran, Hadith collections |
+| Wenyanwen (Kaggle) | Classical Chinese | Confucian, Daoist | Siku Quanshu (四库全书) |
 | Dear Abby | English | Modern | Advice columns |
-| **Project Gutenberg** | English | **Western Classical** | **Plato, Aristotle, Stoics, Cicero** |
+| Project Gutenberg | English | Western Classical | Plato, Aristotle, Stoics, Cicero |
 | Bible Corpus | Hebrew, Arabic, Chinese | Classical | Parallel Bible translations |
+| **Hardcoded v10.9** | **Sanskrit** | **Dharma, Upanishad, Gita, Artha** | **Mahabharata, Manusmriti, Bhagavad Gita** |
+| **Hardcoded v10.9** | **Pali** | **Pali Canon** | **Dhammapada, Metta Sutta, Vinaya** |
 
-**New in v10.8**: Western Classics corpus adds Greek and Roman philosophical texts:
-- **Plato**: Republic, Apology, Crito, Phaedo, Gorgias, Symposium, Meno
-- **Aristotle**: Nicomachean Ethics, Politics
-- **Stoics**: Marcus Aurelius (Meditations), Epictetus (Enchiridion, Discourses)
-- **Cicero**: De Officiis
+**New in v10.9**: Expanded traditions and languages:
 
-**Total**: ~100K+ passages with moral bond annotations
+**Sanskrit/Pali** (~140 passages):
+- **Mahabharata**: Dharma teachings (अहिंसा परमो धर्मः)
+- **Manusmriti**: Laws of Manu
+- **Upanishads**: Taittiriya, Isha, Brihadaranyaka, Chandogya
+- **Bhagavad Gita**: Complete ethical teachings
+- **Arthashastra**: Political ethics
+- **Pali Canon**: Dhammapada, Metta Sutta, Vinaya, Mangala Sutta
+
+**Chinese Philosophical Traditions** (~230 passages):
+- **Buddhist Chinese** (佛教漢文): Diamond Sutra, Heart Sutra, Lotus Sutra, Platform Sutra
+- **Legalist Chinese** (法家): Han Feizi, Shang Jun Shu, Guanzi
+- **Mohist Chinese** (墨家): Universal Love, Non-aggression, Meritocracy
+- **Neo-Confucian** (宋明理學): Zhu Xi, Wang Yangming
+
+**Arabic/Islamic Traditions** (~60 passages):
+- **Fiqh**: Islamic legal maxims (قواعد فقهية)
+- **Sufi Ethics**: Al-Ghazali, Rumi, Ibn Arabi
+- **Falsafa**: Al-Farabi, Ibn Sina, Ibn Rushd, Ibn Khaldun
+
+**Total**: ~230K+ passages with moral bond annotations
 
 **Automatic Augmentation** (if corpus sizes are below thresholds):
 
@@ -102,11 +119,11 @@ The experiment uses multi-lingual ethical texts spanning 3,000+ years:
 | ETHICS | `hendrycks/ethics` | ~130K | English moral scenarios |
 | Social Chemistry 101 | `allenai/social_chem_101` | ~292K | English social norms |
 
-The notebook automatically augments under-represented languages if cached data has fewer than the minimum required samples (e.g., 100K for English).
+The notebook automatically augments under-represented languages if cached data has fewer than the minimum required samples.
 
 ### 3.2 Train/Test Splits
 
-Six experimental conditions test different transfer scenarios:
+**Ten experimental conditions** test different transfer scenarios:
 
 | Split | Train | Test | Tests |
 |-------|-------|------|-------|
@@ -115,9 +132,16 @@ Six experimental conditions test different transfer scenarios:
 | `ancient_to_modern` | Biblical→Medieval | Modern, Dear Abby | Temporal transfer |
 | `mixed_baseline` | 70% all | 30% all | Upper bound (no transfer) |
 | `abby_to_chinese` | Dear Abby (English) | Classical Chinese | Extreme transfer |
-| **`western_to_eastern`** | **Western Classics** | **Chinese, Hebrew** | **Cross-civilization transfer** |
+| **`confucian_to_buddhist`** | **Confucian Chinese** | **Buddhist Chinese** | **Intra-Chinese transfer** |
+| **`confucian_to_legalist`** | **Confucian Chinese** | **Legalist Chinese** | **Chinese philosophical transfer** |
+| **`all_to_sanskrit`** | **All non-Indic** | **Sanskrit, Pali** | **Transfer to Indic traditions** |
+| **`semitic_to_indic`** | **Hebrew, Aramaic, Arabic** | **Sanskrit, Pali** | **Abrahamic → Dharmic transfer** |
+| **`quran_to_fiqh`** | **Quranic Arabic** | **Fiqh (Islamic jurisprudence)** | **Islamic textual transfer** |
 
-**New in v10.8**: Split 6 (`western_to_eastern`) tests whether Greek/Roman philosophical concepts of virtue, duty, and the good life transfer to Eastern traditions (Confucian, Biblical).
+**New in v10.9**: Five new splits test:
+- **Intra-Chinese diversity**: Do Confucian concepts transfer to Buddhist and Legalist traditions?
+- **Indic traditions**: Can models trained on Semitic/Chinese texts generalize to Sanskrit/Pali?
+- **Islamic development**: Does Quranic moral structure transfer to later Fiqh jurisprudence?
 
 ### 3.3 Model Architecture
 
@@ -255,8 +279,8 @@ Cell 4: Generate Passages
 
 ### 5.1 Quick Start (Google Colab)
 
-1. Open `BIP_v10.8_expanded.ipynb` in Colab
-2. Runtime → Change runtime type → **T4 GPU**
+1. Open `BIP_v10.9.ipynb` in Colab
+2. Runtime → Change runtime type → **T4 GPU** (L4/A100 recommended)
 3. Run cells 1-10 sequentially
 4. Training takes ~30-60 minutes depending on GPU
 
@@ -267,12 +291,12 @@ Cell 4: Generate Passages
 | 1 | Configuration & Setup | 1 min | Environment detection, Drive mount, GPU setup, install deps |
 | 2 | Download/Load Corpora | 1-5 min | Load from Drive cache OR download raw data from sources |
 | 3 | Patterns + Normalization | 10 sec | Define moral bond patterns, text normalization utilities |
-| 4 | Parallel Download + Stream | 3-10 min | Generate passages from all corpora (Sefaria, Chinese, Western, etc.) |
-| 5 | Generate Splits | 1 min | Create 6 train/test splits for cross-lingual experiments |
-| 6 | Model Architecture | 10 sec | Define BIPModel with bond head + adversarial heads |
-| 7 | **Train BIP Model** | 20-40 min | Train on all splits with gradient reversal, evaluate |
-| 8 | Linear Probe Test | 2 min | Independent invariance verification |
-| 9 | Final Results | 1 min | Summary table with BIP verdict |
+| 4 | Parallel Download + Stream | 3-10 min | Generate passages from all corpora; auto-detects missing v10.9 data |
+| 5 | Generate Splits | 1 min | Create 10 train/test splits for cross-lingual experiments |
+| 6 | Model Architecture | 10 sec | Define BIPModel with bond head + adversarial heads (8 langs, 26 periods) |
+| 7 | **Train BIP Model** | 20-40 min | Train on all splits with OOM recovery and gradient reversal |
+| 8 | Geometric Analysis | 2 min | Latent space probing + linear probe invariance test |
+| 9 | Fuzz Testing & Results | 1 min | Structural vs surface perturbation tests, final verdict |
 | 10 | Download Results | 30 sec | Package results for download (Colab/Kaggle/local) |
 
 ### 5.3 Cached Data
@@ -322,7 +346,11 @@ western_to_eastern RESULTS:
 | `ancient_to_modern` | Moral structure stable across 3000 years |
 | `mixed_baseline` | Upper bound on performance |
 | `abby_to_chinese` | Extreme test: modern English → ancient Chinese |
-| `western_to_eastern` | Greek/Roman virtue ethics → Confucian/Biblical traditions |
+| **`confucian_to_buddhist`** | Confucian concepts transfer to Buddhist Chinese tradition |
+| **`confucian_to_legalist`** | Confucian concepts transfer to Legalist Chinese tradition |
+| **`all_to_sanskrit`** | All non-Indic languages transfer to Sanskrit/Pali |
+| **`semitic_to_indic`** | Abrahamic traditions transfer to Dharmic traditions |
+| **`quran_to_fiqh`** | Quranic moral structure transfers to Islamic jurisprudence |
 
 ### 6.4 Failure Modes
 
@@ -347,6 +375,10 @@ western_to_eastern RESULTS:
 
 4. **Cross-Civilization Transfer** (v10.8): Greek/Roman philosophical concepts transfer to Eastern traditions, suggesting deep structural similarities in ethical reasoning.
 
+5. **Intra-Tradition Transfer** (v10.9): Chinese Confucian concepts transfer to Buddhist and Legalist traditions within the same language, testing philosophical rather than linguistic boundaries.
+
+6. **Abrahamic-Dharmic Bridge** (v10.9): Semitic moral concepts (Hebrew, Aramaic, Arabic) transfer to Indic traditions (Sanskrit, Pali), bridging major world religious traditions.
+
 ### 7.2 Implications
 
 - **For AI Safety**: Language-agnostic ethical classifiers are feasible. Train once on well-annotated corpora, deploy anywhere.
@@ -358,45 +390,59 @@ western_to_eastern RESULTS:
 ### 7.3 Limitations
 
 1. **Bond Annotation Quality**: Relies on automated extraction from commentary structure
-2. **Language Coverage**: 5 languages; more needed for strong universality claims
+2. **Language Coverage**: 8 languages; more needed for strong universality claims (e.g., Japanese, African languages)
 3. **Bond Taxonomy**: D4 structure is a modeling choice, not ground truth
 4. **Western Classics in Translation**: Greek/Roman texts are English translations, not original languages
+5. **Sanskrit/Pali Corpus Size**: Hardcoded passages (~140) smaller than other corpora
 
 ### 7.4 Future Work
 
-1. **Expand Languages**: Add Sanskrit (Dharmaśāstra), Japanese (Bushido), original Greek/Latin
-2. **Human Evaluation**: Validate bond annotations with expert ethicists
-3. **Hardware Deployment**: FPGA-based "EPU" for real-time inference (<1ms)
-4. **Multi-Agent Extension**: Rank 4-6 tensor algebra for multi-agent ethical scenarios
+1. **Expand Languages**: Add Japanese (Bushido), Korean, Swahili, original Greek/Latin
+2. **Larger Indic Corpora**: Expand Sanskrit/Pali from hardcoded to dynamically loaded sources
+3. **Human Evaluation**: Validate bond annotations with expert ethicists
+4. **Hardware Deployment**: FPGA-based "EPU" for real-time inference (<1ms)
+5. **Multi-Agent Extension**: Rank 4-6 tensor algebra for multi-agent ethical scenarios
 
 ---
 
-## 8. Changes in v10.8
+## 8. Changes in v10.9
 
 ### 8.1 New Features
 
 | Feature | Description |
 |---------|-------------|
-| Western Classics Corpus | 13 texts from Plato, Aristotle, Stoics, Cicero via Project Gutenberg |
-| Split 6: Western → Eastern | Tests Greek/Roman → Chinese/Hebrew transfer |
-| Parallel Prefetch | 12-thread concurrent download of all remote corpora |
-| WESTERN_CLASSICAL Period | New time period for Greek/Roman philosophy |
+| **Sanskrit/Pali Corpus** | ~140 passages from Mahabharata, Manusmriti, Upanishads, Bhagavad Gita, Pali Canon |
+| **Buddhist Chinese** | Diamond Sutra, Heart Sutra, Lotus Sutra, Platform Sutra passages |
+| **Legalist Chinese** | Han Feizi, Shang Jun Shu, Guanzi passages |
+| **Mohist Chinese** | Universal Love, Non-aggression, Meritocracy passages |
+| **Islamic Traditions** | Fiqh jurisprudence, Sufi ethics (Al-Ghazali), Falsafa (Ibn Rushd) |
+| **5 New Splits** | confucian_to_buddhist, confucian_to_legalist, all_to_sanskrit, semitic_to_indic, quran_to_fiqh |
+| **OOM Recovery** | Automatic GPU memory cleanup and retry on OutOfMemoryError |
+| **11 New Time Periods** | BUDDHIST, LEGALIST, MOHIST, FIQH, SUFI, FALSAFA, DHARMA, UPANISHAD, GITA, ARTHA, PALI |
 
 ### 8.2 Bug Fixes
 
 | Bug | Fix |
 |-----|-----|
-| Broken print() in Cell 5 | Fixed literal newline → escaped `\n` |
-| Confidence weighting ineffective | Now handles numeric values (≥0.8 → 2x weight) |
-| Drive copy skipped on first run | Changed condition to check `SAVE_DIR` existence |
-| Cell 10 Colab-only crash | Added try/except with fallback for Kaggle/local |
-| DRIVE_FILES O(n) lookup | Changed from `list` to `set` for O(1) membership test |
-| Dear Abby not found on Drive | Cell 2 now uses `os.path.exists()` instead of cached set |
+| Quran/Hadith period mismatch | Changed CLASSICAL → QURANIC/HADITH for proper period assignment |
+| v10.9 detection too simplistic | Now checks Sanskrit ≥70, Pali ≥70, AND v10.9 periods present |
+| Stale splits with new data | Automatically deletes old splits when v10.9 corpora detected |
+| OOM on split 2+ | Added `model.cpu()` before deletion, multiple `gc.collect()` passes |
+| Memory not freed between splits | Comprehensive cleanup of model, analyzer, encoder objects |
 
-### 8.3 Performance Improvements
+### 8.3 Technical Improvements
 
-- **Data loading**: ~40% faster due to parallel prefetch
-- **Gutenberg primary, MIT fallback**: More reliable text sources
+- **OOM Recovery Pattern**: `create_model_with_retry()` catches `torch.cuda.OutOfMemoryError`, cleans up, retries
+- **v10.9 Corpus Detection**: Checks for minimum corpus sizes AND presence of new time periods
+- **Automatic Splits Regeneration**: Old splits deleted when new corpora require different split definitions
+
+### 8.4 Previous Changes (v10.8)
+
+| Feature | Description |
+|---------|-------------|
+| Western Classics Corpus | 13 texts from Plato, Aristotle, Stoics, Cicero via Project Gutenberg |
+| Parallel Prefetch | 12-thread concurrent download of all remote corpora |
+| WESTERN_CLASSICAL Period | New time period for Greek/Roman philosophy |
 
 ---
 
@@ -462,18 +508,18 @@ western_to_eastern RESULTS:
 
 # Local:
 pip install torch transformers sentence-transformers pandas tqdm scikit-learn
-python -m jupyter notebook BIP_v10.8_expanded.ipynb
+python -m jupyter notebook BIP_v10.9.ipynb
 ```
 
 ### Key Files
 
 | File | Purpose |
 |------|---------|
-| `BIP_v10.8_expanded.ipynb` | Main experiment notebook |
+| `BIP_v10.9.ipynb` | Main experiment notebook |
 | `data/raw/dear_abby.csv` | Dear Abby corpus (English modern) |
 | `data/processed/passages.jsonl` | Processed text passages |
 | `data/processed/bonds.jsonl` | Bond annotations |
-| `data/splits/all_splits.json` | Train/test split definitions |
+| `data/splits/all_splits.json` | Train/test split definitions (10 splits) |
 | `models/checkpoints/best_*.pt` | Trained model weights |
 | `{SAVE_DIR}/` | Persistent storage (Google Drive / Kaggle working dir) |
 
@@ -492,6 +538,6 @@ python -m jupyter notebook BIP_v10.8_expanded.ipynb
 
 ---
 
-*Document Version: 2.2*
-*Last Updated: 2026-01-13*
+*Document Version: 3.0 (v10.9)*
+*Last Updated: 2026-01-14*
 *Contact: [Andrew H. Bond]*
