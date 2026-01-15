@@ -737,12 +737,14 @@ if SKIP_PROCESSING:
     except:
         pass
 
-    # v10.9 requires: Sanskrit >= 70, Pali >= 70, and v10.9 periods present
-    has_full_v109 = sanskrit_count >= 70 and pali_count >= 70 and has_v109_periods
+    # v10.10 requires: Sanskrit >= 200, Pali >= 150, and v10.9 periods present
+    min_sanskrit = MIN_CORPUS_SIZE.get("sanskrit", 200)
+    min_pali = MIN_CORPUS_SIZE.get("pali", 150)
+    has_full_v109 = sanskrit_count >= min_sanskrit and pali_count >= min_pali and has_v109_periods
 
-    print(f"\nv10.9 corpus check:")
-    print(f"  Sanskrit: {sanskrit_count} (need >= 70)")
-    print(f"  Pali: {pali_count} (need >= 70)")
+    print(f"\nv10.10 corpus check:")
+    print(f"  Sanskrit: {sanskrit_count} (need >= {min_sanskrit})")
+    print(f"  Pali: {pali_count} (need >= {min_pali})")
     print(f"  v10.9 periods: {'present' if has_v109_periods else 'missing'}")
     print(f"  Full v10.9: {'YES' if has_full_v109 else 'NO - will add corpora'}")
 
