@@ -97,6 +97,49 @@ except Exception:
 from sklearn.metrics import f1_score
 import gc
 
+# ===== INITIAL MEMORY CLEANUP =====
+# Clean up any leftover GPU memory from previous runs before starting
+print("Cleaning up GPU memory from previous runs...")
+if torch.cuda.is_available():
+    # Clear any existing models/tensors from globals
+    for var_name in list(globals().keys()):
+        obj = globals().get(var_name)
+        if isinstance(obj, torch.nn.Module):
+            try:
+                obj.cpu()
+                del globals()[var_name]
+            except:
+                pass
+        elif isinstance(obj, torch.Tensor) and obj.is_cuda:
+            try:
+                del globals()[var_name]
+            except:
+                pass
+
+    # Force garbage collection
+    for _ in range(5):
+        gc.collect()
+
+    # Clear CUDA cache
+    torch.cuda.empty_cache()
+    torch.cuda.synchronize()
+    torch.cuda.reset_peak_memory_stats()
+
+    # Check memory status
+    mem_alloc = torch.cuda.memory_allocated() / 1e9
+    mem_reserved = torch.cuda.memory_reserved() / 1e9
+    print(f"  GPU memory: {mem_alloc:.2f} GB allocated, {mem_reserved:.2f} GB reserved")
+
+    if mem_alloc > 1.0:
+        print(f"  WARNING: {mem_alloc:.1f} GB still allocated - consider restarting runtime")
+        # Try more aggressive cleanup
+        torch.cuda.ipc_collect()
+        gc.collect()
+        torch.cuda.empty_cache()
+else:
+    print("  No GPU detected")
+
+print()
 
 # @markdown **Splits to train:**
 TRAIN_HEBREW_TO_OTHERS = True  # @param {type:"boolean"}
@@ -111,6 +154,24 @@ TRAIN_CONFUCIAN_TO_LEGALIST = True  # @param {type:"boolean"}
 TRAIN_ALL_TO_SANSKRIT = True  # @param {type:"boolean"}
 TRAIN_SEMITIC_TO_INDIC = True  # @param {type:"boolean"}
 TRAIN_QURAN_TO_FIQH = True  # @param {type:"boolean"}
+
+# @markdown **Reproducibility:**
+USE_FIXED_SEED = True  # @param {type:"boolean"}
+RANDOM_SEED = 42  # @param {type:"integer"}
+# @markdown Set USE_FIXED_SEED=True for reproducible results, False for random initialization
+
+if USE_FIXED_SEED:
+    import numpy as np
+    torch.manual_seed(RANDOM_SEED)
+    torch.cuda.manual_seed_all(RANDOM_SEED)
+    random.seed(RANDOM_SEED)
+    np.random.seed(RANDOM_SEED)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    print(f"Using fixed seed: {RANDOM_SEED}")
+else:
+    torch.backends.cudnn.benchmark = True  # Faster but non-deterministic
+    print("Using random initialization")
 
 # @markdown **Hyperparameters:**
 LANG_WEIGHT = 0.1  # @param {type:"number"}
