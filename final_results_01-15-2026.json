@@ -1,0 +1,263 @@
+{
+  "version": "v10.9",
+  "all_results": {
+    "hebrew_to_others": {
+      "bond_f1_macro": 0.16891348960558578,
+      "bond_acc": 0.33264421473824607,
+      "language_acc": 0.167189063021007,
+      "per_language_f1": {
+        "english": {
+          "f1": 0.10589177985038445,
+          "n": 2507
+        },
+        "arabic": {
+          "f1": 0.16990914548879177,
+          "n": 3063
+        },
+        "classical_chinese": {
+          "f1": 0.1797894674135559,
+          "n": 9410
+        }
+      },
+      "training_time": 1019.3742740154266
+    },
+    "semitic_to_non_semitic": {
+      "bond_f1_macro": 0.18340884639733,
+      "bond_acc": 0.27052008873551886,
+      "language_acc": 0.030626078383041655,
+      "per_language_f1": {
+        "english": {
+          "f1": 0.16149046259926753,
+          "n": 3503
+        },
+        "classical_chinese": {
+          "f1": 0.1874425999125856,
+          "n": 12725
+        }
+      },
+      "training_time": 1350.6862387657166
+    },
+    "ancient_to_modern": {
+      "bond_f1_macro": 0.44500184697482364,
+      "bond_acc": 0.5069822137292371,
+      "language_acc": 0.0,
+      "per_language_f1": {
+        "english": {
+          "f1": 0.4148640044136508,
+          "n": 10757
+        },
+        "hebrew": {
+          "f1": 0.6451041424183109,
+          "n": 1018
+        },
+        "arabic": {
+          "f1": 0.4065645224705672,
+          "n": 958
+        },
+        "classical_chinese": {
+          "f1": 0.6492395107917168,
+          "n": 873
+        }
+      },
+      "training_time": 3710.6171250343323
+    },
+    "mixed_baseline": {
+      "bond_f1_macro": 0.7999215083130414,
+      "bond_acc": 0.8061575145522126,
+      "language_acc": 0.01213268812679711,
+      "per_language_f1": {
+        "english": {
+          "f1": 0.7498986994549507,
+          "n": 1658
+        },
+        "hebrew": {
+          "f1": 0.8318220259562187,
+          "n": 4632
+        },
+        "sanskrit": {
+          "f1": 0.48,
+          "n": 13
+        },
+        "classical_chinese": {
+          "f1": 0.8405805558237694,
+          "n": 5972
+        },
+        "arabic": {
+          "f1": 0.8672539329677289,
+          "n": 1979
+        }
+      },
+      "training_time": 3145.6491827964783
+    },
+    "abby_to_chinese": {
+      "bond_f1_macro": 0.14191266246652157,
+      "bond_acc": 0.26204943661140934,
+      "language_acc": 0.0,
+      "per_language_f1": {
+        "classical_chinese": {
+          "f1": 0.14191266246652157,
+          "n": 16951
+        }
+      },
+      "training_time": 625.0314743518829
+    },
+    "confucian_to_buddhist": {
+      "bond_f1_macro": 0.006349206349206349,
+      "bond_acc": 0.020833333333333332,
+      "language_acc": 0.0,
+      "per_language_f1": {
+        "classical_chinese": {
+          "f1": 0.006349206349206349,
+          "n": 96
+        }
+      },
+      "training_time": 2252.5001921653748
+    },
+    "confucian_to_legalist": {
+      "bond_f1_macro": 0.0022522522522522522,
+      "bond_acc": 0.00625,
+      "language_acc": 0.0,
+      "per_language_f1": {
+        "classical_chinese": {
+          "f1": 0.0022522522522522522,
+          "n": 160
+        }
+      },
+      "training_time": 2246.5645620822906
+    },
+    "all_to_sanskrit": {
+      "bond_f1_macro": 0.06235334713595583,
+      "bond_acc": 0.2847682119205298,
+      "language_acc": 0.026490066225165563,
+      "per_language_f1": {
+        "sanskrit": {
+          "f1": 0.0924908424908425,
+          "n": 76
+        },
+        "pali": {
+          "f1": 0.03787878787878788,
+          "n": 75
+        }
+      },
+      "training_time": 4124.072979927063
+    },
+    "semitic_to_indic": {
+      "bond_f1_macro": 0.04107450473729543,
+      "bond_acc": 0.2052980132450331,
+      "language_acc": 0.17218543046357615,
+      "per_language_f1": {
+        "sanskrit": {
+          "f1": 0.08069381598793363,
+          "n": 76
+        },
+        "pali": {
+          "f1": 0.004081632653061224,
+          "n": 75
+        }
+      },
+      "training_time": 1320.3115680217743
+    }
+  },
+  "probe_results": {
+    "hebrew_to_others": {
+      "language_acc": 0.9094942324755989,
+      "language_chance": 0.25,
+      "language_status": "NOT invariant",
+      "period_acc": 0.9582963620230701,
+      "period_chance": 0.1111111111111111,
+      "period_status": "NOT invariant"
+    },
+    "semitic_to_non_semitic": {
+      "language_acc": 0.9465899753492194,
+      "language_chance": 0.5,
+      "language_status": "NOT invariant",
+      "period_acc": 0.9063270336894002,
+      "period_chance": 0.125,
+      "period_status": "NOT invariant"
+    }
+  },
+  "geometry_results": {
+    "obligation_permission": {
+      "transfer_accuracy": 1.0,
+      "status": "STRONG"
+    },
+    "harm_care": {
+      "axis_correlation": "0.14424226",
+      "orthogonal": "True"
+    },
+    "role_swap": {
+      "consistency": "0.5231384",
+      "consistency_std": "0.5878509",
+      "status": "VARIABLE"
+    },
+    "pca": {
+      "explained_variance": [
+        0.6661027669906616,
+        0.220783069729805,
+        0.06917933374643326,
+        0.021989403292536736,
+        0.011922570876777172,
+        0.005339454393833876,
+        0.002545453840866685,
+        0.0011509759351611137,
+        0.0008295061415992677,
+        0.00014574086526408792
+      ],
+      "n_components_90pct": "3",
+      "status": "LOW-DIM"
+    }
+  },
+  "fuzz_results": {
+    "structural_obligation_to_permission": {
+      "mean_distance": "0.07375662",
+      "std": "0.0936698",
+      "n": 7
+    },
+    "structural_harm_to_care": {
+      "mean_distance": "0.36851385",
+      "std": "0.29139778",
+      "n": 3
+    },
+    "structural_role_swap": {
+      "mean_distance": "0.0030645926",
+      "std": "0.0027738018",
+      "n": 3
+    },
+    "structural_violation_to_fulfillment": {
+      "mean_distance": "0.16054851",
+      "std": "0.10062904",
+      "n": 3
+    },
+    "surface_all": {
+      "mean_distance": "0.011900238",
+      "std": "0.008923569",
+      "n": 7
+    },
+    "comparison": {
+      "structural_mean": "0.13204232",
+      "surface_mean": "0.011900238",
+      "ratio": "11.095771",
+      "t_statistic": 2.457342033969987,
+      "p_value": 0.022777774076653257
+    }
+  },
+  "successful_splits": [
+    "hebrew_to_others",
+    "semitic_to_non_semitic",
+    "ancient_to_modern",
+    "mixed_baseline",
+    "abby_to_chinese"
+  ],
+  "verdict": "STRONGLY_SUPPORTED",
+  "hardware": {
+    "gpu": "L4/A100",
+    "vram_gb": 42.474471424,
+    "ram_gb": 89.629220864
+  },
+  "settings": {
+    "batch_size": 256,
+    "max_per_lang": 50000,
+    "num_workers": 4
+  },
+  "experiment_time": 19981.702402591705
+}
