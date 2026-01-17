@@ -344,7 +344,16 @@ Cell 2: Load Corpora ───────────────────�
     └──► passages.jsonl (~115K passages)                        │
               │                                                  │
               ▼                                                  │
-Cell 3: Patterns + Bond Extraction                              │
+Cell 3: Load Ethics Datasets                                    │
+    │                                                           │
+    │  • ETHICS dataset (HuggingFace)                          │
+    │  • Scruples dataset                                       │
+    │  • Additional moral reasoning examples                   │
+    │                                                           │
+    └──► passages.jsonl (extended)                              │
+              │                                                  │
+              ▼                                                  │
+Cell 4: Patterns + Bond Extraction                              │
     │                                                           │
     │  • Define 320+ moral patterns (7 languages)              │
     │  • Extract bond type, Hohfeld state, negation            │
@@ -354,7 +363,7 @@ Cell 3: Patterns + Bond Extraction                              │
               │                                                  │
               ├───────────────────────────────────────┐         │
               ▼                                       ▼         │
-Cell 4: Generate Splits                         Cell 5: Model   │
+Cell 5: Generate Splits                         Cell 6: Model   │
     │                                           Architecture    │
     │  • 11 cross-lingual experiments           │               │
     │  • Stratified by language/period          │               │
@@ -363,7 +372,7 @@ Cell 4: Generate Splits                         Cell 5: Model   │
               │                                       │         │
               └───────────────┬───────────────────────┘         │
                               ▼                                  │
-                       Cell 6: Training                         │
+                       Cell 7: Training                         │
                               │                                  │
                               │  For each split:                │
                               │  • Load train/test passages     │
@@ -374,7 +383,7 @@ Cell 4: Generate Splits                         Cell 5: Model   │
                                         │                        │
               ┌─────────────────────────┼─────────────────────┐ │
               ▼                         ▼                     ▼ │
-       Cell 7: Analysis          Cell 8: Fuzz           Cell 9: │
+       Cell 8: Analysis          Cell 9: Fuzz          Cell 10: │
        • CKA/RSA metrics         Testing               Save     │
        • Linear probes           • Adversarial         Results  │
        • Transfer tests          • Robustness                   │
@@ -391,10 +400,10 @@ Cell 4: Generate Splits                         Cell 5: Model   │
 
 | File | Created By | Used By | Description |
 |------|-----------|---------|-------------|
-| `passages.jsonl` | Cell 2 | Cells 3, 4, 5, 6 | Raw text passages |
-| `bonds.jsonl` | Cell 3 | Cells 5, 6, 7 | Bond extraction results |
-| `all_splits.json` | Cell 4 | Cell 6 | Train/test configurations |
-| `checkpoints/*.pt` | Cell 6 | Cells 7, 8 | Trained model weights |
+| `passages.jsonl` | Cells 2, 3 | Cells 4, 5, 6, 7 | Raw text passages |
+| `bonds.jsonl` | Cell 4 | Cells 6, 7, 8 | Bond extraction results |
+| `all_splits.json` | Cell 5 | Cell 7 | Train/test configurations |
+| `checkpoints/*.pt` | Cell 7 | Cells 8, 9 | Trained model weights |
 
 ---
 
@@ -531,12 +540,30 @@ Progress: 1% 3% 5% 8% 12% 15% 20% 25% 30% 35% 40% 45% 50% ...
 
 ---
 
-### Cell 3: Patterns + Normalization + Bond Extraction
+### Cell 3: Load Ethics Datasets
+
+**Purpose:** Load additional ethics datasets for bond extraction training.
+
+**Inputs:**
+- `data/processed/passages.jsonl` (from Cells 2, 3)
+
+**Outputs:**
+- Extended `data/processed/passages.jsonl` with additional ethics examples
+
+**What It Does:**
+1. Loads ETHICS dataset from HuggingFace
+2. Loads Scruples dataset
+3. Adds modern English moral reasoning examples
+4. Extends passages.jsonl with new examples
+
+---
+
+### Cell 4: Patterns + Normalization + Bond Extraction
 
 **Purpose:** Define language-specific patterns and extract moral bonds from all passages.
 
 **Inputs:**
-- `data/processed/passages.jsonl` (from Cell 2)
+- `data/processed/passages.jsonl` (from Cells 2, 3)
 
 **Outputs:**
 - `data/processed/bonds.jsonl` (bond extraction results)
@@ -596,7 +623,7 @@ EXTRACTING BONDS FROM PASSAGES
 
 ---
 
-### Cell 4: Generate Splits
+### Cell 5: Generate Splits
 
 **Purpose:** Create train/validation/test splits with stratification.
 
@@ -607,7 +634,7 @@ EXTRACTING BONDS FROM PASSAGES
 
 ---
 
-### Cell 5: Model Architecture
+### Cell 6: Model Architecture
 
 **Purpose:** Define the BIP neural network architecture.
 
@@ -624,7 +651,7 @@ Input: mBERT embeddings (768-dim)
 
 ---
 
-### Cell 6: Train BIP Model
+### Cell 7: Train BIP Model
 
 **Purpose:** Train the model with adversarial language disentanglement.
 
@@ -636,19 +663,19 @@ Input: mBERT embeddings (768-dim)
 
 ---
 
-### Cell 7: Geometric Analysis & Linear Probe
+### Cell 8: Geometric Analysis & Linear Probe
 
 **Purpose:** Measure cross-lingual invariance with CKA and RSA.
 
 ---
 
-### Cell 8: Fuzz Testing
+### Cell 9: Fuzz Testing
 
 **Purpose:** Adversarial robustness testing with structural vs. surface perturbations.
 
 ---
 
-### Cell 9: Save & Download Results
+### Cell 10: Save & Download Results
 
 **Purpose:** Persist all results and create downloadable package.
 
@@ -797,7 +824,7 @@ When `SAVE_DIR` points to Google Drive, the notebook implements **persistent cac
 | `hendrycks_ethics.json` | ~40MB | 134K ethics scenarios |
 | `Sefaria-Export/` | ~2GB | Full Sefaria JSON (for Responsa) |
 
-### Training Hyperparameters (Cell 6)
+### Training Hyperparameters (Cell 7)
 
 | Parameter | Default | Range | Notes |
 |-----------|---------|-------|-------|
@@ -951,12 +978,12 @@ This URL pattern works from most locations. If blocked:
 - [ ] JIT loading shows "(reached X target, stopping)" or all texts fetched
 - [ ] Cache files created in `cache/gutenberg_texts/` and `cache/romance_texts/`
 
-### Cell 6 (Training)
+### Cell 7 (Training)
 - [ ] Loss decreasing over epochs
 - [ ] Language accuracy DECREASING (disentanglement working)
 - [ ] Moral accuracy INCREASING
 
-### Cell 7 (Analysis)
+### Cell 8 (Analysis)
 - [ ] CKA mean > 0.70
 - [ ] RSA mean > 0.60
 - [ ] Linear probe transfer > 60%
