@@ -1,8 +1,16 @@
-# BIP v10.14.4 Operator & Reviewer Guide
+# BIP v10.15.1 Operator & Reviewer Guide
 
 ## Executive Summary
 
-**Bond Invariance Probing (BIP) v10.14.4** tests whether ethical/moral reasoning structures are invariant across languages and cultures. **v10.14.4** introduces **encoder unfreezing** - the ability to fine-tune the LaBSE encoder itself, not just probe frozen representations. The hypothesis: if moral cognition is universal, the geometric structure of ethical embeddings should remain stable regardless of the surface language.
+**Bond Invariance Probing (BIP) v10.15.1** tests whether ethical/moral reasoning structures are invariant across languages and cultures. **v10.15.1** introduces **aggressive surface invariance training** - addressing the critical finding from v10.14.4 that the model encodes surface features rather than moral structure.
+
+**Key v10.15.1 Changes:**
+- **Contrastive loss** for surface invariance (InfoNCE with surface-augmented pairs)
+- **Much stronger adversarial training** (ADV_MAX_LAMBDA=1.0, was 0.4)
+- **Smaller z-space** (Z_DIM=32, was 64) to force abstraction
+- **Layer-wise encoder unfreezing** (only top N layers, configurable)
+
+The hypothesis: if moral cognition is universal, the geometric structure of ethical embeddings should remain stable regardless of the surface language.
 
 **Key Metrics:**
 - CKA (Centered Kernel Alignment): Measures geometric similarity between language pairs
@@ -653,16 +661,45 @@ Input: mBERT embeddings (768-dim)
 
 ### Cell 7: Training Loop
 
-**Purpose:** Train the model with adversarial language disentanglement.
+**Purpose:** Train the model with adversarial language disentanglement and surface invariance.
 
-**v10.14.4 Encoder Unfreezing:**
+**v10.15.1 Surface Invariance Training (NEW):**
+
+When `SURFACE_AUGMENT=True` and `CONTRASTIVE_WEIGHT > 0`, the training loop adds:
+
+1. **Surface Augmentation:** For each batch, create surface-perturbed versions:
+   - Synonym replacement (must→should, good→virtuous)
+   - Name swapping (Alex→Jordan)
+   - Irrelevant detail insertion ("on a Tuesday", "while it was raining")
+
+2. **InfoNCE Contrastive Loss:** Enforce that original and surface-augmented texts have similar embeddings:
+   ```
+   loss_surface = InfoNCE(z_original, z_augmented, temperature=0.07)
+   ```
+   - Anchors should match their positive pairs (same moral content)
+   - Anchors should differ from negatives (different moral content)
+
+3. **Augment Similarity Loss:** Direct MSE between original and augmented embeddings:
+   ```
+   loss_similarity = MSE(z_original, z_augmented) * AUGMENT_SIMILARITY_WEIGHT
+   ```
+
+**v10.15.1 Stronger Adversarial Training:**
+
+- `ADV_MAX_LAMBDA=1.0` (was 0.4) - maximum adversarial strength
+- `ADV_WARMUP_EPOCHS=2` (was 7) - faster ramp to full strength
+- `ADV_HIDDEN_DIM=1024` (was 512) - larger adversarial heads
+- `ADV_NUM_LAYERS=4` (was 3) - deeper adversarial heads
+
+**v10.15.1 Layer-wise Encoder Unfreezing:**
 
 When `UNFREEZE_ENCODER=True`, the training loop implements a staged approach:
 
 1. **Phase 1 (Warmup):** Encoder frozen, only probe heads train (epochs 1 to `UNFREEZE_AFTER_EPOCHS-1`)
 2. **Phase 2 (Unfreeze):** At epoch `UNFREEZE_AFTER_EPOCHS`:
-   - Encoder parameters unfrozen
-   - Fresh optimizer created at `ENCODER_LR/100`
+   - If `UNFREEZE_LAYERS > 0`: Only unfreeze top N transformer layers (preserves lower representations)
+   - If `UNFREEZE_LAYERS = 0`: Unfreeze all encoder parameters
+   - Fresh optimizer created at `ENCODER_LR * ENCODER_LR_SCALE`
    - AMP scaler reset to prevent stale state
    - Batch size re-probed with backward pass (typically reduces from ~512 to ~32-64)
 3. **Phase 3 (Warmup LR):** Over 5 epochs, encoder LR warms from 1% to 100% of target
@@ -675,33 +712,34 @@ The `probe_max_batch()` function uses binary search to find the maximum batch si
 - Halves range on OOM, doubles on success
 - Returns safe batch size with 10% headroom
 
-**Key Metrics During Training:**
-- `loss_moral`: Moral classification loss (should decrease)
-- `loss_adv`: Adversarial language loss (should INCREASE - disentanglement working)
+**Key Metrics During Training (v10.15.1):**
+- `loss_bond`: Bond classification loss (should decrease)
+- `loss_lang`: Adversarial language loss (should INCREASE - disentanglement working)
+- `loss_surface`: Contrastive surface loss (should decrease - invariance learning)
 - `acc_moral`: Moral accuracy (target: >70%)
 - `acc_lang`: Language accuracy (target: <20% - random chance)
 
-**Expected Output (with encoder unfreezing):**
+**Expected Output (v10.15.1 with surface invariance):**
 ```
-Encoder mode: UNFROZEN after epoch 2
-  Probing max batch size (trainable=False)... 512
-  Encoder FROZEN (probe-only mode)
-  Trainable: 12,345,678 / 471,234,567 (2.6%)
+Encoder mode: FROZEN (probe-only)
+Settings:
+  Backbone:     LaBSE
+  Batch size:   512
+  Learning rate: 3.20e-04
+  Adv weights:  lang=0.1, period=0.066
+  Surface augmentation: True (weight=0.3, temp=0.07)
+  Z_DIM: 32
 
-Epoch 1: Loss=2.69 | Moral=45% | Lang=85%
-Epoch 2: Loss=1.82 | Moral=58% | Lang=62%
-
-  >>> UNFREEZING ENCODER at epoch 2 <<<
-  Trainable params now: 471,234,567
-  Re-probing batch size with encoder trainable...
-  [v10.14.4] Encoder trainable - probing with backward pass
-  Probing max batch size (trainable=True)... 32
-  New batch size: 32 (was 512)
-  Encoder LR warmup: 5e-9 -> 5e-7 over 5 epochs
-
-Epoch 2 (cont): Loss=1.75 | Moral=61% | Lang=55%
-Epoch 3: Loss=1.42 | Moral=68% | Lang=42%
+Epoch 1: Loss=2.69 (adv_lambda=0.50) [GPU: 8.2GB alloc]
+Epoch 2: Loss=1.82 (adv_lambda=1.00) [GPU: 8.3GB alloc]
+  Surface contrastive loss active
 ...
+Epoch 12: Loss=0.95 (adv_lambda=1.00) [GPU: 8.1GB alloc]
+
+hebrew_to_others RESULTS:
+  Bond F1 (macro): 0.412 (4.1x chance)
+  Bond accuracy:   42.3%
+  Language acc:    15.2% (want ~14% = invariant)  <-- MUCH LOWER than v10.14.4's 98.6%
 ```
 
 ---
@@ -763,24 +801,30 @@ def gutenberg_download(gutenberg_id: int) -> str | None:
 **URL pattern:** `https://www.gutenberg.org/ebooks/{id}.txt.utf-8`
 
 **Western Philosophy & Religion (16 texts by ID):**
-| ID | Author | Work |
-|----|--------|------|
-| 5683 | Kant | Critique of Practical Reason |
-| 5684 | Kant | Metaphysical Elements of Ethics |
-| 4280 | Kant | Critique of Pure Reason |
-| 11224 | Mill | Utilitarianism |
-| 34901 | Mill | On Liberty |
-| 3800 | Spinoza | Ethics |
-| 8438 | Aristotle | Nicomachean Ethics |
-| 1497 | Plato | Republic |
-| 1656 | Plato | Apology |
-| 10661 | Epictetus | Discourses |
-| 2680 | Marcus Aurelius | Meditations |
-| 10 | Bible | KJV Complete (80 books) |
-| 124 | Apocrypha | Deuterocanonical Books |
-| 1670 | Luther | Small Catechism |
-| 1722 | Luther | Large Catechism |
-| 43855 | Franklin | Poor Richard's Almanack |
+| ID | Author | Work | Notes |
+|----|--------|------|-------|
+| 5683 | Kant | Critique of Practical Reason | Moral philosophy |
+| 5684 | Kant | Metaphysical Elements of Ethics | Duty ethics |
+| 4280 | Kant | Critique of Pure Reason | Epistemology foundation |
+| 11224 | Mill | Utilitarianism | Consequentialist ethics |
+| 34901 | Mill | On Liberty | Political philosophy |
+| 3800 | Spinoza | Ethics | Rationalist ethics |
+| 8438 | Aristotle | Nicomachean Ethics | Virtue ethics |
+| 1497 | Plato | Republic | Justice, ideal state |
+| 1656 | Plato | Apology | Socratic ethics |
+| 10661 | Epictetus | Discourses | Stoic ethics |
+| 2680 | Marcus Aurelius | Meditations | Stoic practice |
+| **10** | **Bible** | **KJV Complete (80 books)** | **Includes OT, NT, Apocrypha** |
+| **124** | **Apocrypha** | **Deuterocanonical Books** | **14 additional books** |
+| 1670 | Luther | Small Catechism | Protestant ethics |
+| 1722 | Luther | Large Catechism | Extended catechesis |
+| 43855 | Franklin | Poor Richard's Almanack | American virtue |
+
+**Bible Coverage (ID 10 + 124):**
+- **Old Testament**: 39 books (Genesis through Malachi)
+- **New Testament**: 27 books (Matthew through Revelation)
+- **Apocrypha/Deuterocanonicals**: 14 books (Tobit, Judith, Wisdom, Sirach, Baruch, 1-2 Maccabees, etc.)
+- **Total**: ~80 books of religious ethical content
 
 **Romance Languages (12 texts by ID):**
 | ID | Language | Work |
@@ -822,17 +866,43 @@ def gutenberg_download(gutenberg_id: int) -> str | None:
 | `RANDOM_SEED` | 42 | Reproducibility seed |
 | `INCLUDE_RESPONSA` | False | Include Responsa texts (requires 30-50 min git clone) |
 
-#### v10.14.4 Encoder Unfreezing Parameters
+#### v10.15.1 Surface Invariance Parameters (NEW)
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `CONTRASTIVE_WEIGHT` | 0.3 | Weight for InfoNCE contrastive loss |
+| `CONTRASTIVE_TEMPERATURE` | 0.07 | Temperature for contrastive softmax (lower = harder) |
+| `SURFACE_AUGMENT` | True | Enable surface augmentation (synonyms, name swaps, detail insertion) |
+| `AUGMENT_SIMILARITY_WEIGHT` | 0.2 | Direct MSE loss between original and augmented embeddings |
+| `Z_DIM` | 32 | Bond embedding dimension (reduced from 64 to force abstraction) |
+
+**Why surface invariance?** v10.14.4 results showed the fuzz ratio was **inverted** (0.20x instead of >2.0x) - surface perturbations caused MORE embedding change than structural moral perturbations. This means the model was encoding surface features, not moral structure.
+
+#### v10.15.1 Adversarial Training Parameters (STRENGTHENED)
+
+| Parameter | v10.14.4 | v10.15.1 | Description |
+|-----------|----------|----------|-------------|
+| `ADV_MAX_LAMBDA` | 0.4 | **1.0** | Maximum adversarial strength (much stronger) |
+| `ADV_WARMUP_EPOCHS` | 7 | **2** | Epochs to ramp up adversarial (faster ramp) |
+| `ADV_HIDDEN_DIM` | 512 | **1024** | Hidden dimension of adversarial heads (larger) |
+| `ADV_NUM_LAYERS` | 3 | **4** | Adversarial head depth (deeper) |
+| `ADV_DROPOUT` | 0.3 | **0.4** | Dropout in adversarial heads |
+
+#### v10.15.1 Encoder Unfreezing Parameters (REFINED)
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
 | `UNFREEZE_ENCODER` | False | Enable encoder fine-tuning (not just probe heads) |
-| `UNFREEZE_AFTER_EPOCHS` | 2 | Epochs to train probe heads before unfreezing encoder |
+| `UNFREEZE_AFTER_EPOCHS` | 8 | Epochs to train probe heads before unfreezing encoder |
+| `UNFREEZE_LAYERS` | 2 | Only unfreeze top N transformer layers (0=all) |
+| `ENCODER_LR_SCALE` | 0.1 | LR multiplier when unfreezing (0.1 = 10x smaller than target) |
 | `ENCODER_LR` | 5e-7 | Learning rate for encoder (very low to prevent catastrophic forgetting) |
 | `HEAD_LR` | 1e-3 | Learning rate for probe heads |
 | `GRADIENT_ACCUMULATION_STEPS` | 4 | Accumulate gradients for larger effective batch |
 
-**Warning:** Encoder unfreezing requires careful hyperparameter tuning. The encoder (LaBSE, 471M params) can destabilize if the learning rate is too high. Start with defaults.
+**Layer-wise unfreezing (NEW in v10.15.1):** Instead of unfreezing all 471M encoder parameters, only unfreeze the top N transformer layers. This preserves the lower layers' language-general representations while allowing the top layers to adapt to moral structure.
+
+**Warning:** Encoder unfreezing requires careful hyperparameter tuning. Start with `UNFREEZE_LAYERS=2` and `ENCODER_LR_SCALE=0.1`.
 
 ### Sefaria Download Strategy (v10.14)
 
@@ -933,15 +1003,18 @@ passages = load_romance_philosophy(target_passages=0)    # Fetch all 12 texts
 
 ### Success Criteria
 
-| Metric | Threshold | Interpretation |
-|--------|-----------|----------------|
-| CKA (mean) | > 0.70 | Strong geometric invariance |
-| CKA (min) | > 0.50 | No catastrophic failures |
-| RSA (mean) | > 0.60 | Consistent distance structure |
-| Linear Probe (cross-lingual) | > 60% | Transferable representations |
-| Surface Robustness | > 90% | Not overfitting to form |
-| Structural Sensitivity | > 70% | Capturing moral content |
-| Language Adversary Acc | < 20% | Successful disentanglement |
+| Metric | v10.14.4 | v10.15.1 Target | Interpretation |
+|--------|----------|-----------------|----------------|
+| **Fuzz Ratio (structural/surface)** | 0.20x | **> 2.0x** | PRIMARY: Model encodes moral structure, not surface |
+| Language Probe Acc | 98.6% | **< 30%** | Near chance (14.3%) = invariant |
+| Period Probe Acc | 95.0% | **< 30%** | Near chance (12.5%) = invariant |
+| Surface Perturbation Distance | 0.0804 | **< 0.02** | Surface changes = SMALL embedding moves |
+| Structural Perturbation Distance | 0.0160 | **> 0.10** | Moral changes = LARGE embedding moves |
+| Obl/Perm Transfer | 100% | > 90% | Allow slight degradation for invariance |
+| CKA (mean) | > 0.70 | > 0.70 | Strong geometric invariance |
+| RSA (mean) | > 0.60 | > 0.60 | Consistent distance structure |
+
+**Primary Goal:** Invert the fuzz ratio from 0.20x to >2.0x
 
 ---
 
@@ -1097,7 +1170,8 @@ GRADIENT_ACCUMULATION_STEPS = 4
 
 | Version | Date | Changes |
 |---------|------|---------|
-| v10.14.4 | 2026-01-18 | **Encoder unfreezing**: Fine-tune LaBSE encoder (471M params) after warmup epochs; differential learning rates (encoder 5e-7, heads 1e-3); LR warmup from 1% to 100% over 5 epochs after unfreeze; fresh optimizer on unfreeze to avoid stale momentum; AMP scaler reset; WiFi-style batch re-probing with backward pass; NaN detection and handling; gradient accumulation (4 steps default) |
+| **v10.15.1** | 2026-01-18 | **Surface invariance training**: InfoNCE contrastive loss (CONTRASTIVE_WEIGHT=0.3, CONTRASTIVE_TEMPERATURE=0.07); Surface augmentation (synonym swap, name swap, detail insertion); AUGMENT_SIMILARITY_WEIGHT=0.2 for direct MSE; **Much stronger adversarial** (ADV_MAX_LAMBDA=1.0 from 0.4, ADV_WARMUP_EPOCHS=2 from 7, ADV_HIDDEN_DIM=1024 from 512, ADV_NUM_LAYERS=4 from 3); **Smaller z-space** (Z_DIM=32 from 64) to force abstraction; **Layer-wise unfreezing** (UNFREEZE_LAYERS=2, ENCODER_LR_SCALE=0.1); Addresses inverted fuzz ratio (0.20x) from v10.14.4 |
+| v10.14.4 | 2026-01-18 | **Encoder unfreezing**: Fine-tune LaBSE encoder (471M params) after warmup epochs; differential learning rates (encoder 5e-7, heads 1e-3); LR warmup from 1% to 100% over 5 epochs after unfreeze; fresh optimizer on unfreeze to avoid stale momentum; AMP scaler reset; WiFi-style batch re-probing with backward pass; NaN detection and handling; gradient accumulation (4 steps default); **Finding: Fuzz ratio inverted (0.20x)** - model encodes surface, not moral structure |
 | v10.14.3 | 2026-01-17 | Adversarial training improvements, ADV_HIDDEN_DIM=512, ADV_NUM_LAYERS=3, ADV_DROPOUT=0.3 |
 | v10.14 | 2026-01-16 | Bible KJV (80 books), Apocrypha, Luther's Catechisms, Poor Richard's Almanack; Sefaria expanded to 88 texts (39 Tanakh, 26 Mishnah, 17 Talmud); INCLUDE_RESPONSA config (default False); elapsed time tracking for all loaders |
 | v10.13 | 2026-01-16 | Configurable experiment matrix, bond extraction pipeline |
@@ -1131,4 +1205,4 @@ GRADIENT_ACCUMULATION_STEPS = 4
 
 ---
 
-*Document generated for BIP v10.14.4 - Last updated: 2026-01-18*
+*Document generated for BIP v10.15.1 - Last updated: 2026-01-18*
