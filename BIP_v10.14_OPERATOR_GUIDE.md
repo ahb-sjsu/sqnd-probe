@@ -1,8 +1,8 @@
-# BIP v10.14 Operator & Reviewer Guide
+# BIP v10.14.4 Operator & Reviewer Guide
 
 ## Executive Summary
 
-**Bond Invariance Probing (BIP) v10.14** tests whether ethical/moral reasoning structures are invariant across languages and cultures. The hypothesis: if moral cognition is universal, the geometric structure of ethical embeddings should remain stable regardless of the surface language.
+**Bond Invariance Probing (BIP) v10.14.4** tests whether ethical/moral reasoning structures are invariant across languages and cultures. **v10.14.4** introduces **encoder unfreezing** - the ability to fine-tune the LaBSE encoder itself, not just probe frozen representations. The hypothesis: if moral cognition is universal, the geometric structure of ethical embeddings should remain stable regardless of the surface language.
 
 **Key Metrics:**
 - CKA (Centered Kernel Alignment): Measures geometric similarity between language pairs
@@ -651,15 +651,58 @@ Input: mBERT embeddings (768-dim)
 
 ---
 
-### Cell 7: Train BIP Model
+### Cell 7: Training Loop
 
 **Purpose:** Train the model with adversarial language disentanglement.
+
+**v10.14.4 Encoder Unfreezing:**
+
+When `UNFREEZE_ENCODER=True`, the training loop implements a staged approach:
+
+1. **Phase 1 (Warmup):** Encoder frozen, only probe heads train (epochs 1 to `UNFREEZE_AFTER_EPOCHS-1`)
+2. **Phase 2 (Unfreeze):** At epoch `UNFREEZE_AFTER_EPOCHS`:
+   - Encoder parameters unfrozen
+   - Fresh optimizer created at `ENCODER_LR/100`
+   - AMP scaler reset to prevent stale state
+   - Batch size re-probed with backward pass (typically reduces from ~512 to ~32-64)
+3. **Phase 3 (Warmup LR):** Over 5 epochs, encoder LR warms from 1% to 100% of target
+
+**WiFi-Style Batch Probing:**
+
+The `probe_max_batch()` function uses binary search to find the maximum batch size that fits in GPU memory:
+- Starts at low=8, high=target_batch
+- Tests each batch size with forward (or forward+backward if encoder trainable)
+- Halves range on OOM, doubles on success
+- Returns safe batch size with 10% headroom
 
 **Key Metrics During Training:**
 - `loss_moral`: Moral classification loss (should decrease)
 - `loss_adv`: Adversarial language loss (should INCREASE - disentanglement working)
 - `acc_moral`: Moral accuracy (target: >70%)
 - `acc_lang`: Language accuracy (target: <20% - random chance)
+
+**Expected Output (with encoder unfreezing):**
+```
+Encoder mode: UNFROZEN after epoch 2
+  Probing max batch size (trainable=False)... 512
+  Encoder FROZEN (probe-only mode)
+  Trainable: 12,345,678 / 471,234,567 (2.6%)
+
+Epoch 1: Loss=2.69 | Moral=45% | Lang=85%
+Epoch 2: Loss=1.82 | Moral=58% | Lang=62%
+
+  >>> UNFREEZING ENCODER at epoch 2 <<<
+  Trainable params now: 471,234,567
+  Re-probing batch size with encoder trainable...
+  [v10.14.4] Encoder trainable - probing with backward pass
+  Probing max batch size (trainable=True)... 32
+  New batch size: 32 (was 512)
+  Encoder LR warmup: 5e-9 -> 5e-7 over 5 epochs
+
+Epoch 2 (cont): Loss=1.75 | Moral=61% | Lang=55%
+Epoch 3: Loss=1.42 | Moral=68% | Lang=42%
+...
+```
 
 ---
 
@@ -778,6 +821,18 @@ def gutenberg_download(gutenberg_id: int) -> str | None:
 | `CREATE_DOWNLOAD_ZIP` | True | Create downloadable zip |
 | `RANDOM_SEED` | 42 | Reproducibility seed |
 | `INCLUDE_RESPONSA` | False | Include Responsa texts (requires 30-50 min git clone) |
+
+#### v10.14.4 Encoder Unfreezing Parameters
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `UNFREEZE_ENCODER` | False | Enable encoder fine-tuning (not just probe heads) |
+| `UNFREEZE_AFTER_EPOCHS` | 2 | Epochs to train probe heads before unfreezing encoder |
+| `ENCODER_LR` | 5e-7 | Learning rate for encoder (very low to prevent catastrophic forgetting) |
+| `HEAD_LR` | 1e-3 | Learning rate for probe heads |
+| `GRADIENT_ACCUMULATION_STEPS` | 4 | Accumulate gradients for larger effective batch |
+
+**Warning:** Encoder unfreezing requires careful hyperparameter tuning. The encoder (LaBSE, 471M params) can destabilize if the learning rate is too high. Start with defaults.
 
 ### Sefaria Download Strategy (v10.14)
 
@@ -953,6 +1008,33 @@ This URL pattern works from most locations. If blocked:
 - Simple `gutenberg_download(id)` by ID
 - JIT loading with individual caching
 
+#### NaN Losses After Encoder Unfreeze (v10.14.4)
+**Symptoms:** Training proceeds normally, then immediately after ">>> UNFREEZING ENCODER <<<" you see repeated "NaN loss detected - skipping batch" messages.
+
+**Causes & Solutions:**
+
+| Cause | Solution |
+|-------|----------|
+| Encoder LR too high | Reduce `ENCODER_LR` (try 1e-7 or 5e-8) |
+| Stale optimizer momentum | v10.14.4 creates fresh optimizer on unfreeze (automatic) |
+| AMP scaler state mismatch | v10.14.4 resets scaler on unfreeze (automatic) |
+| Gradient explosion | Gradient clipping enabled by default (max_norm=1.0) |
+| Batch too large for backward | Re-probe runs automatically; if still failing, reduce `BATCH_SIZE` |
+
+**Debug Steps:**
+1. Check if NaN appears immediately after unfreeze → LR too high
+2. Check if NaN appears after a few batches → gradient explosion, reduce LR
+3. Check if OOM appears → batch size too large for backward pass
+
+**Safe Configuration:**
+```python
+UNFREEZE_ENCODER = True
+ENCODER_LR = 5e-7  # Very conservative
+HEAD_LR = 1e-3
+UNFREEZE_AFTER_EPOCHS = 2
+GRADIENT_ACCUMULATION_STEPS = 4
+```
+
 #### Low CKA Scores
 **Possible Causes:**
 1. Insufficient training (increase epochs)
@@ -982,6 +1064,10 @@ This URL pattern works from most locations. If blocked:
 - [ ] Loss decreasing over epochs
 - [ ] Language accuracy DECREASING (disentanglement working)
 - [ ] Moral accuracy INCREASING
+- [ ] (If UNFREEZE_ENCODER=True) Encoder unfreezes at correct epoch
+- [ ] (If UNFREEZE_ENCODER=True) Batch size re-probed after unfreeze
+- [ ] (If UNFREEZE_ENCODER=True) No NaN losses after unfreeze
+- [ ] (If UNFREEZE_ENCODER=True) LR warmup message appears
 
 ### Cell 8 (Analysis)
 - [ ] CKA mean > 0.70
@@ -1011,6 +1097,8 @@ This URL pattern works from most locations. If blocked:
 
 | Version | Date | Changes |
 |---------|------|---------|
+| v10.14.4 | 2026-01-18 | **Encoder unfreezing**: Fine-tune LaBSE encoder (471M params) after warmup epochs; differential learning rates (encoder 5e-7, heads 1e-3); LR warmup from 1% to 100% over 5 epochs after unfreeze; fresh optimizer on unfreeze to avoid stale momentum; AMP scaler reset; WiFi-style batch re-probing with backward pass; NaN detection and handling; gradient accumulation (4 steps default) |
+| v10.14.3 | 2026-01-17 | Adversarial training improvements, ADV_HIDDEN_DIM=512, ADV_NUM_LAYERS=3, ADV_DROPOUT=0.3 |
 | v10.14 | 2026-01-16 | Bible KJV (80 books), Apocrypha, Luther's Catechisms, Poor Richard's Almanack; Sefaria expanded to 88 texts (39 Tanakh, 26 Mishnah, 17 Talmud); INCLUDE_RESPONSA config (default False); elapsed time tracking for all loaders |
 | v10.13 | 2026-01-16 | Configurable experiment matrix, bond extraction pipeline |
 | v10.12b | 2026-01-16 | Simplified to `gutenberg_download(id)` like R's gutenbergr - just list IDs, no repo names |
@@ -1043,4 +1131,4 @@ This URL pattern works from most locations. If blocked:
 
 ---
 
-*Document generated for BIP v10.14 - Last updated: 2026-01-16*
+*Document generated for BIP v10.14.4 - Last updated: 2026-01-18*
