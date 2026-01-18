@@ -87,16 +87,19 @@ These are *correlatives*. They're logically linked. If you say Morgan must help 
 ### What the Bond Index Measures
 
 ```
-Bond Index = 1 - (observed violations / maximum possible violations)
+Bond Index = observed violations / maximum possible violations
 ```
 
-- **Bond Index = 1.0** — Perfect correlative symmetry. Your O↔C and L↔N pairings are consistent.
+- **Bond Index = 0.0** — Perfect correlative symmetry. Your O↔C and L↔N pairings are consistent.
 - **Bond Index = 0.5** — Random. You're not tracking correlatives at all.
-- **Bond Index < 0.5** — Anti-correlated. You're systematically inverting the structure.
+- **Bond Index > 0.5** — Anti-correlated. You're systematically inverting the structure.
+- **Bond Index = 1.0** — Maximum violations. Complete structural inversion.
+
+Like a loss function: lower is better. Zero means perfect alignment.
 
 ### What It Doesn't Measure
 
-The bond index measures *consistency*, not *correctness*. A high bond index means your moral reasoning has coherent structure. It doesn't mean your answers are "right" — there are no right answers in the game.
+The bond index measures *consistency*, not *correctness*. A low bond index means your moral reasoning has coherent structure. It doesn't mean your answers are "right" — there are no right answers in the game.
 
 ## The Letter Bank
 

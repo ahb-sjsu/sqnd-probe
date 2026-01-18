@@ -314,7 +314,7 @@ Minutes 75-90:  Optional interview (subset of participants)
 ```
                     Police    City      Community   Advocates
                     Officers  Leaders   Members
-Bond Index          0.85      0.78      0.72        0.81
+Bond Index          0.15      0.22      0.28        0.19
 Force Gate (mean)   4.2       3.8       2.1         1.9
 Surveillance O%     32%       45%       78%         89%
 Protection O%       45%       62%       91%         88%

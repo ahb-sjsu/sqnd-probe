@@ -303,7 +303,7 @@ GROUND_STATE_EXAMPLE = EthicalGroundState(
         "O↔C": 0.87,  # 87% of O classifications paired with C
         "L↔N": 0.82,  # 82% of L classifications paired with N
     },
-    bond_index_baseline=0.84,  # Healthy baseline
+    bond_index_baseline=0.16,  # Healthy baseline (low = good, ~16% violations)
 
     effective_gates={
         "only if convenient": StateTransition(O→L, strength=0.91),
