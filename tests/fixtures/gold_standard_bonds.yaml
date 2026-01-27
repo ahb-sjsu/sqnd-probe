@@ -1,0 +1,351 @@
+# Gold Standard Moral Bond Annotations
+# Manual annotations for validating extraction quality
+# Each entry has: passage text, metadata, and expected bond extractions
+
+# =============================================================================
+# FILIAL PIETY - Cross-cultural universal
+# =============================================================================
+
+- id: gold_biblical_honor_parents
+  text: "Honor your father and your mother, that your days may be long in the land that the LORD your God is giving you."
+  language: hebrew
+  tradition: biblical
+  source: Exodus 20:12
+  expected_bonds:
+    - bond_type: obligation
+      agent_role: child
+      patient_role: parent
+      action: honor
+      modal_strength: must
+      context: family
+      confidence: 1.0
+
+- id: gold_confucian_filial_piety
+  text: "The Master said: In serving your parents, you may gently remonstrate. If you see that they are not inclined to follow your advice, remain reverent and do not oppose them; work hard and do not murmur."
+  language: classical_chinese
+  tradition: confucian
+  source: Analerta 4:18
+  expected_bonds:
+    - bond_type: obligation
+      agent_role: child
+      patient_role: parent
+      action: obey
+      modal_strength: should
+      context: family
+      condition: "may gently remonstrate first"
+      confidence: 0.95
+    - bond_type: prohibition
+      agent_role: child
+      patient_role: parent
+      action: refrain
+      modal_strength: must_not
+      context: family
+      condition: "do not oppose them"
+      confidence: 0.9
+
+- id: gold_dharma_son_duty
+  text: "The son should serve his parents as the eastern direction: by rising to greet them, by serving them, by obeying them, by providing for their needs, and by honoring their traditions."
+  language: sanskrit
+  tradition: dharma
+  source: Sigalovada Sutta
+  expected_bonds:
+    - bond_type: obligation
+      agent_role: child
+      patient_role: parent
+      action: honor
+      modal_strength: should
+      context: family
+      confidence: 0.95
+
+- id: gold_quranic_parents
+  text: "And your Lord has decreed that you worship none but Him, and that you be dutiful to your parents. If one or both of them attain old age in your care, never say to them 'uff' nor repel them, but address them with words of honor."
+  language: arabic
+  tradition: quranic
+  source: Quran 17:23-24
+  expected_bonds:
+    - bond_type: obligation
+      agent_role: child
+      patient_role: parent
+      action: honor
+      modal_strength: must
+      context: family
+      confidence: 1.0
+    - bond_type: prohibition
+      agent_role: child
+      patient_role: parent
+      action: harm
+      modal_strength: must_not
+      context: family
+      condition: "never say 'uff'"
+      confidence: 0.9
+
+# =============================================================================
+# PROHIBITION AGAINST KILLING - Universal
+# =============================================================================
+
+- id: gold_biblical_no_kill
+  text: "You shall not murder."
+  language: hebrew
+  tradition: biblical
+  source: Exodus 20:13
+  expected_bonds:
+    - bond_type: prohibition
+      agent_role: agent
+      patient_role: patient
+      action: kill
+      modal_strength: must_not
+      context: generic
+      confidence: 1.0
+
+- id: gold_buddhist_ahimsa
+  text: "One should not kill any living being, nor cause others to kill, nor approve of others killing. One should abandon the use of violence toward all beings in the world, both the strong and the weak."
+  language: pali
+  tradition: buddhist
+  source: Dhammapada
+  expected_bonds:
+    - bond_type: prohibition
+      agent_role: agent
+      patient_role: patient
+      action: kill
+      modal_strength: must_not
+      context: generic
+      confidence: 1.0
+    - bond_type: prohibition
+      agent_role: agent
+      patient_role: agent
+      action: harm
+      modal_strength: must_not
+      context: generic
+      confidence: 0.9
+
+- id: gold_dharma_ahimsa
+  text: "Ahimsa paramo dharma - Non-violence is the highest duty."
+  language: sanskrit
+  tradition: dharma
+  source: Mahabharata
+  expected_bonds:
+    - bond_type: prohibition
+      agent_role: agent
+      patient_role: patient
+      action: harm
+      modal_strength: must_not
+      context: generic
+      confidence: 1.0
+
+# =============================================================================
+# PROMISE KEEPING - Contract/Trust
+# =============================================================================
+
+- id: gold_rabbinic_promise
+  text: "One who breaks his word is considered as if he has served idols."
+  language: aramaic
+  tradition: rabbinic
+  source: Talmud Sanhedrin
+  expected_bonds:
+    - bond_type: obligation
+      agent_role: promiser
+      patient_role: promisee
+      action: promise
+      modal_strength: must
+      context: generic
+      confidence: 0.9
+
+- id: gold_confucian_trust
+  text: "The Master said: 'I do not know how a man without truthfulness is to get on. How can a large carriage be made to go without the cross-bar for yoking the oxen, or a small carriage without the arrangement for yoking the horses?'"
+  language: classical_chinese
+  tradition: confucian
+  source: Analects 2:22
+  expected_bonds:
+    - bond_type: obligation
+      agent_role: agent
+      patient_role: community
+      action: tell_truth
+      modal_strength: must
+      context: generic
+      confidence: 0.85
+
+# =============================================================================
+# RULER-SUBJECT RELATIONS - Authority
+# =============================================================================
+
+- id: gold_confucian_ruler
+  text: "Let the ruler be a ruler, the subject a subject, the father a father, the son a son."
+  language: classical_chinese
+  tradition: confucian
+  source: Analects 12:11
+  expected_bonds:
+    - bond_type: obligation
+      agent_role: ruler
+      patient_role: subject
+      action: act
+      modal_strength: must
+      context: political
+      condition: "fulfill role properly"
+      confidence: 0.85
+    - bond_type: obligation
+      agent_role: subject
+      patient_role: ruler
+      action: obey
+      modal_strength: must
+      context: political
+      confidence: 0.85
+
+- id: gold_stoic_duty
+  text: "You are a citizen of the world, and a part of it, not a subordinate part, but a principal part. You are able to comprehend the divine administration of the world, and to reflect on the consequences of such an administration."
+  language: greek
+  tradition: stoic
+  source: Epictetus Discourses
+  expected_bonds:
+    - bond_type: obligation
+      agent_role: agent
+      patient_role: community
+      action: act
+      modal_strength: should
+      context: political
+      confidence: 0.8
+
+# =============================================================================
+# RECIPROCITY - Golden Rule variants
+# =============================================================================
+
+- id: gold_confucian_reciprocity
+  text: "Tzu-kung asked: 'Is there a single word which can be a guide to conduct throughout one's life?' The Master said: 'It is perhaps the word shu. Do not impose on others what you yourself do not desire.'"
+  language: classical_chinese
+  tradition: confucian
+  source: Analects 15:24
+  expected_bonds:
+    - bond_type: prohibition
+      agent_role: agent
+      patient_role: patient
+      action: harm
+      modal_strength: must_not
+      context: generic
+      condition: "what you yourself do not desire"
+      confidence: 0.9
+
+- id: gold_biblical_golden_rule
+  text: "So whatever you wish that others would do to you, do also to them, for this is the Law and the Prophets."
+  language: hebrew
+  tradition: biblical
+  source: Matthew 7:12
+  expected_bonds:
+    - bond_type: obligation
+      agent_role: agent
+      patient_role: patient
+      action: help
+      modal_strength: should
+      context: generic
+      condition: "what you wish others would do"
+      confidence: 0.85
+
+# =============================================================================
+# MODERN EXAMPLES - Dear Abby style
+# =============================================================================
+
+- id: gold_modern_debt
+  text: "My friend borrowed $500 from me six months ago and hasn't paid it back. She says she forgot. Am I wrong to ask for it?"
+  language: english
+  tradition: modern_american
+  source: Dear Abby
+  expected_bonds:
+    - bond_type: obligation
+      agent_role: debtor
+      patient_role: creditor
+      action: repay
+      modal_strength: must
+      context: economic
+      confidence: 0.9
+    - bond_type: claim
+      agent_role: creditor
+      patient_role: debtor
+      action: receive
+      modal_strength: may
+      context: economic
+      confidence: 0.85
+
+- id: gold_modern_secret
+  text: "My sister told me she's having an affair. I feel obligated to tell her husband, but she made me promise not to. What should I do?"
+  language: english
+  tradition: modern_american
+  source: Dear Abby
+  expected_bonds:
+    - bond_type: obligation
+      agent_role: promiser
+      patient_role: promisee
+      action: keep_secret
+      modal_strength: should
+      context: family
+      confidence: 0.8
+    - bond_type: obligation
+      agent_role: agent
+      patient_role: patient
+      action: tell_truth
+      modal_strength: should
+      context: family
+      condition: "competing obligation"
+      confidence: 0.75
+
+- id: gold_modern_elderly_care
+  text: "My elderly mother expects me to call her every day and visit every weekend. I have my own family and job. Am I obligated to meet all her demands?"
+  language: english
+  tradition: modern_american
+  source: Dear Abby
+  expected_bonds:
+    - bond_type: obligation
+      agent_role: child
+      patient_role: parent
+      action: help
+      modal_strength: should
+      context: family
+      exception: "within reasonable limits"
+      confidence: 0.85
+
+# =============================================================================
+# EDGE CASES - Multiple bonds, ambiguous
+# =============================================================================
+
+- id: gold_multi_bond_passage
+  text: "A father must teach his son Torah, teach him a trade, and find him a wife. Some say he must also teach him to swim."
+  language: hebrew
+  tradition: rabbinic
+  source: Talmud Kiddushin
+  expected_bonds:
+    - bond_type: obligation
+      agent_role: parent
+      patient_role: child
+      action: teach
+      modal_strength: must
+      context: family
+      condition: "Torah"
+      confidence: 0.95
+    - bond_type: obligation
+      agent_role: parent
+      patient_role: child
+      action: teach
+      modal_strength: must
+      context: family
+      condition: "trade"
+      confidence: 0.95
+    - bond_type: obligation
+      agent_role: parent
+      patient_role: child
+      action: help
+      modal_strength: must
+      context: family
+      condition: "find wife"
+      confidence: 0.9
+
+- id: gold_conditional_obligation
+  text: "If a man makes a vow to the LORD or takes an oath to obligate himself by a pledge, he must not break his word but must do everything he said."
+  language: hebrew
+  tradition: biblical
+  source: Numbers 30:2
+  expected_bonds:
+    - bond_type: obligation
+      agent_role: promiser
+      patient_role: deity
+      action: promise
+      modal_strength: must
+      context: religious
+      condition: "if a vow is made"
+      confidence: 0.95
