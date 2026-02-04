@@ -6,17 +6,15 @@ of moral bond collections.
 """
 
 from collections import Counter, defaultdict
-from typing import Optional
 
 import numpy as np
 
 from .moral_structure import (
-    MoralBond,
-    BondType,
-    RoleType,
     ActionCategory,
+    BondType,
+    MoralBond,
+    RoleType,
 )
-
 
 # =============================================================================
 # MATRIX COMPUTATIONS
@@ -115,8 +113,8 @@ def compute_tradition_vectors(bonds: list[MoralBond]) -> tuple[np.ndarray, list[
         if bond.source_tradition:
             traditions.add(bond.source_tradition)
 
-    pattern_list = sorted(list(patterns), key=str)
-    tradition_list = sorted(list(traditions))
+    pattern_list = sorted(patterns, key=str)
+    tradition_list = sorted(traditions)
 
     pattern_map = {p: i for i, p in enumerate(pattern_list)}
     tradition_map = {t: i for i, t in enumerate(tradition_list)}
@@ -209,7 +207,7 @@ def compute_symmetry_structure(bonds: list[MoralBond]) -> dict:
 
     # Count reciprocal pairs (A→B, B→A with same action)
     reciprocal = 0
-    for (agent, patient, action), bond_list in role_action_bonds.items():
+    for (agent, patient, action), _bond_list in role_action_bonds.items():
         inverse_key = (patient, agent, action)
         if inverse_key in role_action_bonds:
             reciprocal += 1
@@ -253,11 +251,11 @@ def compute_group_structure(bonds: list[MoralBond]) -> dict:
     Returns dict with algebraic properties.
     """
     # Get unique role pairs
-    role_pairs = set((b.agent_role, b.patient_role) for b in bonds)
+    role_pairs = {(b.agent_role, b.patient_role) for b in bonds}
 
     # Check for identity (A→A for each A)
-    agents = set(b.agent_role for b in bonds)
-    patients = set(b.patient_role for b in bonds)
+    agents = {b.agent_role for b in bonds}
+    patients = {b.patient_role for b in bonds}
     all_roles = agents | patients
 
     identity_present = all((r, r) in role_pairs for r in all_roles)

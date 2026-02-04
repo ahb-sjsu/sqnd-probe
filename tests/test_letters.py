@@ -271,27 +271,23 @@ class TestLoadAllLetters:
         """Test include_archive parameter."""
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create main file
-            (Path(tmpdir) / "main.yaml").write_text(
-                """
+            (Path(tmpdir) / "main.yaml").write_text("""
 - letter_id: main
   protocol: CORRELATIVE
   signoff: MAIN
   subject: Main
   body: Body
-"""
-            )
+""")
             # Create archive subdirectory
             archive_dir = Path(tmpdir) / "archive"
             archive_dir.mkdir()
-            (archive_dir / "archive.yaml").write_text(
-                """
+            (archive_dir / "archive.yaml").write_text("""
 - letter_id: archived
   protocol: CORRELATIVE
   signoff: ARCHIVED
   subject: Archived
   body: Body
-"""
-            )
+""")
 
             # Without archive
             letters_no_archive = load_all_letters(Path(tmpdir), include_archive=False)

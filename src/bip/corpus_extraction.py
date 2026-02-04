@@ -11,16 +11,14 @@ import json
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
 from .moral_structure import (
+    EXTRACTION_SYSTEM_PROMPT,
     MoralBond,
+    create_extraction_prompt,
     extract_bonds_sync,
     parse_extraction_response,
-    EXTRACTION_SYSTEM_PROMPT,
-    create_extraction_prompt,
 )
-
 
 # =============================================================================
 # LANGUAGE AND TRADITION MAPPINGS
@@ -123,7 +121,7 @@ class CorpusPassage:
     language: str
     tradition: str
     source: str
-    period: Optional[str] = None
+    period: str | None = None
 
     @classmethod
     def from_corpus_entry(cls, entry: dict) -> "CorpusPassage":
@@ -180,8 +178,8 @@ def extract_from_passage(
 def extract_from_corpus_cache(
     corpus_cache: dict,
     client,
-    sample_size: Optional[int] = None,
-    languages: Optional[list[str]] = None,
+    sample_size: int | None = None,
+    languages: list[str] | None = None,
     model: str = "claude-sonnet-4-20250514",
     delay: float = 0.5,
     verbose: bool = True,
@@ -253,7 +251,7 @@ def extract_from_corpus_cache(
             time.sleep(delay)
 
     if verbose:
-        print(f"\nExtraction complete:")
+        print("\nExtraction complete:")
         print(f"  Passages processed: {passages_processed}")
         print(f"  Bonds extracted: {len(all_bonds)}")
 
@@ -363,7 +361,7 @@ def save_bonds_jsonl(bonds: list[MoralBond], path: Path) -> None:
 def load_bonds_jsonl(path: Path) -> list[MoralBond]:
     """Load bonds from JSONL format."""
     bonds = []
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         for line in f:
             if line.strip():
                 data = json.loads(line)
@@ -374,7 +372,7 @@ def load_bonds_jsonl(path: Path) -> list[MoralBond]:
 def save_extraction_results(
     bonds: list[MoralBond],
     output_dir: Path,
-    metadata: Optional[dict] = None,
+    metadata: dict | None = None,
 ) -> None:
     """Save extraction results with metadata."""
     output_dir = Path(output_dir)
@@ -386,8 +384,8 @@ def save_extraction_results(
     # Save metadata
     meta = metadata or {}
     meta["total_bonds"] = len(bonds)
-    meta["traditions"] = list(set(b.source_tradition for b in bonds if b.source_tradition))
-    meta["languages"] = list(set(b.source_language for b in bonds if b.source_language))
+    meta["traditions"] = list({b.source_tradition for b in bonds if b.source_tradition})
+    meta["languages"] = list({b.source_language for b in bonds if b.source_language})
 
     with open(output_dir / "metadata.json", "w", encoding="utf-8") as f:
         json.dump(meta, f, indent=2)

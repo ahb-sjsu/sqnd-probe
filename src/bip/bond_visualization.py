@@ -6,13 +6,11 @@ for analyzing moral bond collections.
 """
 
 from collections import Counter
-from typing import Optional
 
 import numpy as np
 
-from .moral_structure import MoralBond, BondType, RoleType
-from .bond_algebra import compute_tradition_similarity, compute_tradition_vectors
-
+from .bond_algebra import compute_tradition_similarity
+from .moral_structure import BondType, MoralBond, RoleType
 
 # =============================================================================
 # CLUSTERING
@@ -105,7 +103,7 @@ def cluster_bonds(
     X, feature_names = encode_bonds_as_vectors(bonds)
 
     try:
-        from sklearn.cluster import KMeans, AgglomerativeClustering
+        from sklearn.cluster import AgglomerativeClustering, KMeans
 
         if method == "kmeans":
             model = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
@@ -245,7 +243,7 @@ def plot_tradition_heatmap_text(bonds: list[MoralBond]) -> str:
     # Rows
     for i, t1 in enumerate(traditions):
         row = f"{t1[:8]:>8s}  "
-        for j, t2 in enumerate(traditions):
+        for j, _t2 in enumerate(traditions):
             val = similarity[i, j]
             # Use characters to represent values
             if val > 0.8:
@@ -395,7 +393,7 @@ def plot_bond_space_text(
 # =============================================================================
 
 
-def plot_tradition_heatmap(bonds: list[MoralBond], save_path: Optional[str] = None):
+def plot_tradition_heatmap(bonds: list[MoralBond], save_path: str | None = None):
     """
     Plot heatmap of tradition similarities using matplotlib.
 
@@ -434,7 +432,7 @@ def plot_bond_space(
     bonds: list[MoralBond],
     color_by: str = "tradition",
     method: str = "pca",
-    save_path: Optional[str] = None,
+    save_path: str | None = None,
 ):
     """
     Plot bonds in 2D space using matplotlib.
@@ -467,7 +465,7 @@ def plot_bond_space(
     color_indices = [color_map[c] for c in colors]
 
     fig, ax = plt.subplots(figsize=(12, 8))
-    scatter = ax.scatter(
+    ax.scatter(
         coords[:, 0],
         coords[:, 1],
         c=color_indices,

@@ -8,10 +8,8 @@ Provides tools to evaluate agreement between:
 
 from collections import Counter, defaultdict
 from dataclasses import dataclass
-from typing import Optional
 
-from .moral_structure import MoralBond, BondType
-
+from .moral_structure import BondType, MoralBond
 
 # =============================================================================
 # COMPARISON DATA STRUCTURES
@@ -92,7 +90,7 @@ def match_bond_to_prediction(
     bond: MoralBond,
     predictions: list[dict],
     text_key: str = "text",
-) -> Optional[dict]:
+) -> dict | None:
     """
     Find the embedding prediction that matches a structured bond.
 
@@ -313,21 +311,21 @@ def print_comparison_report(result: ComparisonResult) -> None:
     print("METHOD COMPARISON: Structured vs Embedding")
     print("=" * 60)
 
-    print(f"\n## Overall Agreement")
+    print("\n## Overall Agreement")
     print(f"  Agreement rate: {result.agreement_rate:.1%}")
     print(f"  Total compared: {result.total_compared}")
 
-    print(f"\n## Consistency Scores")
+    print("\n## Consistency Scores")
     print(f"  Structured extraction: {result.consistency_scores.get('structured', 0):.1%}")
     print(f"  Embedding prediction: {result.consistency_scores.get('embedding', 0):.1%}")
 
     if result.bond_type_agreement:
-        print(f"\n## Agreement by Bond Type")
+        print("\n## Agreement by Bond Type")
         for bt, rate in sorted(result.bond_type_agreement.items(), key=lambda x: -x[1]):
             print(f"  {bt:20s}: {rate:.1%}")
 
     if result.by_tradition:
-        print(f"\n## Agreement by Tradition")
+        print("\n## Agreement by Tradition")
         for tradition, stats in sorted(
             result.by_tradition.items(), key=lambda x: -x[1]["agreement"]
         ):
@@ -336,7 +334,7 @@ def print_comparison_report(result: ComparisonResult) -> None:
             )
 
     if result.disagreements:
-        print(f"\n## Sample Disagreements (top 10)")
+        print("\n## Sample Disagreements (top 10)")
         for d in result.disagreements[:10]:
             family_note = " (same family)" if d["same_family"] else ""
             print(f"  {d['tradition']}: {d['structured']} vs {d['embedding']}{family_note}")

@@ -17,6 +17,7 @@ keywords = ["ai-safety", "moral-reasoning", "hohfeldian", "alignment", "ethics",
 dependencies = [
     "anthropic>=0.40.0",
     "click>=8.1.0",
+    "numpy>=1.24.0",
     "pydantic>=2.0.0",
     "pyyaml>=6.0.0",
     "rich>=13.0.0",
@@ -29,8 +30,8 @@ dev = [
     "pytest-cov>=4.0.0",
     "coverage[toml]>=7.0.0",
     "mypy>=1.0.0",
-    "black>=23.0.0",
-    "ruff>=0.1.0",
+    "black==26.1.0",
+    "ruff==0.15.0",
     "types-PyYAML>=6.0.0",
 ]
 
@@ -103,8 +104,14 @@ select = [
 ]
 ignore = [
     "E501",   # line too long (handled by black)
+    "E741",   # ambiguous variable name
+    "B007",   # loop control variable not used
     "B008",   # do not perform function calls in argument defaults
     "B905",   # zip without strict
+    "F401",   # imported but unused (intentional for public API)
+    "ARG001", # unused function argument
+    "ARG002", # unused method argument
+    "SIM102", # nested if statements
 ]
 
 [tool.ruff.lint.isort]

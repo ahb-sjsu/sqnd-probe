@@ -5,23 +5,22 @@
 """Tests for corpus extraction module."""
 
 import pytest
-from pathlib import Path
 
 from src.bip.corpus_extraction import (
     CorpusPassage,
-    get_tradition_from_source,
-    get_language_canonical,
     compute_extraction_stats,
-    save_bonds_jsonl,
+    get_language_canonical,
+    get_tradition_from_source,
     load_bonds_jsonl,
+    save_bonds_jsonl,
 )
 from src.bip.moral_structure import (
-    MoralBond,
-    BondType,
-    RoleType,
     ActionCategory,
+    BondType,
     ContextType,
     ModalStrength,
+    MoralBond,
+    RoleType,
 )
 
 

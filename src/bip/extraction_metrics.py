@@ -5,22 +5,20 @@ Compares extracted bonds against gold standard annotations to measure
 precision, recall, F1, and field-level accuracy.
 """
 
-from collections import Counter, defaultdict
+from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
 import yaml
 
 from .moral_structure import (
-    MoralBond,
-    BondType,
-    RoleType,
     ActionCategory,
-    ModalStrength,
+    BondType,
     ContextType,
+    ModalStrength,
+    MoralBond,
+    RoleType,
 )
-
 
 # =============================================================================
 # GOLD STANDARD LOADING
@@ -41,7 +39,7 @@ class GoldStandardEntry:
 
 def load_gold_standard(path: Path) -> list[GoldStandardEntry]:
     """Load gold standard annotations from YAML file."""
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         data = yaml.safe_load(f)
 
     entries = []
@@ -119,7 +117,7 @@ def bond_partial_match(pred: MoralBond, gold: MoralBond) -> float:
 
 def find_best_match(
     pred: MoralBond, gold_bonds: list[MoralBond], threshold: float = 0.5
-) -> Optional[tuple[MoralBond, float]]:
+) -> tuple[MoralBond, float] | None:
     """
     Find the best matching gold bond for a prediction.
 

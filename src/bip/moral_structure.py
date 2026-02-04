@@ -12,11 +12,9 @@ The key insight is that moral structures (obligations, permissions, claims)
 are language-independent concepts that can be represented symbolically.
 """
 
-from dataclasses import dataclass, field
-from enum import Enum
-from typing import Optional
 import json
-
+from dataclasses import dataclass
+from enum import Enum
 
 # =============================================================================
 # PART 1: SCHEMA DEFINITIONS
@@ -170,13 +168,13 @@ class MoralBond:
     context: ContextType = ContextType.GENERIC
 
     # Conditions (optional)
-    condition: Optional[str] = None  # "if X promised"
-    exception: Optional[str] = None  # "unless emergency"
+    condition: str | None = None  # "if X promised"
+    exception: str | None = None  # "unless emergency"
 
     # Metadata
-    source_language: Optional[str] = None
-    source_tradition: Optional[str] = None
-    source_text_id: Optional[str] = None
+    source_language: str | None = None
+    source_tradition: str | None = None
+    source_text_id: str | None = None
     confidence: float = 1.0
 
     def to_canonical_tuple(self) -> tuple:
@@ -513,7 +511,7 @@ def compute_bond_algebra(bonds: list[MoralBond]) -> dict:
         "patient_role_distribution": Counter(b.patient_role.value for b in bonds),
         "action_distribution": Counter(b.action.value for b in bonds),
         "context_distribution": Counter(b.context.value for b in bonds),
-        "unique_canonical_tuples": len(set(b.to_canonical_tuple() for b in bonds)),
+        "unique_canonical_tuples": len({b.to_canonical_tuple() for b in bonds}),
     }
 
     # Compute role transition matrix
@@ -559,7 +557,7 @@ def find_cultural_variations(
 
         # If more than one culture and they differ
         if len(culture_bonds) > 1:
-            bond_types = set(b.bond_type for b in culture_bonds.values())
+            bond_types = {b.bond_type for b in culture_bonds.values()}
             if len(bond_types) > 1:
                 variations[f"{key[0]}->{key[1]}:{key[2]}"] = list(culture_bonds.items())
 

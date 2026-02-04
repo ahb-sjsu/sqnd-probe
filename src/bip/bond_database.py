@@ -6,18 +6,15 @@ Provides efficient querying, filtering, and analysis of large bond collections.
 
 import json
 import sqlite3
-from collections import Counter
-from dataclasses import asdict
 from pathlib import Path
-from typing import Iterator, Optional
 
 from .moral_structure import (
-    MoralBond,
-    BondType,
-    RoleType,
     ActionCategory,
+    BondType,
     ContextType,
     ModalStrength,
+    MoralBond,
+    RoleType,
 )
 
 
@@ -41,8 +38,7 @@ class BondDatabase:
         """Create database schema."""
         cursor = self.conn.cursor()
 
-        cursor.execute(
-            """
+        cursor.execute("""
             CREATE TABLE IF NOT EXISTS bonds (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 bond_type TEXT NOT NULL,
@@ -60,8 +56,7 @@ class BondDatabase:
                 canonical_tuple TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
-        """
-        )
+        """)
 
         # Create indexes for common queries
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_bond_type ON bonds(bond_type)")
@@ -183,7 +178,7 @@ class BondDatabase:
             confidence=row["confidence"],
         )
 
-    def get_all(self, limit: Optional[int] = None) -> list[MoralBond]:
+    def get_all(self, limit: int | None = None) -> list[MoralBond]:
         """Get all bonds, optionally limited."""
         cursor = self.conn.cursor()
         if limit:
@@ -214,8 +209,8 @@ class BondDatabase:
 
     def query_by_roles(
         self,
-        agent_role: Optional[RoleType | str] = None,
-        patient_role: Optional[RoleType | str] = None,
+        agent_role: RoleType | str | None = None,
+        patient_role: RoleType | str | None = None,
     ) -> list[MoralBond]:
         """Get bonds filtered by agent and/or patient roles."""
         cursor = self.conn.cursor()
@@ -283,7 +278,7 @@ class BondDatabase:
     # STATISTICS
     # =========================================================================
 
-    def count(self, tradition: Optional[str] = None) -> int:
+    def count(self, tradition: str | None = None) -> int:
         """Count bonds, optionally filtered by tradition."""
         cursor = self.conn.cursor()
         if tradition:
@@ -302,48 +297,40 @@ class BondDatabase:
         stats = {"total_bonds": self.count()}
 
         # By tradition
-        cursor.execute(
-            """
+        cursor.execute("""
             SELECT source_tradition, COUNT(*) as count
             FROM bonds
             GROUP BY source_tradition
             ORDER BY count DESC
-            """
-        )
+            """)
         stats["by_tradition"] = {row["source_tradition"]: row["count"] for row in cursor.fetchall()}
 
         # By language
-        cursor.execute(
-            """
+        cursor.execute("""
             SELECT source_language, COUNT(*) as count
             FROM bonds
             GROUP BY source_language
             ORDER BY count DESC
-            """
-        )
+            """)
         stats["by_language"] = {row["source_language"]: row["count"] for row in cursor.fetchall()}
 
         # By bond type
-        cursor.execute(
-            """
+        cursor.execute("""
             SELECT bond_type, COUNT(*) as count
             FROM bonds
             GROUP BY bond_type
             ORDER BY count DESC
-            """
-        )
+            """)
         stats["by_bond_type"] = {row["bond_type"]: row["count"] for row in cursor.fetchall()}
 
         # By action
-        cursor.execute(
-            """
+        cursor.execute("""
             SELECT action, COUNT(*) as count
             FROM bonds
             GROUP BY action
             ORDER BY count DESC
             LIMIT 20
-            """
-        )
+            """)
         stats["top_actions"] = {row["action"]: row["count"] for row in cursor.fetchall()}
 
         # Unique canonical patterns
@@ -365,14 +352,12 @@ class BondDatabase:
         cursor = self.conn.cursor()
 
         # Get canonical patterns per tradition
-        cursor.execute(
-            """
+        cursor.execute("""
             SELECT source_tradition, canonical_tuple
             FROM bonds
             WHERE source_tradition IS NOT NULL
             GROUP BY source_tradition, canonical_tuple
-            """
-        )
+            """)
 
         tradition_patterns = {}
         for row in cursor.fetchall():
@@ -408,7 +393,7 @@ class BondDatabase:
     def import_from_jsonl(self, path: Path) -> int:
         """Import bonds from JSONL format. Returns count imported."""
         bonds = []
-        with open(path, "r", encoding="utf-8") as f:
+        with open(path, encoding="utf-8") as f:
             for line in f:
                 if line.strip():
                     data = json.loads(line)
