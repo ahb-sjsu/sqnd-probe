@@ -73,7 +73,9 @@ class BIPEncoder(nn.Module):
         else:
             self.projection = nn.Identity()
 
-    def forward(self, input_ids: torch.Tensor, attention_mask: torch.Tensor, **kwargs) -> torch.Tensor:
+    def forward(
+        self, input_ids: torch.Tensor, attention_mask: torch.Tensor, **kwargs
+    ) -> torch.Tensor:
         """
         Encode passages.
 
