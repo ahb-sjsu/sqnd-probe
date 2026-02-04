@@ -180,12 +180,14 @@ def compute_bond_composition(bonds: list[MoralBond]) -> dict:
             if b1 == a2:  # Composable: A→B and B→C
                 # Check if A→C exists
                 if (a1, b2) in role_pairs:
-                    chains.append({
-                        "first": (a1.value, b1.value),
-                        "second": (a2.value, b2.value),
-                        "composed": (a1.value, b2.value),
-                        "count": len(bonds1) * len(bonds2),
-                    })
+                    chains.append(
+                        {
+                            "first": (a1.value, b1.value),
+                            "second": (a2.value, b2.value),
+                            "composed": (a1.value, b2.value),
+                            "count": len(bonds1) * len(bonds2),
+                        }
+                    )
 
     return {
         "transitive_chains": chains,
@@ -265,8 +267,8 @@ def compute_group_structure(bonds: list[MoralBond]) -> dict:
 
     # Check closure under composition
     closure_violations = 0
-    for (a1, b1) in role_pairs:
-        for (a2, b2) in role_pairs:
+    for a1, b1 in role_pairs:
+        for a2, b2 in role_pairs:
             if b1 == a2:  # Composable
                 if (a1, b2) not in role_pairs:
                     closure_violations += 1
@@ -323,13 +325,15 @@ def find_moral_isomorphisms(
     # Pattern-level matches
     matches = []
     for pattern in shared:
-        matches.append({
-            "pattern": str(pattern),
-            "count1": patterns1[pattern],
-            "count2": patterns2[pattern],
-            "frequency_ratio": min(patterns1[pattern], patterns2[pattern])
-            / max(patterns1[pattern], patterns2[pattern]),
-        })
+        matches.append(
+            {
+                "pattern": str(pattern),
+                "count1": patterns1[pattern],
+                "count2": patterns2[pattern],
+                "frequency_ratio": min(patterns1[pattern], patterns2[pattern])
+                / max(patterns1[pattern], patterns2[pattern]),
+            }
+        )
 
     # Sort by frequency ratio
     matches.sort(key=lambda x: -x["frequency_ratio"])
@@ -381,9 +385,9 @@ def print_algebra_report(bonds: list[MoralBond]) -> None:
     print("\n## Composition Structure")
     composition = compute_bond_composition(bonds)
     print(f"  Transitive chains found: {composition['total_chains']}")
-    if composition['transitive_chains']:
+    if composition["transitive_chains"]:
         print("  Top chains:")
-        for chain in composition['transitive_chains'][:5]:
+        for chain in composition["transitive_chains"][:5]:
             print(f"    {chain['first']} → {chain['second']} = {chain['composed']}")
 
     # Tradition similarity

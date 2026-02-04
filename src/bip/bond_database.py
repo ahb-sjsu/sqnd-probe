@@ -41,7 +41,8 @@ class BondDatabase:
         """Create database schema."""
         cursor = self.conn.cursor()
 
-        cursor.execute("""
+        cursor.execute(
+            """
             CREATE TABLE IF NOT EXISTS bonds (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 bond_type TEXT NOT NULL,
@@ -59,7 +60,8 @@ class BondDatabase:
                 canonical_tuple TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
-        """)
+        """
+        )
 
         # Create indexes for common queries
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_bond_type ON bonds(bond_type)")
@@ -193,17 +195,13 @@ class BondDatabase:
     def query_by_tradition(self, tradition: str) -> list[MoralBond]:
         """Get all bonds from a specific tradition."""
         cursor = self.conn.cursor()
-        cursor.execute(
-            "SELECT * FROM bonds WHERE source_tradition = ?", (tradition,)
-        )
+        cursor.execute("SELECT * FROM bonds WHERE source_tradition = ?", (tradition,))
         return [self._row_to_bond(row) for row in cursor.fetchall()]
 
     def query_by_language(self, language: str) -> list[MoralBond]:
         """Get all bonds from a specific language."""
         cursor = self.conn.cursor()
-        cursor.execute(
-            "SELECT * FROM bonds WHERE source_language = ?", (language,)
-        )
+        cursor.execute("SELECT * FROM bonds WHERE source_language = ?", (language,))
         return [self._row_to_bond(row) for row in cursor.fetchall()]
 
     def query_by_bond_type(self, bond_type: BondType | str) -> list[MoralBond]:
@@ -278,9 +276,7 @@ class BondDatabase:
         if isinstance(canonical_tuple, tuple):
             canonical_tuple = str(canonical_tuple)
         cursor = self.conn.cursor()
-        cursor.execute(
-            "SELECT * FROM bonds WHERE canonical_tuple = ?", (canonical_tuple,)
-        )
+        cursor.execute("SELECT * FROM bonds WHERE canonical_tuple = ?", (canonical_tuple,))
         return [self._row_to_bond(row) for row in cursor.fetchall()]
 
     # =========================================================================
@@ -314,9 +310,7 @@ class BondDatabase:
             ORDER BY count DESC
             """
         )
-        stats["by_tradition"] = {
-            row["source_tradition"]: row["count"] for row in cursor.fetchall()
-        }
+        stats["by_tradition"] = {row["source_tradition"]: row["count"] for row in cursor.fetchall()}
 
         # By language
         cursor.execute(
@@ -327,9 +321,7 @@ class BondDatabase:
             ORDER BY count DESC
             """
         )
-        stats["by_language"] = {
-            row["source_language"]: row["count"] for row in cursor.fetchall()
-        }
+        stats["by_language"] = {row["source_language"]: row["count"] for row in cursor.fetchall()}
 
         # By bond type
         cursor.execute(
@@ -340,9 +332,7 @@ class BondDatabase:
             ORDER BY count DESC
             """
         )
-        stats["by_bond_type"] = {
-            row["bond_type"]: row["count"] for row in cursor.fetchall()
-        }
+        stats["by_bond_type"] = {row["bond_type"]: row["count"] for row in cursor.fetchall()}
 
         # By action
         cursor.execute(
@@ -354,9 +344,7 @@ class BondDatabase:
             LIMIT 20
             """
         )
-        stats["top_actions"] = {
-            row["action"]: row["count"] for row in cursor.fetchall()
-        }
+        stats["top_actions"] = {row["action"]: row["count"] for row in cursor.fetchall()}
 
         # Unique canonical patterns
         cursor.execute("SELECT COUNT(DISTINCT canonical_tuple) FROM bonds")

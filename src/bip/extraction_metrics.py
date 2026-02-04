@@ -216,7 +216,9 @@ def compute_extraction_metrics(
 
     # Find matches for each prediction
     for pred in predicted:
-        match = find_best_match(pred, [g for i, g in enumerate(gold) if i not in matched_gold], partial_threshold)
+        match = find_best_match(
+            pred, [g for i, g in enumerate(gold) if i not in matched_gold], partial_threshold
+        )
 
         tradition = pred.source_tradition or "unknown"
 
@@ -300,7 +302,9 @@ def compute_extraction_metrics(
         exact_f1=exact_f1,
         bond_type_accuracy=field_correct["bond_type"] / field_total if field_total > 0 else 0.0,
         agent_role_accuracy=field_correct["agent_role"] / field_total if field_total > 0 else 0.0,
-        patient_role_accuracy=field_correct["patient_role"] / field_total if field_total > 0 else 0.0,
+        patient_role_accuracy=(
+            field_correct["patient_role"] / field_total if field_total > 0 else 0.0
+        ),
         action_accuracy=field_correct["action"] / field_total if field_total > 0 else 0.0,
         total_predicted=len(predicted),
         total_gold=len(gold),

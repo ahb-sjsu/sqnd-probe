@@ -130,9 +130,7 @@ class CorpusPassage:
         """Create from a corpus cache entry."""
         # Handle different entry formats
         text = entry.get("text") or entry.get("text_original") or entry.get("content", "")
-        language = get_language_canonical(
-            entry.get("language") or entry.get("lang", "unknown")
-        )
+        language = get_language_canonical(entry.get("language") or entry.get("lang", "unknown"))
         source = entry.get("source") or entry.get("source_type", "unknown")
         tradition = get_tradition_from_source(source)
 
@@ -233,6 +231,7 @@ def extract_from_corpus_cache(
     if sample_size:
         # Sample evenly across the corpus
         import random
+
         random.seed(42)
         passages = random.sample(passages, min(sample_size, len(passages)))
 
@@ -286,9 +285,7 @@ async def extract_from_passage_async(
         )
 
         response_text = message.content[0].text
-        bonds = parse_extraction_response(
-            response_text, passage.language, passage.tradition
-        )
+        bonds = parse_extraction_response(response_text, passage.language, passage.tradition)
 
         for bond in bonds:
             bond.source_text_id = passage.id
@@ -327,13 +324,12 @@ async def extract_bonds_batch_async(
         batch = passages[i : i + batch_size]
 
         if verbose:
-            print(f"Processing batch {i // batch_size + 1}/{(len(passages) + batch_size - 1) // batch_size}")
+            print(
+                f"Processing batch {i // batch_size + 1}/{(len(passages) + batch_size - 1) // batch_size}"
+            )
 
         # Process batch concurrently
-        tasks = [
-            extract_from_passage_async(client, passage, model=model)
-            for passage in batch
-        ]
+        tasks = [extract_from_passage_async(client, passage, model=model) for passage in batch]
         results = await asyncio.gather(*tasks, return_exceptions=True)
 
         for result in results:

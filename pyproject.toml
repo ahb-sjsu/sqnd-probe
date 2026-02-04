@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dear-ethicist"
-version = "0.1.1-BIP"
+version = "0.1.1+bip"
 description = "An advice column game for measuring D4 gauge structure in moral reasoning"
 readme = "README.md"
 requires-python = ">=3.10"

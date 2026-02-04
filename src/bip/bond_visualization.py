@@ -36,6 +36,7 @@ def encode_bonds_as_vectors(bonds: list[MoralBond]) -> tuple[np.ndarray, list[st
     bond_types = [bt.value for bt in BondType]
     roles = [r.value for r in RoleType]
     from .moral_structure import ActionCategory
+
     actions = [a.value for a in ActionCategory]
 
     n_features = len(bond_types) + 2 * len(roles) + len(actions)
@@ -117,9 +118,7 @@ def cluster_bonds(
 
     except ImportError:
         # Fallback to simple hashing-based clustering
-        labels = np.array([
-            hash(bond.to_canonical_tuple()) % n_clusters for bond in bonds
-        ])
+        labels = np.array([hash(bond.to_canonical_tuple()) % n_clusters for bond in bonds])
 
     # Compute cluster statistics
     cluster_stats = {}
@@ -176,12 +175,14 @@ def reduce_dimensions(
     try:
         if method == "pca":
             from sklearn.decomposition import PCA
+
             model = PCA(n_components=n_components)
             coords = model.fit_transform(X)
             metadata["explained_variance"] = model.explained_variance_ratio_.tolist()
 
         elif method == "tsne":
             from sklearn.manifold import TSNE
+
             perplexity = min(30, len(bonds) - 1)
             model = TSNE(n_components=n_components, perplexity=perplexity, random_state=42)
             coords = model.fit_transform(X)
@@ -189,8 +190,11 @@ def reduce_dimensions(
         elif method == "umap":
             try:
                 import umap
+
                 n_neighbors = min(15, len(bonds) - 1)
-                model = umap.UMAP(n_components=n_components, n_neighbors=n_neighbors, random_state=42)
+                model = umap.UMAP(
+                    n_components=n_components, n_neighbors=n_neighbors, random_state=42
+                )
                 coords = model.fit_transform(X)
             except ImportError:
                 metadata["error"] = "umap-learn not installed"
@@ -474,7 +478,9 @@ def plot_bond_space(
 
     # Legend
     handles = [
-        plt.Line2D([0], [0], marker="o", color="w", markerfacecolor=plt.cm.tab10(i / 10), markersize=10)
+        plt.Line2D(
+            [0], [0], marker="o", color="w", markerfacecolor=plt.cm.tab10(i / 10), markersize=10
+        )
         for i in range(len(unique_colors))
     ]
     ax.legend(handles, unique_colors, loc="best", title=color_by.title())

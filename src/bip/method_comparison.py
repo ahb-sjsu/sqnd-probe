@@ -45,16 +45,16 @@ class ComparisonResult:
 
 # Map BIP model bond type indices to our BondType enum
 BIP_BOND_TYPE_MAP = {
-    0: BondType.PROHIBITION,      # HARM_PREVENTION -> prohibition
-    1: BondType.OBLIGATION,       # RECIPROCITY -> obligation (mutual duties)
-    2: BondType.LIBERTY,          # AUTONOMY -> liberty
-    3: BondType.CLAIM,            # PROPERTY -> claim (rights)
-    4: BondType.OBLIGATION,       # FAMILY -> obligation
-    5: BondType.OBLIGATION,       # AUTHORITY -> obligation
-    6: BondType.PERMISSION,       # EMERGENCY -> permission (exception)
-    7: BondType.OBLIGATION,       # CONTRACT -> obligation
-    8: BondType.OBLIGATION,       # CARE -> obligation
-    9: BondType.OBLIGATION,       # FAIRNESS -> obligation
+    0: BondType.PROHIBITION,  # HARM_PREVENTION -> prohibition
+    1: BondType.OBLIGATION,  # RECIPROCITY -> obligation (mutual duties)
+    2: BondType.LIBERTY,  # AUTONOMY -> liberty
+    3: BondType.CLAIM,  # PROPERTY -> claim (rights)
+    4: BondType.OBLIGATION,  # FAMILY -> obligation
+    5: BondType.OBLIGATION,  # AUTHORITY -> obligation
+    6: BondType.PERMISSION,  # EMERGENCY -> permission (exception)
+    7: BondType.OBLIGATION,  # CONTRACT -> obligation
+    8: BondType.OBLIGATION,  # CARE -> obligation
+    9: BondType.OBLIGATION,  # FAIRNESS -> obligation
 }
 
 
@@ -206,13 +206,15 @@ def compare_extraction_methods(
 
         # Track disagreements
         if not comparison["exact_match"]:
-            disagreements.append({
-                "text_id": bond.source_text_id,
-                "tradition": tradition,
-                "structured": comparison["structured_type"],
-                "embedding": comparison["embedding_type"],
-                "same_family": comparison["same_family"],
-            })
+            disagreements.append(
+                {
+                    "text_id": bond.source_text_id,
+                    "tradition": tradition,
+                    "structured": comparison["structured_type"],
+                    "embedding": comparison["embedding_type"],
+                    "same_family": comparison["same_family"],
+                }
+            )
 
     # Compute agreement rate
     total = len(comparisons)
@@ -326,8 +328,12 @@ def print_comparison_report(result: ComparisonResult) -> None:
 
     if result.by_tradition:
         print(f"\n## Agreement by Tradition")
-        for tradition, stats in sorted(result.by_tradition.items(), key=lambda x: -x[1]["agreement"]):
-            print(f"  {tradition:20s}: {stats['agreement']:.1%} ({stats['matches']}/{stats['total']})")
+        for tradition, stats in sorted(
+            result.by_tradition.items(), key=lambda x: -x[1]["agreement"]
+        ):
+            print(
+                f"  {tradition:20s}: {stats['agreement']:.1%} ({stats['matches']}/{stats['total']})"
+            )
 
     if result.disagreements:
         print(f"\n## Sample Disagreements (top 10)")
@@ -357,12 +363,14 @@ def analyze_systematic_disagreements(result: ComparisonResult) -> dict:
     patterns = []
     for (struct_type, embed_type), count in transitions.most_common(10):
         if count >= 3:
-            patterns.append({
-                "structured_predicts": struct_type,
-                "embedding_predicts": embed_type,
-                "count": count,
-                "percentage": count / len(result.disagreements) * 100,
-            })
+            patterns.append(
+                {
+                    "structured_predicts": struct_type,
+                    "embedding_predicts": embed_type,
+                    "count": count,
+                    "percentage": count / len(result.disagreements) * 100,
+                }
+            )
 
     # Tradition-specific patterns
     tradition_patterns = defaultdict(lambda: defaultdict(int))
