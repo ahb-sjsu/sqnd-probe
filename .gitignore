@@ -23,7 +23,14 @@ htmlcov/
 .vscode/
 .idea/
 
+# Environment
+.env
+
 # OS
 .DS_Store
 Thumbs.db
 nul
+bash.exe.stackdump
+
+# Office temp/lock files
+~$*
