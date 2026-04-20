@@ -32,6 +32,23 @@ pip install -e ".[dev]"
 
 ## How to Play
 
+```mermaid
+flowchart LR
+    START[dear-ethicist play]
+    LETTER[Letter arrives<br/>everyday dilemma]
+    THINK[You read + reason]
+    VERDICT[Publish advice]
+
+    MAP["Hohfeldian mapping<br/>Obligation / Claim / Privilege / Power /<br/>Duty / No-claim / Liability / Disability"]
+    TRACE[Per-letter trace<br/>which positions you invoked]
+    AGG[Session aggregate<br/>moral reasoning profile]
+    REP[Report: D4 gauge structure<br/>symmetry / asymmetry signatures]
+
+    START --> LETTER --> THINK --> VERDICT
+    VERDICT --> MAP --> TRACE --> AGG --> REP
+    VERDICT --> LETTER
+```
+
 ### Start a Session
 
 ```bash
