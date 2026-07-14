@@ -1,0 +1,12 @@
+ladder sweep: 8 models x 40 scenarios x 10 samples x 4 cells; conc=24
+gemma-small      rank= 2 n=40 frac_ctx_FDR=0.000 meanCNT=0.0000 nullCNT=0.0000 bad=0.01 t=84s
+qwen3-small      rank= 3 n=40 frac_ctx_FDR=0.000 meanCNT=0.0000 nullCNT=0.0000 bad=0.00 t=166s
+...
+gemma-small      rank= 2 n=40 frac_ctx_FDR=0.000 meanCNT=0.0000 nullCNT=0.0000 bad=0.01 t=84s
+qwen3-small      rank= 3 n=40 frac_ctx_FDR=0.000 meanCNT=0.0000 nullCNT=0.0000 bad=0.00 t=166s
+gemma            rank= 5 n=40 frac_ctx_FDR=0.000 meanCNT=0.0000 nullCNT=0.0000 bad=0.00 t=57s
+gpt-oss          rank= 6 n=40 frac_ctx_FDR=0.000 meanCNT=0.0000 nullCNT=0.0001 bad=0.04 t=1269s
+glm-5            rank= 7 n=40 frac_ctx_FDR=0.000 meanCNT=0.0000 nullCNT=0.0000 bad=0.00 t=142s
+qwen3            rank= 8 n=40 frac_ctx_FDR=0.000 meanCNT=0.0000 nullCNT=0.0000 bad=0.05 t=89s
+minimax-m2       rank= 9 n=40 frac_ctx_FDR=0.000 meanCNT=0.0000 nullCNT=0.0000 bad=0.01 t=699s
+kimi             rank=10 n=40 frac_ctx_FDR=0.000 meanCNT=0.0000 nullCNT=0.0000 bad=0.01 t=10230s

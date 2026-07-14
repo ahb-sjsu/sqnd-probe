@@ -9,6 +9,16 @@
 
 An advice column game that measures the mathematical structure of moral reasoning.
 
+> **Epistemic status (2026-07-14):** working research instrument. The operations this game
+> actually measures — correlative swap (*s*) and negation (*r²*) — are commuting involutions
+> generating the Klein four-group **V₄** (abelian, order 4). The **non-abelian D4** structure
+> named in the companion NA-SQND papers is *posited*, not yet demonstrated: it requires
+> quarter-turn operations that no current protocol elicits (see
+> [`paper/response_to_critique.md`](paper/response_to_critique.md) §C for the group-law
+> verification protocol that would test it). The strongest empirical result to date is a
+> *null*: no signaling-corrected quantum contextuality (CHSH |S| ≤ 2 everywhere). Claims are
+> stated at their licensed strength.
+
 ## What Is This?
 
 You play as a newly hired advice columnist for *The Morning Chronicle*. Letters arrive from readers tangled in everyday moral dilemmas:
@@ -43,7 +53,7 @@ flowchart LR
     MAP["Hohfeldian mapping<br/>Obligation / Claim / Privilege / Power /<br/>Duty / No-claim / Liability / Disability"]
     TRACE[Per-letter trace<br/>which positions you invoked]
     AGG[Session aggregate<br/>moral reasoning profile]
-    REP[Report: D4 gauge structure<br/>symmetry / asymmetry signatures]
+    REP[Report: gauge-structure signatures<br/>V4 measured / D4 posited]
 
     START --> LETTER --> THINK --> VERDICT
     VERDICT --> MAP --> TRACE --> AGG --> REP
@@ -189,21 +199,29 @@ Use the `run_dear_ethicist.ipynb` notebook or run headless mode:
 
 ## The Mathematical Framework
 
-### D4 Dihedral Group
+### The D4 hypothesis and the measured V₄ subgroup
 
-The four Hohfeldian positions form a square. The symmetries of this square form the *dihedral group D4*:
+The four Hohfeldian positions form a square. The symmetries of this square form the *dihedral group D4* (order 8, non-abelian):
 
 ```
-    O -------- L
+    O -------- C
     |          |
     |          |
-    C -------- N
+    N -------- L
 ```
 
-- **Rotation (R)**: Cycles O→L→N→C→O
-- **Reflection (S)**: Swaps correlatives O↔C, L↔N
+- **Reflection (S)**: swaps correlatives O↔C, L↔N — *measured* (correlative protocols)
+- **Negation (R²)**: swaps opposites O↔L, C↔N — *measured* (semantic-gate protocols)
+- **Rotation (R)**: cycles O→C→L→N→O — *posited*; no current protocol elicits a quarter-turn
 
 The bond index measures invariance under reflection S. A system with perfect correlative symmetry is S-invariant.
+
+**Measured vs posited.** S and R² are commuting involutions, so together they generate only the
+Klein four-group **V₄ = {E, R², S, SR²}**, which is abelian. Demonstrating the full non-abelian
+D4 requires eliciting a quarter-turn (R, R³, SR, SR³) from subjects — the group-law verification
+protocol proposed in `paper/response_to_critique.md` §C, which is not yet implemented. Until
+that experiment runs and passes, V₄ is the measured structure and D4 is the hypothesis this
+instrument exists to test.
 
 ### Why This Matters
 
@@ -269,7 +287,9 @@ sqnd-probe/
 pytest tests/ -v
 ```
 
-All 15 tests verify D4 group axioms (R⁴=E, S²=E, SRS=R⁻¹) and model correctness.
+The suite verifies the D4 group axioms (R⁴=E, S²=E, SRS=R⁻¹), the group-action homomorphism
+law ((a·b)(x) = a(b(x)) for all 64 pairs), that ⟨S, R²⟩ generates exactly V₄, and model
+correctness.
 
 ## Related Repositories
 

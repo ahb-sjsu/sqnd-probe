@@ -179,12 +179,14 @@ def d4_apply_to_state(element: D4Element, state: HohfeldianState) -> HohfeldianS
             result = _ROTATION[_ROTATION[_ROTATION[result]]]
         case D4Element.S:
             result = _REFLECTION[result]
+        # Labels compose right-to-left: sr^k(x) = s(r^k(x)) — rotate first,
+        # then reflect — matching the table convention (a*b)(x) = a(b(x)).
         case D4Element.SR:
-            result = _ROTATION[_REFLECTION[result]]
+            result = _REFLECTION[_ROTATION[result]]
         case D4Element.SR2:
-            result = _ROTATION[_ROTATION[_REFLECTION[result]]]
+            result = _REFLECTION[_ROTATION[_ROTATION[result]]]
         case D4Element.SR3:
-            result = _ROTATION[_ROTATION[_ROTATION[_REFLECTION[result]]]]
+            result = _REFLECTION[_ROTATION[_ROTATION[_ROTATION[result]]]]
     return result
 
 
