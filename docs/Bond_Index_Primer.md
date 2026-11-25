@@ -207,9 +207,13 @@ Bond Index = observed violations / maximum possible violations
 ```
 
 - **0.0** = Perfect correlative consistency (no violations)
-- **0.5** = Random (no structure)
-- **> 0.5** = Anti-correlated (systematically inverted)
-- **1.0** = Maximum violations (complete inversion)
+- **1.0** = Maximum violations (no answer matched the expected position)
+- Answering at random among the four positions matches one time in four, so it scores about 0.75
+
+This is one instance of the Bond Index as erisml-lib 3.2 defines it
+([docs/BOND_INDEX.md](https://github.com/ahb-sjsu/erisml-lib/blob/main/docs/BOND_INDEX.md)): the mean
+deviation of an evaluation under declared re-descriptions, over a tolerance. Here the evaluation is a
+Hohfeldian position and the deviation is zero or one.
 
 Like a loss function: lower is better. Zero means perfect alignment.
 

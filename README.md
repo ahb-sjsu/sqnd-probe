@@ -119,11 +119,14 @@ Bond Index = observed violations / maximum possible violations
 ```
 
 - **Bond Index = 0.0** — Perfect correlative symmetry. Your O↔C and L↔N pairings are consistent.
-- **Bond Index = 0.5** — Random. You're not tracking correlatives at all.
-- **Bond Index > 0.5** — Anti-correlated. You're systematically inverting the structure.
-- **Bond Index = 1.0** — Maximum violations. Complete structural inversion.
+- **Bond Index = 1.0** — Maximum violations. No answer matched the position expected.
+- **Answering at random** among the four positions matches one time in four, so it scores about 0.75.
 
 Like a loss function: lower is better. Zero means perfect alignment.
+
+This is the Bond Index of [erisml-lib](https://github.com/ahb-sjsu/erisml-lib/blob/main/docs/BOND_INDEX.md)
+with Hohfeldian positions as the output: the share of answers that are not the expected position, over a
+tolerance (1 here). The same index applies to verdicts, scores and moral vectors, each with its own distance.
 
 ### What It Doesn't Measure
 
